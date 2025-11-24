@@ -855,8 +855,7 @@ table.widefat.mlb-tools-table {
 /* -------------------- Hotels list specifics -------------------- */
 .mlb-hotel-header {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    align-items: flex-start;
     gap: 12px;
     margin-bottom: 8px;
     padding-bottom: 8px;
@@ -865,8 +864,9 @@ table.widefat.mlb-tools-table {
 
 .mlb-hotel-summary {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 12px;
+    flex: 1 1 auto;
 }
 
 .mlb-hotel-summary .dashicons,
@@ -878,6 +878,7 @@ table.widefat.mlb-tools-table {
     font-size: 15px;
     font-weight: 600;
     color: var(--mlb-text-primary);
+    text-align: left;
 }
 
 .mlb-hotel-id-text {
@@ -889,6 +890,7 @@ table.widefat.mlb-tools-table {
     display: flex;
     gap: 8px;
     align-items: center;
+    margin-left: auto;
 }
 
 .mlb-hotel-actions .button {

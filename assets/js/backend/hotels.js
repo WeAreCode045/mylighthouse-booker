@@ -20,7 +20,13 @@
                     items: '.mlb-hotel-item',
                     axis: 'y',
                     placeholder: 'mlb-hotel-item-placeholder',
-                    disabled: true,
+                    disabled: false,
+                    start: function(){
+                        $(this).addClass('mlb-reorder-active');
+                    },
+                    stop: function(){
+                        $(this).removeClass('mlb-reorder-active');
+                    },
                     update: function() {
                         // gather ordered ids (prefer DB id; fall back to external id or ID text)
                         var order = [];
@@ -64,35 +70,7 @@
         // Initialise sortable ordering for hotels list (drag handle requires jQuery UI Sortable)
         initHotelsSortable();
 
-        // Toggle reorder button
-        this.root.off('click.mlb.toggleReorder', '#mlb-toggle-reorder').on('click.mlb.toggleReorder', '#mlb-toggle-reorder', function(e){
-            e.preventDefault();
-            var $btn = $(this);
-            var $container = initHotelsSortable();
-            if(!$container || !$container.length) return;
-            var disabled = $container.sortable('option', 'disabled');
-            if (disabled) {
-                $container.sortable('option', 'disabled', false);
-                $container.addClass('mlb-reorder-active');
-                $btn.addClass('active');
-                $btn.attr('aria-pressed','true');
-            } else {
-                $container.sortable('option', 'disabled', true);
-                $container.removeClass('mlb-reorder-active');
-                $btn.removeClass('active');
-                $btn.attr('aria-pressed','false');
-            }
-        });
-
-        // Auto-enable reorder mode when a drag handle is grabbed (safety net if button wasn't toggled)
-        this.root.off('mousedown.mlb.draghandle', '.mlb-drag-handle').on('mousedown.mlb.draghandle', '.mlb-drag-handle', function(){
-            var $container = initHotelsSortable();
-            if(!$container || !$container.length) return;
-            var disabled = $container.sortable('option', 'disabled');
-            if(disabled) {
-                $('#mlb-toggle-reorder').trigger('click');
-            }
-        });
+        // Drag handles are always active; highlight during sorting via sortable start/stop callbacks above
 
         // Tab switching inside hotel edit (rooms / specials)
         this.root.off('click.mlb.tabs', '.mlb-tab-btn').on('click.mlb.tabs', '.mlb-tab-btn', function(e){

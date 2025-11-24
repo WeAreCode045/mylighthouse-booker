@@ -24,11 +24,6 @@ if (! defined('ABSPATH')) {
 				<?php esc_html_e('Add Hotel', 'mylighthouse-booker'); ?>
 			</button>
 
-			<button type="button" id="mlb-toggle-reorder" class="button mlb-btn mlb-btn-secondary" title="<?php esc_attr_e('Enable drag & drop ordering', 'mylighthouse-booker'); ?>">
-				<span class="dashicons dashicons-move"></span>
-				<?php esc_html_e('Reorder Hotels', 'mylighthouse-booker'); ?>
-			</button>
-
 			<!-- Add Hotel Modal -->
 			<div id="mlb-add-hotel-modal" class="mlb-modal" hidden>
 				<div class="mlb-modal-backdrop" data-dismiss="modal"></div>
