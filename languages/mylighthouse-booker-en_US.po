@@ -1,4 +1,4 @@
-# Copyright (C) 2025 StandaloneTech
+# Copyright (C) 2025 Code045
 # This file is distributed under the same license as the mylighthouse-booker plugin.
 msgid ""
 msgstr ""
@@ -87,8 +87,8 @@ msgid "Below (full width)"
 msgstr "Below (full width)"
 
 #: templates/modals/calendar-modal.php:49 templates/modals/modal-room.php:49
-msgid "Book Special"
-msgstr "Book Special"
+msgid "Book This Special"
+msgstr "Book This Special"
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:746
 #: templates/modals/calendar-modal.php:48 templates/modals/modal-room.php:48
@@ -396,8 +396,8 @@ msgstr "Hover Background"
 #. Plugin URI of the plugin
 #. Author URI of the plugin
 #: mylighthouse-booker.php
-msgid "https://standalonetech.com/"
-msgstr "https://standalonetech.com/"
+msgid "https://code045.nl/"
+msgstr "https://code045.nl/"
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:551
 msgid "Icon Color"
@@ -448,8 +448,8 @@ msgstr "Item"
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:398
 #: templates/booking-form.php:27
-msgid "Kies een Hotel"
-msgstr ""
+msgid "Select Hotel"
+msgstr "Select Hotel"
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:247
 msgid "Layout & Visibility"
@@ -695,8 +695,8 @@ msgstr "Stacked"
 
 #. Author of the plugin
 #: mylighthouse-booker.php
-msgid "StandaloneTech"
-msgstr "StandaloneTech"
+msgid "Code045"
+msgstr "Code045"
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:445
 #: includes/Elementor/class-elementor-widget-booking-form.php:503
@@ -751,7 +751,7 @@ msgstr "You do not have permission to save settings."
 #: includes/Elementor/class-elementor-widget-booking-form.php:132
 #: includes/Elementor/class-elementor-widget-booking-form.php:144
 msgid "— Select a Hotel —"
-msgstr ""
+msgstr "— Select a Hotel —"
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:158
 msgid "— Select a Room —"

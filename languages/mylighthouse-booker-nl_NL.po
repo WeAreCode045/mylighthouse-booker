@@ -1,4 +1,4 @@
-# Copyright (C) 2025 StandaloneTech
+# Copyright (C) 2025 Code045
 # This file is distributed under the same license as the mylighthouse-booker plugin.
 msgid ""
 msgstr ""
@@ -26,8 +26,8 @@ msgstr "mylighthouse-booker"
 #. Plugin URI of the plugin
 #. Author URI of the plugin
 #: mylighthouse-booker.php
-msgid "https://standalonetech.com/"
-msgstr "https://standalonetech.com/"
+msgid "https://code045.nl/mylighthouse-booker/"
+msgstr "https://code045.nl/mylighthouse-booker/"
 
 #. Description of the plugin
 #: mylighthouse-booker.php
@@ -36,8 +36,8 @@ msgstr "mylighthouse-booker Plugin."
 
 #. Author of the plugin
 #: mylighthouse-booker.php
-msgid "StandaloneTech"
-msgstr "StandaloneTech"
+msgid "Code045"
+msgstr "Code045"
 
 #: includes/Admin/class-admin-assets.php:72
 msgid "Preparing..."
@@ -564,7 +564,7 @@ msgstr "Knoptekst"
 #: includes/Elementor/class-elementor-widget-booking-form.php:741
 #: templates/booking-form.php:17
 msgid "Check Availability"
-msgstr "Beschikbaarheid"
+msgstr "Toon Beschikbaarheid"
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:396
 msgid "Hotel Select Placeholder"
@@ -572,7 +572,7 @@ msgstr "Hotel Kiezen Plaatshouder"
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:398
 #: templates/booking-form.php:27
-msgid "Kies een Hotel"
+msgid "Select Hotel"
 msgstr "Kies een hotel..."
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:406
@@ -581,13 +581,13 @@ msgstr "Kies een hotel..."
 #: includes/Elementor/class-elementor-widget-booking-form.php:876
 #: templates/booking-form-hotel.php:43 templates/booking-form.php:80
 msgid "Select Arrival Date"
-msgstr "Selecteer aankomstdatum"
+msgstr "Aankomstdatum"
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:416
 #: includes/Elementor/class-elementor-widget-booking-form.php:877
 #: templates/booking-form-hotel.php:44 templates/booking-form.php:80
 msgid "Select Departure Date"
-msgstr "Selecteer vertrekdatum"
+msgstr "Vertrekdatum"
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:429
 msgid "Buttons"
@@ -725,7 +725,7 @@ msgstr "Boek deze kamer"
 
 #: templates/booking-form.php:28
 msgid "Select Arrival Date ⇢ Select Departure Date"
-msgstr "Selecteer aankomstdatum ⇢ Selecteer vertrekdatum"
+msgstr "Kies aankomstdatum ⇢ Kies vertrekdatum"
 
 #: templates/modals/calendar-modal.php:18
 #: templates/modals/modal-calendar-template.php:24
@@ -766,5 +766,5 @@ msgid "Check-out:"
 msgstr "Vertrek:"
 
 #: templates/modals/calendar-modal.php:49 templates/modals/modal-room.php:49
-msgid "Book Special"
-msgstr "Boek Special"
+msgid "Book This Special"
+msgstr "Boek Deze Special"

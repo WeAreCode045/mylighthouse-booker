@@ -1,4 +1,4 @@
-# Copyright (C) 2025 
+# Copyright (C) 2025 Code045
 # This file is distributed under the same license as the mylighthouse-booker plugin.
 msgid ""
 msgstr ""
@@ -569,7 +569,7 @@ msgid "1. Select Hotel"
 msgstr ""
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:132
-msgid "— Kies een Hotel —"
+msgid "— Select a Hotel —"
 msgstr ""
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:134
@@ -862,19 +862,19 @@ msgid "Special form requires selecting a hotel and special in the Source setting
 msgstr ""
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:754
-msgid "Boeken"
+msgid "Book this Special"
 msgstr ""
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:759
-msgid "Boek deze Kamer"
+msgid "Book this Room"
 msgstr ""
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:905
-msgid "Kies Aankomst"
+msgid "Select Arrival"
 msgstr ""
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:906
-msgid "Kies Vertrek"
+msgid "Select Departure"
 msgstr ""
 
 #: templates/booking-form.php:28
@@ -932,5 +932,5 @@ msgstr ""
 
 #: templates/modals/calendar-modal.php:49
 #: templates/modals/modal-room.php:49
-msgid "Book Special"
+msgid "Book This Special"
 msgstr ""
