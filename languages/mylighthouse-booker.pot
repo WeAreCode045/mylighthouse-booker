@@ -1,15 +1,15 @@
-# Copyright (C) 2025 Code045
+# Copyright (C) 2025 
 # This file is distributed under the same license as the mylighthouse-booker plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: mylighthouse-booker 1.1.0\n"
+"Project-Id-Version: mylighthouse-booker 1.2.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mylighthouse-booker\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-11-25T01:28:13+00:00\n"
+"POT-Creation-Date: 2025-11-25T02:55:28+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: mylighthouse-booker\n"
@@ -569,7 +569,7 @@ msgid "1. Select Hotel"
 msgstr ""
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:132
-msgid "— Select a Hotel —"
+msgid "— Kies een Hotel —"
 msgstr ""
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:134
@@ -710,171 +710,150 @@ msgid "Right"
 msgstr ""
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:379
-msgid "Text Override"
+msgid "Buttons"
 msgstr ""
 
-#: includes/Elementor/class-elementor-widget-booking-form.php:387
-msgid "Button Text"
+#: includes/Elementor/class-elementor-widget-booking-form.php:385
+#: includes/Elementor/class-elementor-widget-booking-form.php:452
+msgid "Background"
 msgstr ""
 
-#: includes/Elementor/class-elementor-widget-booking-form.php:389
+#: includes/Elementor/class-elementor-widget-booking-form.php:390
+#: includes/Elementor/class-elementor-widget-booking-form.php:453
+msgid "Hover Background"
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:395
+#: includes/Elementor/class-elementor-widget-booking-form.php:454
+msgid "Text Color"
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:400
+#: includes/Elementor/class-elementor-widget-booking-form.php:455
+msgid "Text Hover"
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:405
+#: includes/Elementor/class-elementor-widget-booking-form.php:456
+msgid "Border Color"
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:410
+#: includes/Elementor/class-elementor-widget-booking-form.php:457
+msgid "Border Hover"
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:416
+#: includes/Elementor/class-elementor-widget-booking-form.php:460
+msgid "Border Width"
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:424
+#: includes/Elementor/class-elementor-widget-booking-form.php:473
+msgid "Border Radius"
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:436
+msgid "Button Typography"
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:447
+msgid "Fields Styling & Typography"
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:490
+msgid "Field Typography"
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:495
+msgid "Select Background"
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:496
+msgid "Select Text Color"
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:497
+msgid "Select Arrow Color"
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:498
+msgid "Dropdown Background"
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:499
+msgid "Dropdown Item Text"
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:500
+msgid "Dropdown Item Hover BG"
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:501
+msgid "Dropdown Item Hover Text"
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:509
+msgid "Icon Styling"
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:514
+msgid "Icon Color"
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:516
+msgid "Field Icons Size"
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:521
+msgid "Applies to the hotel and date field icons on the left."
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:602
+msgid "No valid hotels configured. Please add hotels in Hotels -> Mylighthouse Booker."
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:609
+msgid "Booking Page URL is not set. Please configure it in Settings -> Mylighthouse Booker."
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:635
+msgid "Room form requires selecting a hotel and room in the Source settings."
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:659
+msgid "Special form requires selecting a hotel and special in the Source settings."
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:867
+#: templates/modals/calendar-modal.php:48
+#: templates/modals/modal-room.php:48
+msgid "Book This Room"
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:869
+#: templates/modals/calendar-modal.php:49
+#: templates/modals/modal-room.php:49
+msgid "Book Special"
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:871
 #: templates/booking-form.php:17
 msgid "Check Availability"
 msgstr ""
 
-#: includes/Elementor/class-elementor-widget-booking-form.php:396
-msgid "Hotel Select Placeholder"
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:398
-#: templates/booking-form.php:27
-msgid "Choose a hotel..."
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:406
-#: includes/Elementor/class-elementor-widget-booking-form.php:408
-#: includes/Elementor/class-elementor-widget-booking-form.php:418
 #: templates/booking-form-hotel.php:43
 #: templates/booking-form.php:80
 msgid "Select Arrival Date"
 msgstr ""
 
-#: includes/Elementor/class-elementor-widget-booking-form.php:416
 #: templates/booking-form-hotel.php:44
 #: templates/booking-form.php:80
 msgid "Select Departure Date"
 msgstr ""
 
-#: includes/Elementor/class-elementor-widget-booking-form.php:429
-msgid "Buttons"
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:435
-#: includes/Elementor/class-elementor-widget-booking-form.php:502
-msgid "Background"
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:440
-#: includes/Elementor/class-elementor-widget-booking-form.php:503
-msgid "Hover Background"
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:445
-#: includes/Elementor/class-elementor-widget-booking-form.php:504
-msgid "Text Color"
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:450
-#: includes/Elementor/class-elementor-widget-booking-form.php:505
-msgid "Text Hover"
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:455
-#: includes/Elementor/class-elementor-widget-booking-form.php:506
-msgid "Border Color"
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:460
-#: includes/Elementor/class-elementor-widget-booking-form.php:507
-msgid "Border Hover"
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:466
-#: includes/Elementor/class-elementor-widget-booking-form.php:510
-msgid "Border Width"
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:474
-#: includes/Elementor/class-elementor-widget-booking-form.php:523
-msgid "Border Radius"
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:486
-msgid "Button Typography"
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:497
-msgid "Fields Styling & Typography"
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:540
-msgid "Field Typography"
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:545
-msgid "Select Background"
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:546
-msgid "Select Text Color"
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:547
-msgid "Select Arrow Color"
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:548
-msgid "Dropdown Background"
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:549
-msgid "Dropdown Item Text"
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:550
-msgid "Dropdown Item Hover BG"
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:551
-msgid "Dropdown Item Hover Text"
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:559
-msgid "Icon Styling"
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:564
-msgid "Icon Color"
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:566
-msgid "Field Icons Size"
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:571
-msgid "Applies to the hotel and date field icons on the left."
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:652
-msgid "No valid hotels configured. Please add hotels in Hotels -> Mylighthouse Booker."
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:659
-msgid "Booking Page URL is not set. Please configure it in Settings -> Mylighthouse Booker."
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:685
-msgid "Room form requires selecting a hotel and room in the Source settings."
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:709
-msgid "Special form requires selecting a hotel and special in the Source settings."
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:754
-msgid "Book this Special"
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:759
-msgid "Book this Room"
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:905
-msgid "Select Arrival"
-msgstr ""
-
-#: includes/Elementor/class-elementor-widget-booking-form.php:906
-msgid "Select Departure"
+#: templates/booking-form.php:27
+msgid "Choose a hotel..."
 msgstr ""
 
 #: templates/booking-form.php:28
@@ -923,14 +902,4 @@ msgstr ""
 #: templates/modals/calendar-modal.php:42
 #: templates/modals/modal-room.php:42
 msgid "Check-out:"
-msgstr ""
-
-#: templates/modals/calendar-modal.php:48
-#: templates/modals/modal-room.php:48
-msgid "Book This Room"
-msgstr ""
-
-#: templates/modals/calendar-modal.php:49
-#: templates/modals/modal-room.php:49
-msgid "Book This Special"
 msgstr ""

@@ -368,8 +368,8 @@
 							$checkoutHidden.val(formatDMY(end));
 
 							// Update visible input
-							const startStr = start.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
-							const endStr = end.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+							const startStr = start.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+							const endStr = end.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
 							$daterangeInput.val(`${startStr} → ${endStr}`);
 						});
 					},
