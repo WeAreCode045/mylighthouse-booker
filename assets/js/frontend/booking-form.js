@@ -667,12 +667,12 @@
 
 								// Update UI directly (room-booking.js can also handle this)
 								if (bookingDetailsDiv) {
-									const arrivalStr = start.toLocaleDateString('en-GB', {
+									const arrivalStr = start.toLocaleDateString('en-US', {
 										day: 'numeric',
 										month: 'short',
 										year: 'numeric'
 									});
-									const departureStr = end.toLocaleDateString('en-GB', {
+									const departureStr = end.toLocaleDateString('en-US', {
 										day: 'numeric',
 										month: 'short',
 										year: 'numeric'

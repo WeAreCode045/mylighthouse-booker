@@ -5,7 +5,7 @@
  * Plugin URI: https://code045.nl/
  * Description:Wordpress Booking Plugin for MyLighthouse Booking Engine (formely Cubilis). Integrate the Booking engine into your Wordpress Website. 
  * Author URI: https://code045.nl/
- * Version: 1.1.0
+ * Version: 1.2.0
  * Requires at least: 6.0
  * Tested up to: 6.7
  *
@@ -36,7 +36,7 @@ if (! defined('MYLIGHTHOUSE_BOOKER_PLUGIN_URL')) {
 
 // Define MYLIGHTHOUSE_BOOKER_VERSION.
 if (! defined('MYLIGHTHOUSE_BOOKER_VERSION')) {
-	define('MYLIGHTHOUSE_BOOKER_VERSION', '1.1.0');
+	define('MYLIGHTHOUSE_BOOKER_VERSION', '1.2.0');
 }
 
 // Note: plugin translations removed — strings are rendered as static English.
