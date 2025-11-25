@@ -38,7 +38,7 @@ class Mylighthouse_Booker_Admin_Assets {
         wp_enqueue_script( 'mlb-admin-dashboard-js' );
 
         // per-feature scripts
-        wp_register_script( 'mlb-hotels-js', MYLIGHTHOUSE_BOOKER_PLUGIN_URL . 'assets/js/backend/hotels.js', array( 'jquery', 'jquery-ui-sortable' ), '1.0.0', true );
+        wp_register_script( 'mlb-hotels-js', MYLIGHTHOUSE_BOOKER_PLUGIN_URL . 'assets/js/backend/hotels.js', array( 'jquery' ), '1.0.0', true );
         wp_enqueue_script( 'mlb-hotels-js' );
 
         wp_register_script( 'mlb-tools-js', MYLIGHTHOUSE_BOOKER_PLUGIN_URL . 'assets/js/backend/tools.js', array( 'jquery' ), '1.0.0', true );

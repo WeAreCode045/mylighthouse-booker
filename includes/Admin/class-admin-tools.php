@@ -19,17 +19,17 @@ class Mylighthouse_Booker_Admin_Tools {
                     <form method="post" action="<?php echo esc_url(admin_url('admin.php')); ?>" data-mlb-tools-ajax="1" data-result-target="#mlb-tools-ajax-result">
                         <?php wp_nonce_field('mlb_tools_action', 'mlb_tools_nonce'); ?>
                         <input type="hidden" name="action" value="mlb_tools_check_tables" />
-                        <button class="button mlb-btn mlb-btn-primary" type="submit"><?php esc_html_e('Check/Create Tables', 'mylighthouse-booker'); ?></button>
+                        <button class="mlb-btn mlb-btn-primary" type="submit"><?php esc_html_e('Check/Create Tables', 'mylighthouse-booker'); ?></button>
                     </form>
                     <form method="post" action="<?php echo esc_url(admin_url('admin.php')); ?>" data-mlb-tools-ajax="1" data-result-target="#mlb-tools-ajax-result">
                         <?php wp_nonce_field('mlb_tools_action', 'mlb_tools_nonce'); ?>
                         <input type="hidden" name="action" value="mlb_tools_migrate_hotels" />
-                        <button class="button mlb-btn mlb-btn-secondary" type="submit"><?php esc_html_e('Migrate Legacy Hotels to Database', 'mylighthouse-booker'); ?></button>
+                        <button class="mlb-btn mlb-btn-secondary" type="submit"><?php esc_html_e('Migrate Legacy Hotels to Database', 'mylighthouse-booker'); ?></button>
                     </form>
                     <form method="post" action="<?php echo esc_url(admin_url('admin.php')); ?>" class="mlb-tools-schema-form" data-mlb-tools-ajax="1" data-result-target="#mlb-tools-ajax-result">
                         <?php wp_nonce_field('mlb_tools_action', 'mlb_tools_nonce'); ?>
                         <input type="hidden" name="action" value="mlb_tools_update_schema" />
-                        <button class="button mlb-btn" type="submit"><?php esc_html_e('Update Database Tables (dbDelta)', 'mylighthouse-booker'); ?></button>
+                        <button class="mlb-btn" type="submit"><?php esc_html_e('Update Database Tables (dbDelta)', 'mylighthouse-booker'); ?></button>
                     </form>
                 </div>
                 <div id="mlb-tools-ajax-result" class="mlb-tools-result" aria-live="polite"></div>
@@ -56,7 +56,7 @@ class Mylighthouse_Booker_Admin_Tools {
                                 <span><?php esc_html_e( 'Include General Settings', 'mylighthouse-booker' ); ?></span>
                             </label>
                             <p class="description"><?php esc_html_e( 'Adds booking page URL, display mode, and spinner image to the export.', 'mylighthouse-booker' ); ?></p>
-                            <button type="submit" id="mlb-export-btn" class="button mlb-btn mlb-btn-primary">
+                            <button type="submit" id="mlb-export-btn" class="mlb-btn mlb-btn-secondary">
                                 <?php esc_html_e('Download Export', 'mylighthouse-booker'); ?>
                             </button>
                         </form>
@@ -79,8 +79,8 @@ class Mylighthouse_Booker_Admin_Tools {
                         </label>
                         <p class="description"><?php esc_html_e( 'When enabled, matching hotel, room, or special IDs already in the database will be ignored.', 'mylighthouse-booker' ); ?></p>
                         <div class="mlb-import-actions">
-                            <button type="button" id="mlb-preview-btn" class="button" data-preview-nonce="<?php echo esc_attr($preview_nonce); ?>"><?php esc_html_e('Preview Import', 'mylighthouse-booker'); ?></button>
-                            <button type="button" id="mlb-import-btn" class="button mlb-btn mlb-btn-secondary" data-import-nonce="<?php echo esc_attr($import_nonce); ?>"><?php esc_html_e('Import JSON', 'mylighthouse-booker'); ?></button>
+                            <button type="button" id="mlb-preview-btn" class="mlb-btn mlb-btn-secondary" data-preview-nonce="<?php echo esc_attr($preview_nonce); ?>"><?php esc_html_e('Preview Import', 'mylighthouse-booker'); ?></button>
+                            <button type="button" id="mlb-import-btn" class="mlb-btn mlb-btn-secondary" data-import-nonce="<?php echo esc_attr($import_nonce); ?>"><?php esc_html_e('Import JSON', 'mylighthouse-booker'); ?></button>
                         </div>
                         <div id="mlb-import-result" class="mlb-tools-result" aria-live="polite"></div>
                     </div>

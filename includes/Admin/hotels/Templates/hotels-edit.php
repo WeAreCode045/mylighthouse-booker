@@ -28,9 +28,9 @@ $back_url = admin_url('admin.php?page=mylighthouse-booker&content=hotels');
         <div class="mlb-hotels-header">
             <h2 class="mlb-section-title">
                 <a href="<?php echo esc_url($back_url); ?>" class="mlb-back-link">
-                    <span class="dashicons dashicons-arrow-left-alt2"></span>
+                    <span class="dashicons mlb-dashicon dashicons-arrow-left-alt2"></span>
                 </a>
-                <span class="dashicons dashicons-building"></span>
+                <span class="dashicons mlb-dashicon dashicons-building"></span>
                 <?php echo esc_html($page_title); ?>
             </h2>
         </div>

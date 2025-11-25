@@ -47,9 +47,16 @@ $hotel_data_attrs[] = 'data-content="' . esc_attr($content_attr) . '"';
 ?>
 <div class="mlb-hotel-item" <?php echo implode(' ', $hotel_data_attrs); ?>>
     <div class="mlb-hotel-header" data-external-id="<?php echo esc_attr($external_id); ?>">
-        <span class="mlb-drag-handle dashicons dashicons-menu" title="<?php esc_attr_e('Drag to reorder', 'mylighthouse-booker'); ?>" aria-hidden="true"></span>
+        <div class="mlb-hotel-order-controls" role="group" aria-label="<?php esc_attr_e('Change hotel order', 'mylighthouse-booker'); ?>">
+            <button type="button" class="mlb-order-btn mlb-move-up" title="<?php esc_attr_e('Move hotel up', 'mylighthouse-booker'); ?>" aria-label="<?php esc_attr_e('Move hotel up', 'mylighthouse-booker'); ?>">
+                <span class="dashicons mlb-dashicon dashicons-arrow-up-alt2" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="mlb-order-btn mlb-move-down" title="<?php esc_attr_e('Move hotel down', 'mylighthouse-booker'); ?>" aria-label="<?php esc_attr_e('Move hotel down', 'mylighthouse-booker'); ?>">
+                <span class="dashicons mlb-dashicon dashicons-arrow-down-alt2" aria-hidden="true"></span>
+            </button>
+        </div>
         <div class="mlb-hotel-summary">
-            <span class="dashicons dashicons-building"></span>
+            <span class="dashicons mlb-dashicon dashicons-building"></span>
             <strong class="mlb-hotel-name-text"><?php echo esc_html($name); ?></strong>
             <span class="mlb-hotel-id-text">
                 <?php /* translators: %s is the external hotel identifier (hotel ID) from the supplier/API. */ ?>
@@ -63,11 +70,11 @@ $hotel_data_attrs[] = 'data-content="' . esc_attr($content_attr) . '"';
             <?php endif; ?>
         </div>
         <div class="mlb-hotel-actions">
-            <a href="<?php echo esc_url($edit_url); ?>" class="mlb-edit-hotel button button-small mlb-btn mlb-btn-primary mlb-btn-sm" title="<?php esc_attr_e('Edit', 'mylighthouse-booker'); ?>">
-                <span class="dashicons dashicons-edit"></span>
+            <a href="<?php echo esc_url($edit_url); ?>" class="mlb-edit-hotel mlb-action-btn mlb-action-btn--primary" title="<?php esc_attr_e('Edit', 'mylighthouse-booker'); ?>">
+                <span class="dashicons mlb-dashicon dashicons-edit"></span>
             </a>
-            <a href="<?php echo esc_url($delete_url); ?>" class="mlb-ajax-delete-hotel mlb-remove-hotel button button-small mlb-btn mlb-btn-danger mlb-btn-sm" data-hotel-name="<?php echo esc_attr($name); ?>" data-hotel-id="<?php echo esc_attr($hotel_id); ?>" data-delete-nonce="<?php echo esc_attr(wp_create_nonce('delete-hotel-' . $hotel_id)); ?>" title="<?php esc_attr_e('Delete', 'mylighthouse-booker'); ?>">
-                <span class="dashicons dashicons-trash"></span>
+            <a href="<?php echo esc_url($delete_url); ?>" class="mlb-ajax-delete-hotel mlb-remove-hotel mlb-action-btn mlb-action-btn--danger" data-hotel-name="<?php echo esc_attr($name); ?>" data-hotel-id="<?php echo esc_attr($hotel_id); ?>" data-delete-nonce="<?php echo esc_attr(wp_create_nonce('delete-hotel-' . $hotel_id)); ?>" title="<?php esc_attr_e('Delete', 'mylighthouse-booker'); ?>">
+                <span class="dashicons mlb-dashicon dashicons-trash"></span>
             </a>
         </div>
     </div>

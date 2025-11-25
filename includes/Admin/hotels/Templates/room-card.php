@@ -18,17 +18,17 @@ $room_external_id = $room['room_id'] ?? '';
 
 <div class="mlb-list-item mlb-repeater-item mlb-room-card" data-index="<?php echo esc_attr($index); ?>">
 	<div class="mlb-item-summary">
-		<span class="dashicons dashicons-admin-home" aria-hidden="true"></span>
+		<span class="dashicons mlb-dashicon dashicons-admin-home" aria-hidden="true"></span>
 		<strong class="mlb-item-name-text"><?php echo esc_html($room_name); ?></strong>
 		<span class="mlb-item-id-text"><?php echo sprintf(esc_html__('ID: %s', 'mylighthouse-booker'), esc_html($room_external_id)); ?></span>
 	</div>
 
 	<div class="mlb-item-actions">
-		<button type="button" class="mlb-edit-room-btn mlb-btn mlb-btn-primary mlb-btn-sm" title="<?php esc_attr_e('Edit room', 'mylighthouse-booker'); ?>">
-			<span class="dashicons dashicons-edit" aria-hidden="true"></span>
+		<button type="button" class="mlb-edit-room-btn mlb-action-btn mlb-action-btn--primary" title="<?php esc_attr_e('Edit room', 'mylighthouse-booker'); ?>">
+			<span class="dashicons mlb-dashicon dashicons-edit" aria-hidden="true"></span>
 		</button>
-		<button type="button" class="mlb-remove-room-btn mlb-remove-hotel mlb-btn mlb-btn-danger mlb-btn-sm" title="<?php esc_attr_e('Delete room', 'mylighthouse-booker'); ?>" aria-label="<?php esc_attr_e('Delete room', 'mylighthouse-booker'); ?>">
-			<span class="dashicons dashicons-trash" aria-hidden="true"></span>
+		<button type="button" class="mlb-remove-room-btn mlb-remove-hotel mlb-action-btn mlb-action-btn--danger" title="<?php esc_attr_e('Delete room', 'mylighthouse-booker'); ?>" aria-label="<?php esc_attr_e('Delete room', 'mylighthouse-booker'); ?>">
+			<span class="dashicons mlb-dashicon dashicons-trash" aria-hidden="true"></span>
 		</button>
 	</div>
 

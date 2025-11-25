@@ -15,8 +15,8 @@ if (! defined('ABSPATH')) {
         <?php endforeach; endif; ?>
     </div>
 
-    <button type="button" class="button button-primary mlb-btn mlb-btn-primary" id="add-special">
-        <span class="dashicons dashicons-plus"></span>
+    <button type="button" class="mlb-btn mlb-btn-primary" id="add-special">
+        <span class="dashicons mlb-dashicon dashicons-plus"></span>
         <?php esc_html_e('Add Special', 'mylighthouse-booker'); ?>
     </button>
 

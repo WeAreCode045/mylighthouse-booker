@@ -45,7 +45,7 @@ class Mylighthouse_Booker_Admin_Settings {
                             <tr>
                                 <th scope="row"><?php esc_html_e('Booking Page', 'mylighthouse-booker'); ?></th>
                                 <td>
-                                    <input type="text" name="mlb_booking_page_url" value="<?php echo esc_attr($booking_page); ?>" class="regular-text" placeholder="<?php echo esc_attr(esc_html__('Relative or absolute URL', 'mylighthouse-booker')); ?>" />
+                                    <input type="text" name="mlb_booking_page_url" value="<?php echo esc_attr($booking_page); ?>" class="regular-text mlb-input" placeholder="<?php echo esc_attr(esc_html__('Relative or absolute URL', 'mylighthouse-booker')); ?>" />
                                     <p class="description"><?php esc_html_e('Optional: URL to the booking page where full results should be shown.', 'mylighthouse-booker'); ?></p>
                                 </td>
                             </tr>
@@ -62,7 +62,7 @@ class Mylighthouse_Booker_Admin_Settings {
                             <tr>
                                 <th scope="row"><?php esc_html_e('Spinner Background', 'mylighthouse-booker'); ?></th>
                                 <td>
-                                    <input type="url" name="mlb_spinner_image_url" id="mlb_spinner_image_url" value="<?php echo esc_attr($spinner_image_url); ?>" class="regular-text" placeholder="https://example.com/spinner-background.jpg" />
+                                    <input type="url" name="mlb_spinner_image_url" id="mlb_spinner_image_url" value="<?php echo esc_attr($spinner_image_url); ?>" class="regular-text mlb-input" placeholder="https://example.com/spinner-background.jpg" />
                                     <?php if (!empty($spinner_image_url)) : ?>
                                         <div style="margin-top:10px;">
                                             <img src="<?php echo esc_url($spinner_image_url); ?>" alt="<?php esc_attr_e('Spinner preview', 'mylighthouse-booker'); ?>" style="max-width:200px;height:auto;border:1px solid #ccd0d4;padding:4px;border-radius:4px;" />
@@ -73,7 +73,7 @@ class Mylighthouse_Booker_Admin_Settings {
                             </tr>
                         </table>
 
-                        <p><button class="button button-primary mlb-btn mlb-btn-primary" type="submit"><?php esc_html_e('Save General Settings', 'mylighthouse-booker'); ?></button></p>
+                        <p><button class="mlb-btn mlb-btn-primary" type="submit"><?php esc_html_e('Save General Settings', 'mylighthouse-booker'); ?></button></p>
                     <?php endif; ?>
                 </form>
             </div>

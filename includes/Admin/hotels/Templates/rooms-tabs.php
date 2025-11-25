@@ -10,8 +10,8 @@ if (! defined('ABSPATH')) {
 <div class="mlb-section-card mlb-tabs-card">
     <div class="mlb-tabs">
         <div class="mlb-tabs-nav" role="tablist" aria-label="Rooms and Specials">
-            <button type="button" class="mlb-tab-btn active" data-tab="rooms" role="tab" aria-selected="true"> 
-                <i class="fas fa-bed"></i>
+                <button type="button" class="mlb-tab-btn active" data-tab="rooms" role="tab" aria-selected="true"> 
+				<i class="fas fa-bed"></i>
                 <?php esc_html_e('Rooms', 'mylighthouse-booker'); ?>
             </button>
             <button type="button" class="mlb-tab-btn" data-tab="specials" role="tab" aria-selected="false">
@@ -32,8 +32,8 @@ if (! defined('ABSPATH')) {
                 </div>
 
                 <div class="mlb-tab-actions">
-                    <button type="button" class="button button-primary mlb-btn mlb-btn-primary" id="add-room">
-                        <span class="dashicons dashicons-plus" aria-hidden="true"></span>
+                    <button type="button" class="mlb-btn mlb-btn-primary" id="add-room">
+						<span class="dashicons mlb-dashicon dashicons-plus" aria-hidden="true"></span>
                         <?php esc_html_e('Add Room', 'mylighthouse-booker'); ?>
                     </button>
                 </div>
@@ -59,11 +59,11 @@ if (! defined('ABSPATH')) {
                             <input type="hidden" id="mlb-modal-target" value="rooms" />
                             <div class="mlb-field">
                                 <label for="mlb-modal-name"><?php esc_html_e('Name', 'mylighthouse-booker'); ?></label>
-                                <input id="mlb-modal-name" class="regular-text" />
+                                <input id="mlb-modal-name" class="regular-text mlb-input" />
                             </div>
                             <div class="mlb-field">
                                 <label for="mlb-modal-extid"><?php esc_html_e('External ID', 'mylighthouse-booker'); ?></label>
-                                <input id="mlb-modal-extid" class="regular-text" />
+                                <input id="mlb-modal-extid" class="regular-text mlb-input" />
                             </div>
                         </div>
                         <div class="mlb-modal-footer">
@@ -84,8 +84,8 @@ if (! defined('ABSPATH')) {
                     </div>
 
                     <div class="mlb-tab-actions">
-                        <button type="button" class="button button-primary mlb-btn mlb-btn-primary" id="add-special">
-                            <span class="dashicons dashicons-plus" aria-hidden="true"></span>
+                        <button type="button" class="mlb-btn mlb-btn-primary" id="add-special">
+						<span class="dashicons mlb-dashicon dashicons-plus" aria-hidden="true"></span>
                             <?php esc_html_e('Add Special', 'mylighthouse-booker'); ?>
                         </button>
                     </div>

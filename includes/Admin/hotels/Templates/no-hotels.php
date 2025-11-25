@@ -24,7 +24,7 @@ if (! defined('ABSPATH')) {
 ?>
 
 <div class="mlb-no-hotels">
-	<span class="dashicons dashicons-building"></span>
+	<span class="dashicons mlb-dashicon dashicons-building"></span>
 	<h3><?php esc_html_e('No hotels configured yet', 'mylighthouse-booker'); ?></h3>
 	<p><?php esc_html_e('Add your first hotel to get started with the booking system.', 'mylighthouse-booker'); ?></p>
 </div>

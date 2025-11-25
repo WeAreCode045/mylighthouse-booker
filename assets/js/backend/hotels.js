@@ -10,67 +10,99 @@
         var self = this;
         console.debug('MLBHotelsManager.init');
 
-        function initHotelsSortable() {
-            try {
-                var $container = $('#hotels-container');
-                if (!$container.length || !$.ui || !$.ui.sortable) return null;
-                if ($container.data('ui-sortable')) return $container;
-                $container.sortable({
-                    handle: '.mlb-drag-handle',
-                    items: '.mlb-hotel-item',
-                    axis: 'y',
-                    placeholder: 'mlb-hotel-item-placeholder',
-                    disabled: false,
-                    start: function(){
-                        $(this).addClass('mlb-reorder-active');
-                    },
-                    stop: function(){
-                        $(this).removeClass('mlb-reorder-active');
-                    },
-                    update: function() {
-                        // gather ordered ids (prefer DB id; fall back to external id or ID text)
-                        var order = [];
-                        $container.find('.mlb-hotel-item').each(function(){
-                            var $item = $(this);
-                            var id = $item.attr('data-id') || '';
-                            // prefer numeric id when valid
-                            if (!id || id === '0') {
-                                // try data-external-id on header or item
-                                var ext = $item.attr('data-external-id') || $item.find('.mlb-hotel-header').attr('data-external-id') || '';
-                                if (!ext) {
-                                    // fallback to visible text "ID: ..."
-                                    var txt = $item.find('.mlb-hotel-id-text').text() || '';
-                                    ext = String(txt).replace(/^ID:\s*/i, '').trim();
-                                }
-                                order.push(ext || id);
-                            } else {
-                                order.push(id);
-                            }
-                        });
-                        var ajaxUrl = (window.mlb_admin_params && mlb_admin_params.ajax_url) ? mlb_admin_params.ajax_url : (window.ajaxurl || '');
-                        if(!ajaxUrl) { console.warn('AJAX URL not available for saving hotel order'); return; }
-                        var fd = new FormData();
-                        fd.append('action', 'mlb_save_hotels_order');
-                        fd.append('nonce', (window.mlb_admin_params && mlb_admin_params.nonce) ? mlb_admin_params.nonce : '');
-                        // send as JSON string to preserve non-numeric external ids
-                        fd.append('order', JSON.stringify(order));
-                        fetch(ajaxUrl, { method: 'POST', credentials: 'same-origin', body: fd }).then(function(r){ return r.json(); }).then(function(json){
-                            if(!json || !json.success){ console.warn('Save order failed', json); mlbCreateAdminNotice( mlbGettext('Failed to save order'), 'error', 4000 ); return; }
-                            mlbCreateAdminNotice( mlbGettext('Order saved'), 'success', 2000 );
-                        }).catch(function(err){ console.error('Save order request failed', err); mlbCreateAdminNotice( mlbGettext('Save request failed'), 'error', 4000 ); });
-                    }
-                });
-                return $container;
-            } catch (e) {
-                console.debug('Sortable init skipped', e);
-                return null;
-            }
+        var orderSaveTimer = null;
+
+        function getHotelsContainer(){
+            return $('#hotels-container');
         }
 
-        // Initialise sortable ordering for hotels list (drag handle requires jQuery UI Sortable)
-        initHotelsSortable();
+        function collectHotelOrder(){
+            var order = [];
+            var $container = getHotelsContainer();
+            if(!$container.length) return order;
+            $container.find('.mlb-hotel-item').each(function(){
+                var $item = $(this);
+                var id = $item.attr('data-id') || '';
+                if(!id || id === '0') {
+                    var ext = $item.attr('data-external-id') || $item.find('.mlb-hotel-header').attr('data-external-id') || '';
+                    if(!ext){
+                        var txt = $item.find('.mlb-hotel-id-text').text() || '';
+                        ext = String(txt).replace(/^ID:\s*/i, '').trim();
+                    }
+                    order.push(ext || id);
+                } else {
+                    order.push(id);
+                }
+            });
+            return order;
+        }
 
-        // Drag handles are always active; highlight during sorting via sortable start/stop callbacks above
+        function saveHotelOrder(){
+            var order = collectHotelOrder();
+            if(!order.length) return;
+            var ajaxUrl = (window.mlb_admin_params && mlb_admin_params.ajax_url) ? mlb_admin_params.ajax_url : (window.ajaxurl || '');
+            if(!ajaxUrl){ console.warn('AJAX URL not available for saving hotel order'); return; }
+            var fd = new FormData();
+            fd.append('action', 'mlb_save_hotels_order');
+            fd.append('nonce', (window.mlb_admin_params && mlb_admin_params.nonce) ? mlb_admin_params.nonce : '');
+            fd.append('order', JSON.stringify(order));
+            fetch(ajaxUrl, { method: 'POST', credentials: 'same-origin', body: fd }).then(function(r){ return r.json(); }).then(function(json){
+                if(!json || !json.success){ console.warn('Save order failed', json); mlbCreateAdminNotice( mlbGettext('Failed to save order'), 'error', 4000 ); return; }
+                mlbCreateAdminNotice( mlbGettext('Order saved'), 'success', 2000 );
+            }).catch(function(err){ console.error('Save order request failed', err); mlbCreateAdminNotice( mlbGettext('Save request failed'), 'error', 4000 ); });
+        }
+
+        function scheduleOrderSave(){
+            if(orderSaveTimer){ clearTimeout(orderSaveTimer); }
+            orderSaveTimer = setTimeout(function(){
+                orderSaveTimer = null;
+                saveHotelOrder();
+            }, 300);
+        }
+
+        function moveHotelItem($item, direction){
+            if(!$item || !$item.length) return;
+            if(direction === 'up'){
+                var $prev = $item.prev('.mlb-hotel-item');
+                if(!$prev.length) return;
+                $item.insertBefore($prev);
+            } else {
+                var $next = $item.next('.mlb-hotel-item');
+                if(!$next.length) return;
+                $item.insertAfter($next);
+            }
+            updateOrderButtons();
+            scheduleOrderSave();
+        }
+
+        function updateOrderButtons(){
+            var $items = getHotelsContainer().find('.mlb-hotel-item');
+            if(!$items.length) return;
+            var lastIndex = $items.length - 1;
+            $items.each(function(index){
+                var $el = $(this);
+                $el.find('.mlb-move-up').prop('disabled', index === 0);
+                $el.find('.mlb-move-down').prop('disabled', index === lastIndex);
+            });
+        }
+
+        self.updateOrderButtons = updateOrderButtons;
+
+        this.root.off('click.mlb.moveUp', '.mlb-move-up').on('click.mlb.moveUp', '.mlb-move-up', function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            var $item = $(this).closest('.mlb-hotel-item');
+            moveHotelItem($item, 'up');
+        });
+
+        this.root.off('click.mlb.moveDown', '.mlb-move-down').on('click.mlb.moveDown', '.mlb-move-down', function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            var $item = $(this).closest('.mlb-hotel-item');
+            moveHotelItem($item, 'down');
+        });
+
+        updateOrderButtons();
 
         // Tab switching inside hotel edit (rooms / specials)
         this.root.off('click.mlb.tabs', '.mlb-tab-btn').on('click.mlb.tabs', '.mlb-tab-btn', function(e){
@@ -222,6 +254,9 @@
                             } else {
                                 // prepend new hotel to top of list
                                 $container.prepend($node);
+                            }
+                            if(window.mlb_hotels_manager && typeof window.mlb_hotels_manager.updateOrderButtons === 'function'){
+                                window.mlb_hotels_manager.updateOrderButtons();
                             }
                         }
                     } catch (e) { console.error('Insert/replace hotel row failed', e); }
@@ -426,7 +461,7 @@
         // replace text with input (create via DOM APIs then wrap with jQuery)
         var inputEl = document.createElement('input');
         inputEl.type = 'text';
-        inputEl.className = 'mlb-inline-input regular-text';
+        inputEl.className = 'mlb-inline-input regular-text mlb-input';
         inputEl.value = current.replace(/^ID:\s*/,'').trim();
         var $input = $(inputEl);
         $valueWrap.find('.mlb-sidebar-text').hide();
@@ -502,7 +537,7 @@
             if(!json || !json.success){ alert((json && json.data && json.data.message) ? json.data.message : 'Save failed'); return; }
             // insert returned hotel row HTML
             if(json.data && json.data.html){
-                try{ var $node = $(json.data.html); $('#hotels-container').prepend($node); }
+                try{ var $node = $(json.data.html); $('#hotels-container').prepend($node); if(window.mlb_hotels_manager && typeof window.mlb_hotels_manager.updateOrderButtons === 'function'){ window.mlb_hotels_manager.updateOrderButtons(); } }
                 catch(e){ console.error('Insert hotel failed', e); }
             } else {
                 // fallback: reload page or navigate to hotels list

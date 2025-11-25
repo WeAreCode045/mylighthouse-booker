@@ -16,11 +16,11 @@ if (! defined('ABSPATH')) {
 	<div class="mlb-hotels-main">
 		<div class="mlb-hotels-header">
 			<h2 class="mlb-section-title">
-				<span class="dashicons dashicons-building"></span>
+				<span class="dashicons mlb-dashicon dashicons-building"></span>
 				<?php esc_html_e('Hotel Management', 'mylighthouse-booker'); ?>
 			</h2>
-			<button type="button" id="mlb-open-add-hotel" class="button button-primary mlb-btn mlb-btn-primary">
-				<span class="dashicons dashicons-plus"></span>
+			<button type="button" id="mlb-open-add-hotel" class="mlb-btn mlb-btn-primary">
+				<span class="dashicons mlb-dashicon dashicons-plus"></span>
 				<?php esc_html_e('Add Hotel', 'mylighthouse-booker'); ?>
 			</button>
 
@@ -34,11 +34,11 @@ if (! defined('ABSPATH')) {
 					<div class="mlb-modal-body">
 						<div class="mlb-field">
 							<label for="mlb-add-hotel-name"><?php esc_html_e('Hotel Name', 'mylighthouse-booker'); ?></label>
-							<input id="mlb-add-hotel-name" class="regular-text" />
+							<input id="mlb-add-hotel-name" class="regular-text mlb-input" />
 						</div>
 						<div class="mlb-field">
 							<label for="mlb-add-hotel-extid"><?php esc_html_e('External ID', 'mylighthouse-booker'); ?></label>
-							<input id="mlb-add-hotel-extid" class="regular-text" />
+							<input id="mlb-add-hotel-extid" class="regular-text mlb-input" />
 						</div>
 					</div>
 					<div class="mlb-modal-footer">

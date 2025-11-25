@@ -218,7 +218,7 @@
             // Helper to render the tools status table (mirrors server-side inline script)
             function renderTable(tableStatus){
                 if(!tableStatus) return '';
-                var html = '<table class="widefat fixed mlb-tools-table"><thead><tr><th>Table</th><th>Status</th><th>Missing Columns</th></tr></thead><tbody>';
+                    var html = '<table class="widefat fixed mlb-table mlb-tools-table"><thead><tr><th>Table</th><th>Status</th><th>Missing Columns</th></tr></thead><tbody>';
                 Object.keys(tableStatus).forEach(function(tableLabel){
                     var info = tableStatus[tableLabel];
                     var status = (info && info.status) ? info.status : info;
@@ -761,7 +761,7 @@
                         var file = importFile.files[0]; var reader = new FileReader();
                         reader.onload = function(evt){
                             try{ var json = JSON.parse(evt.target.result); } catch(err){ if(importResult) renderAdminNotice(importResult, 'error', ((window.mlb_admin_params && mlb_admin_params.msg_invalid_json) ? mlb_admin_params.msg_invalid_json : 'Invalid JSON file.'), true); return; }
-                            importBtn.disabled = true; importBtn.textContent = (window.mlb_admin_params && mlb_admin_params.msg_importing) ? mlb_admin_params.msg_importing : mlbGettext('Importing...');
+                                previewBtn.disabled = true; previewBtn.textContent = (window.mlb_admin_params && mlb_admin_params.msg_previewing) ? mlb_admin_params.msg_previewing : mlbGettext('Previewing...');
                             var fd = new FormData();
                             fd.append('action','mlb_tools_import');
                             fd.append('payload', JSON.stringify(json));
@@ -800,7 +800,7 @@
                             var ajaxUrl = (window.mlb_admin_params && mlb_admin_params.ajax_url) ? mlb_admin_params.ajax_url : (window.ajaxurl || '');
                             fetch(ajaxUrl, {method:'POST', credentials:'same-origin', body: fd}).then(function(r){ return r.json(); }).then(function(json){
                                 if(!json || !json.success){ if(importResult) renderAdminNotice(importResult, 'error', (json && json.data && json.data.message) ? json.data.message : 'Preview failed', true); }
-                                else { var data = json.data || {}; var html = '<h3>Import Preview</h3>'; html += '<p>' + (data.message || '') + '</p>'; if(data.hotels && data.hotels.length){ html += '<h4>Hotels</h4><div class="mlb-import-preview"><table class="mlb-preview-table"><thead><tr><th>Hotel ID</th><th>Action</th><th>Details</th></tr></thead><tbody>'; data.hotels.forEach(function(h){ var details = ''; if(h.rooms && h.rooms.length) details += '<div>Rooms: ' + h.rooms.map(function(r){ return escapeHtml(r.room_id) + ' (' + escapeHtml(r.action) + ')'; }).join(', ') + '</div>'; if(h.specials && h.specials.length) details += '<div>Specials: ' + h.specials.map(function(s){ return escapeHtml(s.special_id) + ' (' + escapeHtml(s.action) + ')'; }).join(', ') + '</div>'; html += '<tr><td>' + escapeHtml(h.hotel_id) + '</td><td><span class="mlb-badge ' + (h.action === 'create' ? 'created' : 'updated') + '">' + escapeHtml(h.action) + '</span></td><td>' + details + '</td></tr>'; }); html += '</tbody></table></div>'; }
+                                else { var data = json.data || {}; var html = '<h3>Import Preview</h3>'; html += '<p>' + (data.message || '') + '</p>'; if(data.hotels && data.hotels.length){ html += '<h4>Hotels</h4><div class="mlb-import-preview"><table class="mlb-table mlb-preview-table"><thead><tr><th>Hotel ID</th><th>Action</th><th>Details</th></tr></thead><tbody>'; data.hotels.forEach(function(h){ var details = ''; if(h.rooms && h.rooms.length) details += '<div>Rooms: ' + h.rooms.map(function(r){ return escapeHtml(r.room_id) + ' (' + escapeHtml(r.action) + ')'; }).join(', ') + '</div>'; if(h.specials && h.specials.length) details += '<div>Specials: ' + h.specials.map(function(s){ return escapeHtml(s.special_id) + ' (' + escapeHtml(s.action) + ')'; }).join(', ') + '</div>'; html += '<tr><td>' + escapeHtml(h.hotel_id) + '</td><td><span class="mlb-badge ' + (h.action === 'create' ? 'created' : 'updated') + '">' + escapeHtml(h.action) + '</span></td><td>' + details + '</td></tr>'; }); html += '</tbody></table></div>'; }
                                     if(data.settings && data.settings.values && Object.keys(data.settings.values).length){ html += '<h4>' + mlbGettext('General Settings') + '</h4>'; html += '<p>' + (data.settings.apply ? mlbGettext('These settings will be applied.') : mlbGettext('Settings detected but checkbox is disabled.')) + '</p>'; html += '<ul class="mlb-settings-preview">'; Object.keys(data.settings.values).forEach(function(key){ var label = settingsLabels[key] || key; html += '<li><strong>' + escapeHtml(label) + ':</strong> ' + escapeHtml(data.settings.values[key] || '') + '</li>'; }); html += '</ul>'; }
                                         if(importResult) safeSetInnerHTML(importResult, html); }
                             }).catch(function(){ if(importResult) renderAdminNotice(importResult, 'error', ((window.mlb_admin_params && mlb_admin_params.msg_preview_request_failed) ? mlb_admin_params.msg_preview_request_failed : 'Preview request failed'), true); }).finally(function(){ previewBtn.disabled=false; previewBtn.textContent=(window.mlb_admin_params && mlb_admin_params.msg_preview_import) ? mlb_admin_params.msg_preview_import : 'Preview Import'; });
@@ -939,9 +939,6 @@
             $('.mlb-sidebar-link').removeClass('active');
             $(this).addClass('active');
 
-            // Close any open submenus except the one for this item
-            $('.mlb-sidebar-submenu').not($(this).closest('.mlb-sidebar-item').find('.mlb-sidebar-submenu')).removeClass('open');
-
             var page = $(this).attr('data-page');
             var contentKey = $(this).attr('data-content') || null;
             var section = null;
@@ -950,18 +947,6 @@
                 var parts = contentKey.split('-');
                 if(parts[0] === 'settings'){
                     section = parts[1] || 'general';
-                }
-            }
-
-            // If this top-level item has a submenu, toggle it open/closed instead of hiding it immediately
-            if($(this).hasClass('mlb-has-submenu')){
-                var parentItem = $(this).closest('.mlb-sidebar-item');
-                var submenu = parentItem.find('.mlb-sidebar-submenu').first();
-                if(submenu.length){
-                    var willOpen = !submenu.hasClass('open');
-                    submenu.toggleClass('open');
-                    var submenuKey = $(this).attr('data-submenu') || null;
-                    // No more hash/localStorage persistence; URL content param controls submenu state
                 }
             }
 
@@ -1120,87 +1105,10 @@
             });
         });
 
-        // Handle sublinks (styling subsections) inside the settings submenu
-        $(document).on('click', '.mlb-sidebar-sublink', function(e){
-            e.preventDefault();
-            $('.mlb-sidebar-sublink').removeClass('active');
-            $(this).addClass('active');
-
-            var page = $(this).attr('data-page');
-            var section = $(this).attr('data-section');
-            var subsection = $(this).attr('data-subsection');
-            var contentKey = $(this).attr('data-content') || null;
-            if(!contentKey && page === 'mylighthouse-booker' && section){
-                contentKey = 'settings-' + section + (subsection ? '-' + subsection : '');
-            }
-
-            // No localStorage/hash persistence. URL content param controls which submenu/section is shown.
-
-            // Update the admin URL query param so the clicked sublink is shareable
-            try{ updateAdminUrl(page, contentKey); }catch(err){ console.warn(err); }
-
-            // Load settings page then activate the desired subsection
-                loadDashboardPage(page, function(){
-                // Wait for the settings manager to be available
-                var attempts = 0;
-                var interval = setInterval(function(){
-                    attempts++;
-                    if(window.mlb_settings_manager && typeof window.mlb_settings_manager.showSection === 'function'){
-                        // Show the requested main section first
-                        window.mlb_settings_manager.showSection(section);
-                        // If a styling subsection was specified, show it
-                        // No styling subsections — only general settings are provided now.
-                        clearInterval(interval);
-                    }
-                    if(attempts > 20) { clearInterval(interval); }
-                }, 150);
-            }, section, subsection, contentKey);
-        });
-
         // On first load, trigger the active button
         var active = $('.mlb-sidebar-link.active');
         if(active.length){
             active.trigger('click');
         }
-
-        // Restore submenu open state from URL hash or localStorage
-        (function restoreOpenSubmenu(){
-            try{
-                var url = new URL(window.location.href);
-                var contentParam = url.searchParams.get('content');
-                if(!contentParam) return;
-
-                // If content param maps to settings.*, find the owner link and open the submenu
-                if(contentParam.indexOf('settings') === 0){
-                    var owner = $('.mlb-sidebar-link[data-content^="settings"]');
-                    if(owner.length){
-                        var parentItem = owner.closest('.mlb-sidebar-item');
-                        var submenu = parentItem.find('.mlb-sidebar-submenu').first();
-                        if(submenu.length && !submenu.hasClass('open')){
-                            submenu.addClass('open');
-                        }
-
-                        var parts = contentParam.split('-');
-                        var section = parts[1] || 'general';
-                        var page = owner.attr('data-page') || 'mylighthouse-booker';
-                        // Load settings and activate the requested section
-                        loadDashboardPage(page, function(){
-                            try{
-                                if(window.mlb_settings_manager && typeof window.mlb_settings_manager.showSection === 'function'){
-                                    window.mlb_settings_manager.showSection(section);
-                                }
-                            }catch(err){ console.error(err); }
-                        }, section, null, contentParam);
-                    }
-                } else if (contentParam.indexOf('hotels') === 0){
-                    // Open Hotels top-level
-                    var owner = $('.mlb-sidebar-link[data-content="hotels"]');
-                    if(owner.length){ owner.trigger('click'); }
-                } else if (contentParam.indexOf('tools') === 0){
-                    var owner = $('.mlb-sidebar-link[data-content="tools"]');
-                    if(owner.length){ owner.trigger('click'); }
-                }
-            }catch(err){ /* ignore */ }
-        })();
     });
 })(jQuery);
