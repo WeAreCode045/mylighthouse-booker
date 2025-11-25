@@ -1,15 +1,15 @@
-# Copyright (C) 2025 StandaloneTech
+# Copyright (C) 2025 
 # This file is distributed under the same license as the mylighthouse-booker plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: mylighthouse-booker 1.0.0\n"
+"Project-Id-Version: mylighthouse-booker 1.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mylighthouse-booker\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-11-21T01:55:23+00:00\n"
+"POT-Creation-Date: 2025-11-25T01:28:13+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: mylighthouse-booker\n"
@@ -22,72 +22,74 @@ msgstr ""
 #. Plugin URI of the plugin
 #. Author URI of the plugin
 #: mylighthouse-booker.php
-msgid "https://standalonetech.com/"
+msgid "https://code045.nl/"
 msgstr ""
 
 #. Description of the plugin
 #: mylighthouse-booker.php
-msgid "mylighthouse-booker Plugin."
-msgstr ""
-
-#. Author of the plugin
-#: mylighthouse-booker.php
-msgid "StandaloneTech"
-msgstr ""
-
-#: includes/Admin/class-admin-assets.php:72
-msgid "Preparing..."
-msgstr ""
-
-#: includes/Admin/class-admin-assets.php:73
-msgid "Export failed"
-msgstr ""
-
-#: includes/Admin/class-admin-assets.php:74
-msgid "Export request failed"
-msgstr ""
-
-#: includes/Admin/class-admin-assets.php:75
-msgid "Download Export"
-msgstr ""
-
-#: includes/Admin/class-admin-assets.php:76
-msgid "Please select a JSON file to import."
+msgid "Wordpress Booking Plugin for MyLighthouse Booking Engine (formely Cubilis). Integrate the Booking engine into your Wordpress Website."
 msgstr ""
 
 #: includes/Admin/class-admin-assets.php:77
-msgid "Invalid JSON file."
+msgid "Preparing..."
 msgstr ""
 
 #: includes/Admin/class-admin-assets.php:78
-msgid "Import failed"
+msgid "Export failed"
 msgstr ""
 
 #: includes/Admin/class-admin-assets.php:79
-msgid "Importing..."
+msgid "Export request failed"
 msgstr ""
 
 #: includes/Admin/class-admin-assets.php:80
-msgid "Import JSON"
+#: includes/Admin/class-admin-tools.php:60
+msgid "Download Export"
 msgstr ""
 
 #: includes/Admin/class-admin-assets.php:81
-msgid "Import request failed"
+msgid "Export complete."
 msgstr ""
 
 #: includes/Admin/class-admin-assets.php:82
-msgid "Previewing..."
+msgid "Please select a JSON file to import."
 msgstr ""
 
 #: includes/Admin/class-admin-assets.php:83
-msgid "Preview failed"
+msgid "Invalid JSON file."
 msgstr ""
 
 #: includes/Admin/class-admin-assets.php:84
-msgid "Preview request failed"
+msgid "Import failed"
 msgstr ""
 
 #: includes/Admin/class-admin-assets.php:85
+msgid "Importing..."
+msgstr ""
+
+#: includes/Admin/class-admin-assets.php:86
+#: includes/Admin/class-admin-tools.php:83
+msgid "Import JSON"
+msgstr ""
+
+#: includes/Admin/class-admin-assets.php:87
+msgid "Import request failed"
+msgstr ""
+
+#: includes/Admin/class-admin-assets.php:88
+msgid "Previewing..."
+msgstr ""
+
+#: includes/Admin/class-admin-assets.php:89
+msgid "Preview failed"
+msgstr ""
+
+#: includes/Admin/class-admin-assets.php:90
+msgid "Preview request failed"
+msgstr ""
+
+#: includes/Admin/class-admin-assets.php:91
+#: includes/Admin/class-admin-tools.php:82
 msgid "Preview Import"
 msgstr ""
 
@@ -100,7 +102,7 @@ msgid "Settings"
 msgstr ""
 
 #: includes/Admin/class-admin-dashboard.php:48
-#: includes/Admin/class-admin-tools.php:12
+#: includes/Admin/class-admin-tools.php:16
 msgid "Tools"
 msgstr ""
 
@@ -148,50 +150,196 @@ msgstr ""
 msgid "Configure plugin options here."
 msgstr ""
 
-#: includes/Admin/class-admin-settings.php:36
+#: includes/Admin/class-admin-settings.php:46
 msgid "Booking Page"
 msgstr ""
 
-#: includes/Admin/class-admin-settings.php:38
+#: includes/Admin/class-admin-settings.php:48
 msgid "Relative or absolute URL"
 msgstr ""
 
-#: includes/Admin/class-admin-settings.php:39
+#: includes/Admin/class-admin-settings.php:49
 msgid "Optional: URL to the booking page where full results should be shown."
 msgstr ""
 
-#: includes/Admin/class-admin-settings.php:43
+#: includes/Admin/class-admin-settings.php:53
 msgid "Display Mode"
 msgstr ""
 
-#: includes/Admin/class-admin-settings.php:46
+#: includes/Admin/class-admin-settings.php:56
 msgid "Modal (show results in popup)"
 msgstr ""
 
-#: includes/Admin/class-admin-settings.php:47
+#: includes/Admin/class-admin-settings.php:57
 msgid "Booking Page (redirect to booking page)"
 msgstr ""
 
-#: includes/Admin/class-admin-settings.php:49
+#: includes/Admin/class-admin-settings.php:59
 msgid "Choose how booking results are displayed after form submission."
 msgstr ""
 
-#: includes/Admin/class-admin-settings.php:54
+#: includes/Admin/class-admin-settings.php:63
+msgid "Spinner Background"
+msgstr ""
+
+#: includes/Admin/class-admin-settings.php:68
+msgid "Spinner preview"
+msgstr ""
+
+#: includes/Admin/class-admin-settings.php:71
+msgid "Enter the full URL to the image that should appear behind the spinner in the booking modal."
+msgstr ""
+
+#: includes/Admin/class-admin-settings.php:76
 msgid "Save General Settings"
 msgstr ""
 
-#: includes/Admin/class-admin-tools.php:13
+#: includes/Admin/class-admin-tools.php:17
 msgid "Utility actions for this plugin."
 msgstr ""
 
-#: includes/Admin/class-admin-tools.php:18
+#: includes/Admin/class-admin-tools.php:22
 msgid "Check/Create Tables"
 msgstr ""
 
+#: includes/Admin/class-admin-tools.php:27
+msgid "Migrate Legacy Hotels to Database"
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:32
+msgid "Update Database Tables (dbDelta)"
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:39
+msgid "Import & Export"
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:40
+msgid "Move hotels (with rooms and specials) between environments using JSON exports."
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:44
+msgid "Export Data"
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:45
+msgid "Download a JSON snapshot of all hotels, rooms, and specials."
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:50
+msgid "Export scope"
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:52
+msgid "All hotels (includes rooms and specials)"
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:56
+msgid "Include General Settings"
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:58
+msgid "Adds booking page URL, display mode, and spinner image to the export."
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:63
+msgid "Export download frame"
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:67
+msgid "Import Data"
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:68
+msgid "Upload a JSON export to preview changes and import hotels, rooms, and specials."
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:69
+msgid "JSON file"
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:73
+msgid "Apply General Settings from file"
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:75
+msgid "Updates booking-related options when the export contains them."
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:78
+msgid "Skip items that already exist"
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:80
+msgid "When enabled, matching hotel, room, or special IDs already in the database will be ignored."
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:112
+msgid "Hotels Table"
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:117
+msgid "Rooms Table"
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:122
+msgid "Specials Table"
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:152
+msgid "Table check completed."
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:234
+msgid "Export generated successfully."
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:247
+#: includes/Admin/class-admin-tools.php:379
+msgid "Invalid JSON payload."
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:252
+#: includes/Admin/class-admin-tools.php:384
+msgid "No hotels found in the provided payload."
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:282
+#: includes/Admin/class-admin-tools.php:423
+msgid "Missing hotel ID or name."
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:349
+msgid "Preview ready: %1$d hotel(s) to create, %2$d hotel(s) to update."
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:355
+msgid "General settings will also be updated."
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:468
+msgid "Failed to create hotel %s."
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:581
+msgid "Import completed. %1$d hotel(s) created, %2$d hotel(s) updated."
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:587
+msgid "General settings updated."
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:669
 #: includes/Admin/hotels/class-hotels-page.php:46
 #: includes/Admin/hotels/class-hotels-page.php:66
-#: includes/API/class-ajax-handlers.php:60
+#: includes/API/class-ajax-handlers.php:161
+#: includes/API/class-ajax-handlers.php:465
 msgid "Security check failed."
+msgstr ""
+
+#: includes/Admin/class-admin-tools.php:673
+#: includes/API/class-ajax-handlers.php:469
+msgid "You do not have permission to perform this action."
 msgstr ""
 
 #: includes/Admin/hotels/class-hotels-page.php:49
@@ -218,25 +366,37 @@ msgstr ""
 msgid "External ID"
 msgstr ""
 
+#: includes/Admin/hotels/Templates/hotel-row.php:50
+msgid "Change hotel order"
+msgstr ""
+
+#: includes/Admin/hotels/Templates/hotel-row.php:51
+msgid "Move hotel up"
+msgstr ""
+
+#: includes/Admin/hotels/Templates/hotel-row.php:54
+msgid "Move hotel down"
+msgstr ""
+
 #. translators: %s is the external hotel identifier (hotel ID) from the supplier/API.
-#: includes/Admin/hotels/Templates/hotel-row.php:32
+#: includes/Admin/hotels/Templates/hotel-row.php:63
 #: includes/Admin/hotels/Templates/room-card.php:23
 #: includes/Admin/hotels/Templates/special-card.php:23
 msgid "ID: %s"
 msgstr ""
 
 #. translators: %d is the number of rooms for this hotel.
-#: includes/Admin/hotels/Templates/hotel-row.php:37
+#: includes/Admin/hotels/Templates/hotel-row.php:68
 msgid "%d room"
 msgid_plural "%d rooms"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/Admin/hotels/Templates/hotel-row.php:42
+#: includes/Admin/hotels/Templates/hotel-row.php:73
 msgid "Edit"
 msgstr ""
 
-#: includes/Admin/hotels/Templates/hotel-row.php:45
+#: includes/Admin/hotels/Templates/hotel-row.php:76
 msgid "Delete"
 msgstr ""
 
@@ -347,8 +507,12 @@ msgstr ""
 msgid "Delete special"
 msgstr ""
 
-#: includes/API/class-ajax-handlers.php:64
+#: includes/API/class-ajax-handlers.php:165
 msgid "You do not have permission to save settings."
+msgstr ""
+
+#: includes/API/class-ajax-handlers.php:482
+msgid "Database tables have been updated. New columns are available immediately."
 msgstr ""
 
 #: includes/Elementor/class-elementor-loader.php:52
@@ -405,13 +569,16 @@ msgid "1. Select Hotel"
 msgstr ""
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:132
-#: includes/Elementor/class-elementor-widget-booking-form.php:144
-msgid "— Select a Hotel —"
+msgid "— Kies een Hotel —"
 msgstr ""
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:134
 #: includes/Elementor/class-elementor-widget-booking-form.php:146
 msgid "First, select the hotel."
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:144
+msgid "— Select a Hotel —"
 msgstr ""
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:158
@@ -551,7 +718,6 @@ msgid "Button Text"
 msgstr ""
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:389
-#: includes/Elementor/class-elementor-widget-booking-form.php:741
 #: templates/booking-form.php:17
 msgid "Check Availability"
 msgstr ""
@@ -562,20 +728,18 @@ msgstr ""
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:398
 #: templates/booking-form.php:27
-msgid "Kies een Hotel"
+msgid "Choose a hotel..."
 msgstr ""
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:406
 #: includes/Elementor/class-elementor-widget-booking-form.php:408
 #: includes/Elementor/class-elementor-widget-booking-form.php:418
-#: includes/Elementor/class-elementor-widget-booking-form.php:876
 #: templates/booking-form-hotel.php:43
 #: templates/booking-form.php:80
 msgid "Select Arrival Date"
 msgstr ""
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:416
-#: includes/Elementor/class-elementor-widget-booking-form.php:877
 #: templates/booking-form-hotel.php:44
 #: templates/booking-form.php:80
 msgid "Select Departure Date"
@@ -586,121 +750,131 @@ msgid "Buttons"
 msgstr ""
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:435
-#: includes/Elementor/class-elementor-widget-booking-form.php:501
+#: includes/Elementor/class-elementor-widget-booking-form.php:502
 msgid "Background"
 msgstr ""
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:440
-#: includes/Elementor/class-elementor-widget-booking-form.php:502
+#: includes/Elementor/class-elementor-widget-booking-form.php:503
 msgid "Hover Background"
 msgstr ""
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:445
-#: includes/Elementor/class-elementor-widget-booking-form.php:503
+#: includes/Elementor/class-elementor-widget-booking-form.php:504
 msgid "Text Color"
 msgstr ""
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:450
-#: includes/Elementor/class-elementor-widget-booking-form.php:504
+#: includes/Elementor/class-elementor-widget-booking-form.php:505
 msgid "Text Hover"
 msgstr ""
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:455
-#: includes/Elementor/class-elementor-widget-booking-form.php:505
+#: includes/Elementor/class-elementor-widget-booking-form.php:506
 msgid "Border Color"
 msgstr ""
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:460
-#: includes/Elementor/class-elementor-widget-booking-form.php:506
+#: includes/Elementor/class-elementor-widget-booking-form.php:507
 msgid "Border Hover"
 msgstr ""
 
-#: includes/Elementor/class-elementor-widget-booking-form.php:465
-#: includes/Elementor/class-elementor-widget-booking-form.php:508
+#: includes/Elementor/class-elementor-widget-booking-form.php:466
+#: includes/Elementor/class-elementor-widget-booking-form.php:510
 msgid "Border Width"
 msgstr ""
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:474
-#: includes/Elementor/class-elementor-widget-booking-form.php:521
+#: includes/Elementor/class-elementor-widget-booking-form.php:523
 msgid "Border Radius"
 msgstr ""
 
-#: includes/Elementor/class-elementor-widget-booking-form.php:485
+#: includes/Elementor/class-elementor-widget-booking-form.php:486
 msgid "Button Typography"
 msgstr ""
 
-#: includes/Elementor/class-elementor-widget-booking-form.php:496
+#: includes/Elementor/class-elementor-widget-booking-form.php:497
 msgid "Fields Styling & Typography"
 msgstr ""
 
-#: includes/Elementor/class-elementor-widget-booking-form.php:527
+#: includes/Elementor/class-elementor-widget-booking-form.php:540
 msgid "Field Typography"
 msgstr ""
 
-#: includes/Elementor/class-elementor-widget-booking-form.php:532
+#: includes/Elementor/class-elementor-widget-booking-form.php:545
 msgid "Select Background"
 msgstr ""
 
-#: includes/Elementor/class-elementor-widget-booking-form.php:533
+#: includes/Elementor/class-elementor-widget-booking-form.php:546
 msgid "Select Text Color"
 msgstr ""
 
-#: includes/Elementor/class-elementor-widget-booking-form.php:534
+#: includes/Elementor/class-elementor-widget-booking-form.php:547
 msgid "Select Arrow Color"
 msgstr ""
 
-#: includes/Elementor/class-elementor-widget-booking-form.php:535
+#: includes/Elementor/class-elementor-widget-booking-form.php:548
 msgid "Dropdown Background"
 msgstr ""
 
-#: includes/Elementor/class-elementor-widget-booking-form.php:536
+#: includes/Elementor/class-elementor-widget-booking-form.php:549
 msgid "Dropdown Item Text"
 msgstr ""
 
-#: includes/Elementor/class-elementor-widget-booking-form.php:537
+#: includes/Elementor/class-elementor-widget-booking-form.php:550
 msgid "Dropdown Item Hover BG"
 msgstr ""
 
-#: includes/Elementor/class-elementor-widget-booking-form.php:538
+#: includes/Elementor/class-elementor-widget-booking-form.php:551
 msgid "Dropdown Item Hover Text"
 msgstr ""
 
-#: includes/Elementor/class-elementor-widget-booking-form.php:546
+#: includes/Elementor/class-elementor-widget-booking-form.php:559
 msgid "Icon Styling"
 msgstr ""
 
-#: includes/Elementor/class-elementor-widget-booking-form.php:551
+#: includes/Elementor/class-elementor-widget-booking-form.php:564
 msgid "Icon Color"
 msgstr ""
 
-#: includes/Elementor/class-elementor-widget-booking-form.php:553
+#: includes/Elementor/class-elementor-widget-booking-form.php:566
 msgid "Field Icons Size"
 msgstr ""
 
-#: includes/Elementor/class-elementor-widget-booking-form.php:558
+#: includes/Elementor/class-elementor-widget-booking-form.php:571
 msgid "Applies to the hotel and date field icons on the left."
 msgstr ""
 
-#: includes/Elementor/class-elementor-widget-booking-form.php:639
+#: includes/Elementor/class-elementor-widget-booking-form.php:652
 msgid "No valid hotels configured. Please add hotels in Hotels -> Mylighthouse Booker."
 msgstr ""
 
-#: includes/Elementor/class-elementor-widget-booking-form.php:646
+#: includes/Elementor/class-elementor-widget-booking-form.php:659
 msgid "Booking Page URL is not set. Please configure it in Settings -> Mylighthouse Booker."
 msgstr ""
 
-#: includes/Elementor/class-elementor-widget-booking-form.php:672
+#: includes/Elementor/class-elementor-widget-booking-form.php:685
 msgid "Room form requires selecting a hotel and room in the Source settings."
 msgstr ""
 
-#: includes/Elementor/class-elementor-widget-booking-form.php:696
+#: includes/Elementor/class-elementor-widget-booking-form.php:709
 msgid "Special form requires selecting a hotel and special in the Source settings."
 msgstr ""
 
-#: includes/Elementor/class-elementor-widget-booking-form.php:746
-#: templates/modals/calendar-modal.php:48
-#: templates/modals/modal-room.php:48
-msgid "Book This Room"
+#: includes/Elementor/class-elementor-widget-booking-form.php:754
+msgid "Boeken"
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:759
+msgid "Boek deze Kamer"
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:905
+msgid "Kies Aankomst"
+msgstr ""
+
+#: includes/Elementor/class-elementor-widget-booking-form.php:906
+msgid "Kies Vertrek"
 msgstr ""
 
 #: templates/booking-form.php:28
@@ -749,6 +923,11 @@ msgstr ""
 #: templates/modals/calendar-modal.php:42
 #: templates/modals/modal-room.php:42
 msgid "Check-out:"
+msgstr ""
+
+#: templates/modals/calendar-modal.php:48
+#: templates/modals/modal-room.php:48
+msgid "Book This Room"
 msgstr ""
 
 #: templates/modals/calendar-modal.php:49

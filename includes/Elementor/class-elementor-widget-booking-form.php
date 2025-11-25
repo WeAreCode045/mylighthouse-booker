@@ -372,56 +372,6 @@ class Mylighthouse_Booker_Elementor_Widget_Booking_Form extends Widget_Base
 
 		$this->end_controls_section();
 
-		// CONTENT tab - Text Override
-		$this->start_controls_section(
-			'text_override',
-			[
-				'label' => __('Text Override', 'mylighthouse-booker'),
-				'tab'   => Controls_Manager::TAB_CONTENT,
-			]
-		);
-
-		$this->add_control(
-			'button_label',
-			[
-				'label' => __('Button Text', 'mylighthouse-booker'),
-				'type' => Controls_Manager::TEXT,
-				'placeholder' => __('Check Availability', 'mylighthouse-booker'),
-			]
-		);
-
-		$this->add_control(
-			'hotel_placeholder',
-			[
-				'label' => __('Hotel Select Placeholder', 'mylighthouse-booker'),
-				'type' => Controls_Manager::TEXT,
-				'placeholder' => __('Choose a hotel...', 'mylighthouse-booker'),
-				'condition' => [ 'form_type' => 'hotel' ],
-			]
-		);
-
-		$this->add_control(
-			'arrival_placeholder',
-			[
-				'label' => __('Select Arrival Date', 'mylighthouse-booker'),
-				'type' => Controls_Manager::TEXT,
-				'placeholder' => __('Select Arrival Date', 'mylighthouse-booker'),
-				'condition' => [ 'form_type' => 'hotel' ],
-			]
-		);
-
-		$this->add_control(
-			'departure_placeholder',
-			[
-				'label' => __('Select Departure Date', 'mylighthouse-booker'),
-				'type' => Controls_Manager::TEXT,
-				'placeholder' => __('Select Arrival Date', 'mylighthouse-booker'),
-				'condition' => [ 'form_type' => 'hotel' ],
-			]
-		);
-
-		$this->end_controls_section();
-
 		// STYLE: Buttons
 		$this->start_controls_section(
 			'style_buttons',
@@ -751,13 +701,7 @@ class Mylighthouse_Booker_Elementor_Widget_Booking_Form extends Widget_Base
 
 		// Styling is managed via the Elementor widget; do not read legacy DB option here.
 		$style_opts = array();
-		$button_label_global = __('Boeken', 'mylighthouse-booker');
-		$button_label = ! empty($settings['button_label']) ? $settings['button_label'] : $button_label_global;
-		
-		// For room forms, use "Book This Room" as default if not customized
-		if ($form_type === 'room' && empty($settings['button_label'])) {
-			$button_label = __('Boek deze Kamer', 'mylighthouse-booker');
-		}
+		$button_label = $this->get_default_button_label($form_type);
 
 		$layout = $settings['layout'] ?? (isset($style_opts['form_layout']['layout']) ? $style_opts['form_layout']['layout'] : 'inline');
 		$placement = $settings['button_placement'] ?? (isset($style_opts['button_placement']) ? $style_opts['button_placement'] : 'after');
@@ -891,19 +835,6 @@ class Mylighthouse_Booker_Elementor_Widget_Booking_Form extends Widget_Base
 		}
 		echo '<div class="mlb-elementor-widget' . esc_attr($no_stack_class . $fit_class) . '"' . $inline_style . '>';
 		ob_start();
-		// Text overrides: placeholders
-		$hotel_placeholder = ! empty($settings['hotel_placeholder']) ? $settings['hotel_placeholder'] : '';
-		$arrival_placeholder = ! empty($settings['arrival_placeholder']) ? $settings['arrival_placeholder'] : '';
-		$departure_placeholder = ! empty($settings['departure_placeholder']) ? $settings['departure_placeholder'] : '';
-		if (! empty($arrival_placeholder) || ! empty($departure_placeholder)) {
-			$form_data['daterange_placeholder'] = trim($arrival_placeholder . ' ➜ ' . $departure_placeholder, ' -');
-		}
-		if (! empty($hotel_placeholder)) {
-			$form_data['hotel_placeholder'] = $hotel_placeholder;
-		}
-		// Pass individual texts for JS to build initial value
-		$form_data['arrival_text'] = ! empty($arrival_placeholder) ? $arrival_placeholder : __('Kies Aankomst', 'mylighthouse-booker');
-		$form_data['departure_text'] = ! empty($departure_placeholder) ? $departure_placeholder : __('Kies Vertrek', 'mylighthouse-booker');
 
 		// Icons: render as Font Awesome <i> tags using the class value from the Icons control
 		$hotel_icon_html = '';
@@ -921,5 +852,23 @@ class Mylighthouse_Booker_Elementor_Widget_Booking_Form extends Widget_Base
 		Mylighthouse_Booker_Template_Loader::get_template('booking-form.php', $form_data);
 		echo ob_get_clean();
 		echo '</div>';
+	}
+
+	/**
+	 * Provide translated default CTA text based on the current form type.
+	 *
+	 * @param string $form_type
+	 * @return string
+	 */
+	private function get_default_button_label($form_type)
+	{
+		switch ($form_type) {
+			case 'room':
+				return __('Book This Room', 'mylighthouse-booker');
+			case 'special':
+				return __('Book Special', 'mylighthouse-booker');
+			default:
+				return __('Check Availability', 'mylighthouse-booker');
+		}
 	}
 }

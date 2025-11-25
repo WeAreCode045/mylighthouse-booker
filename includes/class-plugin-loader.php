@@ -157,11 +157,12 @@ class Mylighthouse_Booker_Plugin_Loader
 			return $locale;
 		}
 
-		if (empty($locale) || $locale === 'nl-NL') {
+		$normalized = str_replace('-', '_', $locale);
+		if (empty($normalized) || $normalized === 'nl_NL') {
 			return $this->default_locale;
 		}
 
-		return $locale;
+		return $normalized;
 	}
 
 	/**
@@ -175,6 +176,10 @@ class Mylighthouse_Booker_Plugin_Loader
 	public function force_dutch_strings($translated, $text, $domain)
 	{
 		if ($domain !== 'mylighthouse-booker') {
+			return $translated;
+		}
+
+		if (! $this->is_dutch_locale_context()) {
 			return $translated;
 		}
 
@@ -213,6 +218,9 @@ class Mylighthouse_Booker_Plugin_Loader
 			return $translated;
 		}
 
+		if (! $this->is_dutch_locale_context()) {
+			return $translated;
+		}
 		$map = $this->get_dutch_messages();
 		if (! isset($map[$single]) || $map[$single] === '') {
 			return $translated;
@@ -256,6 +264,27 @@ class Mylighthouse_Booker_Plugin_Loader
 		return $this->dutch_strings;
 	}
 
+	/**
+	 * Determine if the current locale should receive forced Dutch strings.
+	 *
+	 * @return bool
+	 */
+	private function is_dutch_locale_context()
+	{
+		$locale = '';
+		if (function_exists('determine_locale')) {
+			$locale = determine_locale();
+		} elseif (function_exists('get_locale')) {
+			$locale = get_locale();
+		}
+
+		if (empty($locale)) {
+			return false;
+		}
+
+		$normalized = strtolower(str_replace('-', '_', $locale));
+		return ($normalized === 'nl_nl' || strpos($normalized, 'nl_') === 0 || $normalized === 'nl');
+	}
 	/**
 	 * Load plugin textdomain for translations
 	 */
