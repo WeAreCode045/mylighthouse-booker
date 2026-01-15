@@ -806,6 +806,9 @@
 										let hotelId = $form.data('hotel-id') || $form.find('[name="hotel_id"]').val();
 										const checkin = $form.find('.mlb-checkin').val();
 										const checkout = $form.find('.mlb-checkout').val();
+										function toISO(dmy){ if(!dmy) return ''; var p = dmy.split('-'); if(p.length!==3) return dmy; return p[2] + '-' + p[1] + '-' + p[0]; }
+										const checkinISO = toISO(checkin);
+										const checkoutISO = toISO(checkout);
 										const discountCode = modalOverlay.querySelector('.mlb-discount-code') ? modalOverlay.querySelector('.mlb-discount-code').value : '';
 										
 										// If no hotel ID from data, try to get from select or hidden input
@@ -825,14 +828,14 @@
 										if (hotelId && checkin && checkout) {
 											// Build full booking engine URL with parameters
 											let bookingUrl = 'https://bookingengine.mylighthouse.com/' + encodeURIComponent(hotelId) + '/Rooms/Select?';
-											bookingUrl += 'Arrival=' + encodeURIComponent(checkin);
-											bookingUrl += '&Departure=' + encodeURIComponent(checkout);
+											bookingUrl += 'Arrival=' + encodeURIComponent(checkinISO);
+											bookingUrl += '&Departure=' + encodeURIComponent(checkoutISO);
 											bookingUrl += '&Room=';
 											if (discountCode) {
 												bookingUrl += '&DiscountCode=' + encodeURIComponent(discountCode);
 											}
 											
-											// Redirect to booking engine
+											try { console.debug('[MLB Redirect] navigating to', bookingUrl); } catch(e) {}
 											window.location.href = bookingUrl;
 										} else {
 											console.error('MLB: Missing required data for booking redirect', { hotelId, checkin, checkout });

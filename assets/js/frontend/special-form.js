@@ -71,7 +71,7 @@
                 // Room is empty for specials
                 params.push('Room=');
                 if (params.length > 0) engineUrl += params.join('&');
-                console.log('[handleSpecialFallback] Redirecting to engine:', engineUrl);
+                try { console.debug('[MLB Redirect] navigating to', engineUrl); } catch(e) {}
                 window.location.href = engineUrl;
                 return;
             }
