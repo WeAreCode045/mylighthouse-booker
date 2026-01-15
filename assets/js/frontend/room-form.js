@@ -734,6 +734,8 @@
                             modalSubmitBtn.disabled = true;
                             modalSubmitBtn.addEventListener('click', function(e) {
                                 try { e.preventDefault(); e.stopPropagation(); } catch(err) {}
+                                // helper: convert DMY (dd-mm-yyyy) to ISO (yyyy-mm-dd)
+                                function toISO(dmy){ if(!dmy) return ''; var p = dmy.split('-'); if(p.length!==3) return dmy; return p[2] + '-' + p[1] + '-' + p[0]; }
                                 try {
                                     // Detect form type
                                     const hasRoomId = $form.data('room-id');
@@ -786,18 +788,20 @@
                                         let hotelId = $form.data('hotel-id') || $form.find('[name="hotel_id"]').val();
                                         const checkin = $checkinHidden.val();
                                         const checkout = $checkoutHidden.val();
+                                        const checkinISO = toISO(checkin);
+                                        const checkoutISO = toISO(checkout);
                                         const discountCode = modalOverlay.querySelector('.mlb-discount-code') ? modalOverlay.querySelector('.mlb-discount-code').value : '';
-                                        
-                                        if (hotelId && checkin && checkout) {
+
+                                        if (hotelId && checkinISO && checkoutISO) {
                                             // Build full booking engine URL with parameters
                                             let bookingUrl = 'https://bookingengine.mylighthouse.com/' + encodeURIComponent(hotelId) + '/Rooms/Select?';
-                                            bookingUrl += 'Arrival=' + encodeURIComponent(checkin);
-                                            bookingUrl += '&Departure=' + encodeURIComponent(checkout);
+                                            bookingUrl += 'Arrival=' + encodeURIComponent(checkinISO);
+                                            bookingUrl += '&Departure=' + encodeURIComponent(checkoutISO);
                                             bookingUrl += '&Room=' + encodeURIComponent(hasRoomId);
                                             if (discountCode) {
                                                 bookingUrl += '&DiscountCode=' + encodeURIComponent(discountCode);
                                             }
-                                            
+                                            try { console.debug('[MLB Redirect] navigating to', bookingUrl); } catch(e) {}
                                             // Redirect to booking engine
                                             window.location.href = bookingUrl;
                                         } else {
@@ -808,18 +812,20 @@
                                         let hotelId = $form.data('hotel-id') || $form.find('[name="hotel_id"]').val();
                                         const checkin = $checkinHidden.val();
                                         const checkout = $checkoutHidden.val();
+                                        const checkinISO = toISO(checkin);
+                                        const checkoutISO = toISO(checkout);
                                         const discountCode = modalOverlay.querySelector('.mlb-discount-code') ? modalOverlay.querySelector('.mlb-discount-code').value : '';
-                                        
-                                        if (hotelId && checkin && checkout) {
+
+                                        if (hotelId && checkinISO && checkoutISO) {
                                             // Build full booking engine URL with parameters
                                             let bookingUrl = 'https://bookingengine.mylighthouse.com/' + encodeURIComponent(hotelId) + '/Rooms/Select?';
-                                            bookingUrl += 'Arrival=' + encodeURIComponent(checkin);
-                                            bookingUrl += '&Departure=' + encodeURIComponent(checkout);
+                                            bookingUrl += 'Arrival=' + encodeURIComponent(checkinISO);
+                                            bookingUrl += '&Departure=' + encodeURIComponent(checkoutISO);
                                             bookingUrl += '&Room=';
                                             if (discountCode) {
                                                 bookingUrl += '&DiscountCode=' + encodeURIComponent(discountCode);
                                             }
-                                            
+                                            try { console.debug('[MLB Redirect] navigating to', bookingUrl); } catch(e) {}
                                             // Redirect to booking engine
                                             window.location.href = bookingUrl;
                                         } else {
