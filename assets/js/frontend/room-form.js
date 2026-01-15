@@ -420,6 +420,17 @@
                         const ctaSpecial = modalOverlay.querySelector('.mlb-modal-cta-special');
                         if (ctaRoom) ctaRoom.textContent = 'Check Availability';
                         if (ctaSpecial) ctaSpecial.style.display = 'none';
+
+                        // If dates are already present, enable the submit button so Check Availability works immediately
+                        try {
+                            const ci = $checkinHidden.val && $checkinHidden.val();
+                            const co = $checkoutHidden.val && $checkoutHidden.val();
+                            if (modalSubmitBtn && ci && co) {
+                                modalSubmitBtn.disabled = false;
+                            }
+                        } catch (err) {
+                            // ignore
+                        }
                     } else if (hasRoomId) {
                         // Room form: show room row, hide special row, show "Book This Room"
                         contentWrapper.classList.add('room-form-modal');
