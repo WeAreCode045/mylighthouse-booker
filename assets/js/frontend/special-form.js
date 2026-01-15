@@ -644,7 +644,8 @@
                         modalSubmitBtn.textContent = mlbGettext('Book Special');
                         // Allow specials to proceed without preselecting dates
                         modalSubmitBtn.disabled = false;
-                        modalSubmitBtn.addEventListener('click', function() {
+                        modalSubmitBtn.addEventListener('click', function(e) {
+                            try { e.preventDefault(); e.stopPropagation(); } catch (err) {}
                             var arrivalDMY = $checkinHidden.val();
                             var departureDMY = $checkoutHidden.val();
 

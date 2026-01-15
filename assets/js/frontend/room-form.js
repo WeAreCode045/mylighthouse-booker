@@ -732,7 +732,8 @@
                     // Handle submit button in modal
                     if (modalSubmitBtn) {
                             modalSubmitBtn.disabled = true;
-                            modalSubmitBtn.addEventListener('click', function() {
+                            modalSubmitBtn.addEventListener('click', function(e) {
+                                try { e.preventDefault(); e.stopPropagation(); } catch(err) {}
                                 try {
                                     // Detect form type
                                     const hasRoomId = $form.data('room-id');

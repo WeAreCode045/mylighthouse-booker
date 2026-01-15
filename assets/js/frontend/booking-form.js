@@ -792,7 +792,8 @@
 					// Handle submit button in room form modal
 					if (modalSubmitBtn) {
 							modalSubmitBtn.disabled = true;
-							modalSubmitBtn.addEventListener('click', function() {
+							modalSubmitBtn.addEventListener('click', function(e) {
+								try { e.preventDefault(); e.stopPropagation(); } catch(err) {}
 								closeModal();
 								try {
 									// Determine form type
