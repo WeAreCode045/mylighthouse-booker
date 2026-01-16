@@ -260,35 +260,24 @@
     margin-right: 8px;
 }
 
-/* Icons before labels: hotel and calendar */
+/* Icon inline support using Font Awesome classes */
 .mlb-booking-details .mlb-row label {
-    position: relative;
-    padding-left: 28px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding-left: 0;
 }
-.mlb-booking-details .mlb-hotel-row label::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
+.mlb-field-icon {
+    font-size: 16px;
     width: 18px;
     height: 18px;
-    background-size: 18px 18px;
-    background-repeat: no-repeat;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect x='3' y='3' width='18' height='18' rx='2' fill='none' stroke='%23222' stroke-width='1.5'/><path d='M8 11h.01M12 11h.01M16 11h.01' stroke='%23222' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    line-height: 18px;
+    color: #666;
+    display: inline-block;
+    text-align: center;
 }
-.mlb-booking-details .mlb-dates-row label::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 18px;
-    height: 18px;
-    background-size: 18px 18px;
-    background-repeat: no-repeat;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect x='3' y='5' width='18' height='16' rx='2' fill='none' stroke='%23222' stroke-width='1.5'/><path d='M16 3v4M8 3v4' stroke='%23222' stroke-width='1.5' stroke-linecap='round'/></svg>");
-}
+.mlb-location-icon { color: var(--mlb-btn-bg, #dc143c); }
+.mlb-calendar-icon { color: #666; }
 
 .mlb-booking-details .mlb-row span {
     font-size: 13px;
@@ -346,10 +335,41 @@
 
 /* Right-align period placeholder when no dates are selected */
 .mlb-period-range.mlb-period-placeholder {
-    text-align: right;
     color: #666;
     font-style: italic;
     width: 100%;
+}
+
+/* EasePick range styling: ensure start/end are highlighted with theme color and range is visible */
+.easepick-wrapper .container.range-plugin .calendar > .days-grid > .day.start,
+.easepick-wrapper .container.range-plugin .calendar > .days-grid > .day.end,
+.container.range-plugin .calendar > .days-grid > .day.start,
+.container.range-plugin .calendar > .days-grid > .day.end {
+    background-color: var(--mlb-calendar-startend-bg, #dc143c) !important;
+    color: var(--mlb-calendar-startend-color, #ffffff) !important;
+    box-shadow: none !important;
+}
+
+.easepick-wrapper .container.range-plugin .calendar > .days-grid > .day.in-range,
+.container.range-plugin .calendar > .days-grid > .day.in-range {
+    background-color: var(--mlb-calendar-inrange-bg, rgba(220,20,60,0.08)) !important;
+    color: inherit !important;
+}
+
+/* Make the start/end cells visually pill-like when consecutive */
+.easepick-wrapper .container.range-plugin .calendar > .days-grid > .day.start::after,
+.container.range-plugin .calendar > .days-grid > .day.start::after,
+.easepick-wrapper .container.range-plugin .calendar > .days-grid > .day.end::after,
+.container.range-plugin .calendar > .days-grid > .day.end::after {
+    background-color: transparent !important;
+}
+
+span.mlb-period-range {
+    text-align: end;
+}
+
+label.mlb-discount-toggle-label {
+    padding-left: 0px !important;
 }
 
 /* Discount row: stack checkbox and input vertically and make input full width */

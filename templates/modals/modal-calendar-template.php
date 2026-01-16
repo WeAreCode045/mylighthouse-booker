@@ -23,7 +23,7 @@ if (! defined('ABSPATH')) {
                     <div class="mlb-booking-details">
                         <h3 class="mlb-booking-details-title"><?php echo esc_html__( 'Booking Details', 'mylighthouse-booker' ); ?></h3>
                         <div class="mlb-row mlb-hotel-row">
-                            <label><?php echo esc_html__( 'Hotel:', 'mylighthouse-booker' ); ?></label>
+                            <label><i class="fas fa-map-marker-alt mlb-field-icon mlb-location-icon" aria-hidden="true"></i><?php echo esc_html__( 'Hotel:', 'mylighthouse-booker' ); ?></label>
                             <span class="mlb-hotel-name"></span>
                             <select class="mlb-hotel-select" style="display:none;" aria-label="<?php echo esc_attr__( 'Select hotel', 'mylighthouse-booker' ); ?>"></select>
                         </div>
@@ -32,7 +32,7 @@ if (! defined('ABSPATH')) {
                             <span class="mlb-room-name"></span>
                         </div>
                         <div class="mlb-row mlb-dates-row">
-                            <label><?php echo esc_html__( 'Period:', 'mylighthouse-booker' ); ?></label>
+                            <label><i class="fas fa-calendar-alt mlb-field-icon mlb-calendar-icon" aria-hidden="true"></i><?php echo esc_html__( 'Period:', 'mylighthouse-booker' ); ?></label>
                             <span class="mlb-period-range"></span>
                         </div>
                         <div class="mlb-row mlb-discount-row">
