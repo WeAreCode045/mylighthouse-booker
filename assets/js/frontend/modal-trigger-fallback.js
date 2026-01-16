@@ -31,8 +31,15 @@
 
         var formId = form.id || '';
         var overlay = form._mlbModalOverlay || document.querySelector('.mlb-calendar-modal-overlay[data-form-id="' + formId + '"]');
-        if (overlay) {
-            overlay.classList.add('mlb-calendar-modal-show');
+                if (!overlay2 && typeof window.initRoomModalDatePicker === 'function') {
+                    try {
+                        console.debug('[MLB Modal Trigger] calling initRoomModalDatePicker for form', form && form.id);
+                        if (window.jQuery) {
+                            try { window.initRoomModalDatePicker(window.jQuery(form)); } catch (e) { /* ignore init errors */ }
+                        } else {
+                            try { window.initRoomModalDatePicker(form); } catch (e) { /* ignore init errors */ }
+                        }
+                    } catch (e) { /* ignore init errors */ }
             return;
         }
 
