@@ -239,8 +239,22 @@ class Mylighthouse_Booker_Frontend_Assets
 		wp_register_script( 'mylighthouse-booker-booking-modal', '', array( 'mylighthouse-booker-frontend' ) );
 		wp_register_script( 'mylighthouse-booker-booking-form', '', array( 'mylighthouse-booker-frontend' ) );
 		wp_register_script( 'mylighthouse-booker-form', '', array( 'mylighthouse-booker-frontend' ) );
-		wp_register_script( 'mylighthouse-booker-room-form', '', array( 'mylighthouse-booker-frontend' ) );
+		// Register actual room-form implementation so modal initializer is available
+		$room_form_path = plugin_dir_path(MYLIGHTHOUSE_BOOKER_PLUGIN_FILE) . 'assets/js/frontend/room-form.js';
+		$room_form_ver = (file_exists($room_form_path)) ? filemtime($room_form_path) : '1.0.0';
+		wp_register_script(
+			'mylighthouse-booker-room-form',
+			plugins_url('/assets/js/frontend/room-form.js', MYLIGHTHOUSE_BOOKER_PLUGIN_FILE),
+			array('jquery', 'mylighthouse-booker-frontend'),
+			$room_form_ver,
+			true
+		);
 		wp_register_script( 'mylighthouse-booker-room-booking', '', array( 'mylighthouse-booker-frontend' ) );
+
+		// If the consolidated frontend bundle is enqueued, also enqueue room-form
+		if ( wp_script_is( 'mylighthouse-booker-frontend', 'enqueued' ) && ! wp_script_is( 'mylighthouse-booker-room-form', 'enqueued' ) ) {
+			wp_enqueue_script( 'mylighthouse-booker-room-form' );
+		}
 
 
 	}
