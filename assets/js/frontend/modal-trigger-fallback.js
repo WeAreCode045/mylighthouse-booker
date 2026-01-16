@@ -5,7 +5,20 @@
     window._mlb_modal_trigger_bound = true;
 
     document.addEventListener('click', function (e) {
-        var btn = e.target.closest && e.target.closest('[data-trigger-modal="true"]');
+        // Normalize click target: allow clicks on the input, its icon, or the surrounding field
+        var btn = null;
+        try {
+            btn = e.target.closest && e.target.closest('[data-trigger-modal="true"]');
+        } catch (ex) { btn = null; }
+
+        if (!btn) {
+            // If the user clicked the icon or surrounding field, map to the actual input trigger
+            var field = e.target.closest && e.target.closest('.daterange-field, .form-field, .mlb-daterange');
+            if (field) {
+                btn = field.querySelector && field.querySelector('[data-trigger-modal="true"]');
+            }
+        }
+        
         if (!btn) return;
 
         if (btn._mlbHandled) return;
