@@ -22,7 +22,9 @@
         }
         if (!btn) return;
         if (btn._mlbHandled) return;
+        // mark handled briefly to prevent duplicate handling from the same click event
         btn._mlbHandled = true;
+        setTimeout(function(){ try { delete btn._mlbHandled; } catch(e) { btn._mlbHandled = false; } }, 500);
         e.preventDefault();
 
         // Find the canonical form element: prefer a direct .mlb-form, otherwise look inside a wrapper
