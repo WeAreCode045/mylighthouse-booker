@@ -61,6 +61,17 @@ class Mylighthouse_Booker_Frontend_Assets
 			'all'
 		);
 
+		// Register modal styles (keep lightweight, only enqueued when frontend is active)
+		$modal_css_path = plugin_dir_path(MYLIGHTHOUSE_BOOKER_PLUGIN_FILE) . 'assets/css/frontend/modal.css';
+		$modal_css_ver = (file_exists($modal_css_path)) ? filemtime($modal_css_path) : '1.0.0';
+		wp_register_style(
+			'mylighthouse-booker-modal',
+			plugins_url('/assets/css/frontend/modal.css', MYLIGHTHOUSE_BOOKER_PLUGIN_FILE),
+			array('mylighthouse-booker-frontend'),
+			$modal_css_ver,
+			'all'
+		);
+
 		// Modal stylesheet removed: modal UI is no longer part of the plugin's frontend.
 
 	}
@@ -83,6 +94,11 @@ class Mylighthouse_Booker_Frontend_Assets
 		// Enqueue styles (booking-form.css depends on easepick)
 		if (!wp_style_is('mylighthouse-booker-frontend', 'enqueued')) {
 			wp_enqueue_style('mylighthouse-booker-frontend');
+		}
+
+		// Enqueue modal CSS when frontend styles are loaded so modal markup is styled
+		if (!wp_style_is('mylighthouse-booker-modal', 'enqueued')) {
+			wp_enqueue_style('mylighthouse-booker-modal');
 		}
 
 		// Modal styles are registered for legacy compatibility but are not enqueued
