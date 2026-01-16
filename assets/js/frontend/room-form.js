@@ -393,6 +393,11 @@
      * Initialize modal date picker for room forms
      */
     function initRoomModalDatePicker($form) {
+        // Accept either a jQuery-wrapped form or a raw DOM element.
+        if (!$form) return;
+        if (!$form.jquery && typeof jQuery !== 'undefined') {
+            try { $form = jQuery($form); } catch (e) {}
+        }
         // Ensure we have a jQuery-wrapped form
         if (!$form || !$form.length) return;
         // Normalize to the actual <form> element in case a wrapper (.mlb-booking-form)
