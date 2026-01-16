@@ -399,6 +399,14 @@
         }
         $form.addClass('mlb-modal-picker-init');
 
+        // Prevent concurrent double-initialization for the same form (race condition)
+        window._mlb_modal_inited_forms = window._mlb_modal_inited_forms || {};
+        if (formId && window._mlb_modal_inited_forms[formId]) {
+            console.debug('[MLB Modal Picker] init already in progress for form:', formId);
+            return;
+        }
+        if (formId) window._mlb_modal_inited_forms[formId] = true;
+
         let attempts = 0;
 
         function initPicker() {
@@ -662,25 +670,27 @@
                     }
                 }
 
-                // Defensive: if a previous overlay for this form already exists, remove it
+                // If an overlay already exists for this form, reuse it instead of appending
                 const existingOverlay = document.querySelector('.mlb-calendar-modal-overlay[data-form-id="' + formId + '"]');
-                if (existingOverlay && existingOverlay.parentNode) {
-                    existingOverlay.parentNode.removeChild(existingOverlay);
+                if (existingOverlay) {
+                    console.debug('[MLB Datepicker] overlay already exists for form', formId);
+                    modalOverlay = existingOverlay;
+                    // ensure helper is exposed on reused overlay
+                    try { modalOverlay._refreshHotelInModal = refreshHotelInModal; } catch (e) {}
+                    try { if ($form && $form.length) $form[0]._mlbModalOverlay = modalOverlay; } catch (e) {}
+                } else {
+                    document.body.appendChild(modalOverlay);
+                    // Ensure modal reflects current form selection immediately after append
+                    try { if (modalOverlay && modalOverlay.style && modalOverlay.style.display === 'none') { modalOverlay.style.display = ''; } } catch (e) {}
+                    console.debug('[MLB Modal Picker] modalOverlay appended for form:', formId, modalOverlay);
+                    try { if ($form && $form.length) $form[0]._mlbModalOverlay = modalOverlay; } catch (e) {}
+                    // Expose the refresh helper on the overlay so external listeners can update it
+                    try { modalOverlay._refreshHotelInModal = refreshHotelInModal; } catch (e) {}
                 }
 
-                document.body.appendChild(modalOverlay);
-                // Ensure modal reflects current form selection immediately after append
+                // Ensure modal reflects current form selection immediately
                 try { refreshHotelInModal(); } catch (e) {}
                 try { showBookingDetailsPlaceholder(); } catch (e) {}
-                try {
-                    if (modalOverlay && modalOverlay.style && modalOverlay.style.display === 'none') {
-                        modalOverlay.style.display = '';
-                    }
-                } catch (e) {}
-                console.debug('[MLB Modal Picker] modalOverlay appended for form:', formId, modalOverlay);
-                try { if ($form && $form.length) $form[0]._mlbModalOverlay = modalOverlay; } catch (e) {}
-                // Expose the refresh helper on the overlay so external listeners can update it
-                try { modalOverlay._refreshHotelInModal = refreshHotelInModal; } catch (e) {}
 
                 // Helper: refresh hotel display/options in modal from source form
                 function refreshHotelInModal() {

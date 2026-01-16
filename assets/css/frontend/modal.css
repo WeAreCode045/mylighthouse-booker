@@ -340,30 +340,6 @@
     width: 100%;
 }
 
-/* EasePick range styling: ensure start/end are highlighted with theme color and range is visible */
-.easepick-wrapper .container.range-plugin .calendar > .days-grid > .day.start,
-.easepick-wrapper .container.range-plugin .calendar > .days-grid > .day.end,
-.container.range-plugin .calendar > .days-grid > .day.start,
-.container.range-plugin .calendar > .days-grid > .day.end {
-    background-color: var(--mlb-calendar-startend-bg, #dc143c) !important;
-    color: var(--mlb-calendar-startend-color, #ffffff) !important;
-    box-shadow: none !important;
-}
-
-.easepick-wrapper .container.range-plugin .calendar > .days-grid > .day.in-range,
-.container.range-plugin .calendar > .days-grid > .day.in-range {
-    background-color: var(--mlb-calendar-inrange-bg, rgba(220,20,60,0.08)) !important;
-    color: inherit !important;
-}
-
-/* Make the start/end cells visually pill-like when consecutive */
-.easepick-wrapper .container.range-plugin .calendar > .days-grid > .day.start::after,
-.container.range-plugin .calendar > .days-grid > .day.start::after,
-.easepick-wrapper .container.range-plugin .calendar > .days-grid > .day.end::after,
-.container.range-plugin .calendar > .days-grid > .day.end::after {
-    background-color: transparent !important;
-}
-
 span.mlb-period-range {
     text-align: end;
 }
