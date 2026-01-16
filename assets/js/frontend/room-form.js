@@ -917,59 +917,81 @@
                     }
                 }
 
-                modalOverlay.addEventListener('click', function(e) {
-                    if (e.target === modalOverlay) closeModal();
-                });
+                // Prevent duplicate event binding when reusing an existing overlay
+                try {
+                    if (!modalOverlay._bound) {
+                        modalOverlay.addEventListener('click', function(e) {
+                            if (e.target === modalOverlay) closeModal();
+                        });
 
-                if (closeBtn) {
-                    closeBtn.addEventListener('click', closeModal);
-                }
+                        if (closeBtn) {
+                            closeBtn.addEventListener('click', closeModal);
+                        }
 
-                const escapeHandler = function(e) {
-                    if (e.key === 'Escape' && modalOverlay.classList.contains('mlb-calendar-modal-show')) {
-                        closeModal();
-                    }
-                };
-                document.addEventListener('keydown', escapeHandler);
-                modalOverlay._escapeHandler = escapeHandler;
+                        const escapeHandler = function(e) {
+                            if (e.key === 'Escape' && modalOverlay.classList.contains('mlb-calendar-modal-show')) {
+                                closeModal();
+                            }
+                        };
+                        document.addEventListener('keydown', escapeHandler);
+                        modalOverlay._escapeHandler = escapeHandler;
 
-                // Show modal on trigger (room forms only)
-                $form.on('mlb-open-calendar', function(e) {
-                    e.preventDefault();
-                    try { refreshHotelInModal(); } catch (e) {}
-                    try { showBookingDetailsPlaceholder(); } catch (e) {}
-                    try { modalOverlay.style.display = 'block'; } catch (e) {}
-                    modalOverlay.classList.add('mlb-calendar-modal-show');
-                });
-
-                if ($bookRoomBtn.length) {
-                    $bookRoomBtn.on('click', function(e) {
-                        e.preventDefault();
-                        console.log('[MLB Modal Picker] Book button clicked for form:', formId);
-                        if (modalOverlay) {
+                        // Show modal on trigger (room forms only) — namespace handler to avoid duplicates
+                        try { $form.off('mlb-open-calendar.mlbModal'); } catch (e) {}
+                        $form.on('mlb-open-calendar.mlbModal', function(e) {
+                            e.preventDefault();
                             try { refreshHotelInModal(); } catch (e) {}
                             try { showBookingDetailsPlaceholder(); } catch (e) {}
-                            console.log('[MLB Modal Picker] Showing modalOverlay for form:', formId, modalOverlay);
                             try { modalOverlay.style.display = 'block'; } catch (e) {}
                             modalOverlay.classList.add('mlb-calendar-modal-show');
-                            try {
-                                // Give layout a tick then inspect computed style and bounds
-                                setTimeout(function() {
+                        });
+
+                        try { $bookRoomBtn.off('click.mlbModalBtn'); } catch (e) {}
+                        if ($bookRoomBtn.length) {
+                            $bookRoomBtn.on('click.mlbModalBtn', function(e) {
+                                e.preventDefault();
+                                console.log('[MLB Modal Picker] Book button clicked for form:', formId);
+                                if (modalOverlay) {
+                                    try { refreshHotelInModal(); } catch (e) {}
+                                    try { showBookingDetailsPlaceholder(); } catch (e) {}
+                                    console.log('[MLB Modal Picker] Showing modalOverlay for form:', formId, modalOverlay);
+                                    try { modalOverlay.style.display = 'block'; } catch (e) {}
+                                    modalOverlay.classList.add('mlb-calendar-modal-show');
                                     try {
-                                        var cs = window.getComputedStyle(modalOverlay);
-                                        console.debug('[MLB Modal Picker] overlay computed style', { display: cs.display, visibility: cs.visibility, opacity: cs.opacity });
-                                        try { console.debug('[MLB Modal Picker] overlay rect', modalOverlay.getBoundingClientRect()); } catch (e) {}
-                                        var container = modalOverlay.querySelector('.mlb-calendar-modal-container');
-                                        console.debug('[MLB Modal Picker] container exists?', !!container);
-                                        if (container) console.debug('[MLB Modal Picker] container rect', container.getBoundingClientRect());
-                                    } catch (e) { console.error('[MLB Modal Picker] post-show inspect error', e); }
-                                }, 40);
-                            } catch (e) {}
-                        } else {
-                            console.warn('[MLB Modal Picker] modalOverlay not present when click fired for form:', formId);
+                                        // Give layout a tick then inspect computed style and bounds
+                                        setTimeout(function() {
+                                            try {
+                                                var cs = window.getComputedStyle(modalOverlay);
+                                                console.debug('[MLB Modal Picker] overlay computed style', { display: cs.display, visibility: cs.visibility, opacity: cs.opacity });
+                                                try { console.debug('[MLB Modal Picker] overlay rect', modalOverlay.getBoundingClientRect()); } catch (e) {}
+                                                var container = modalOverlay.querySelector('.mlb-calendar-modal-container');
+                                                console.debug('[MLB Modal Picker] container exists?', !!container);
+                                                if (container) console.debug('[MLB Modal Picker] container rect', container.getBoundingClientRect());
+                                            } catch (e) { console.error('[MLB Modal Picker] post-show inspect error', e); }
+                                        }, 40);
+                                    } catch (e) {}
+                                } else {
+                                    console.warn('[MLB Modal Picker] modalOverlay not present when click fired for form:', formId);
+                                }
+                            });
                         }
-                    });
-                }
+
+                        modalOverlay._bound = true;
+                    }
+                } catch (e) {}
+
+                // Dedupe overlays for this form: keep first, remove extras (race-safe cleanup)
+                try {
+                    const nodes = document.querySelectorAll('.mlb-calendar-modal-overlay[data-form-id="' + formId + '"]');
+                    if (nodes && nodes.length > 1) {
+                        for (var i = 1; i < nodes.length; i++) {
+                            try { nodes[i].parentNode && nodes[i].parentNode.removeChild(nodes[i]); } catch (e) {}
+                        }
+                        modalOverlay = document.querySelector('.mlb-calendar-modal-overlay[data-form-id="' + formId + '"]');
+                        try { if ($form && $form.length) $form[0]._mlbModalOverlay = modalOverlay; } catch (e) {}
+                        console.debug('[MLB Modal Picker] deduped overlays for form', formId);
+                    }
+                } catch (e) {}
 
                 // Get calendar colors
                 const calendarColors = (typeof cqb_params !== 'undefined' && cqb_params.calendar_colors)
