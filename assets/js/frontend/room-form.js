@@ -746,6 +746,7 @@
                     modalOverlay = existingOverlay;
                     // ensure helper is exposed on reused overlay
                     try { modalOverlay._refreshHotelInModal = refreshHotelInModal; } catch (e) {}
+                    try { modalOverlay._showBookingDetailsPlaceholder = showBookingDetailsPlaceholder; } catch (e) {}
                     try { if ($form && $form.length) $form[0]._mlbModalOverlay = modalOverlay; } catch (e) {}
                 } else {
                     document.body.appendChild(modalOverlay);
@@ -755,6 +756,7 @@
                     try { if ($form && $form.length) $form[0]._mlbModalOverlay = modalOverlay; } catch (e) {}
                     // Expose the refresh helper on the overlay so external listeners can update it
                     try { modalOverlay._refreshHotelInModal = refreshHotelInModal; } catch (e) {}
+                    try { modalOverlay._showBookingDetailsPlaceholder = showBookingDetailsPlaceholder; } catch (e) {}
                 }
 
                 // Ensure modal reflects current form selection immediately
@@ -933,17 +935,12 @@
                         // Refresh/hydrate hotel display in modal to match the source form on close
                                 try { if (typeof refreshHotelInModal === 'function') refreshHotelInModal(); } catch (e) {}
 
-                                // If the source form requested a page reload when the modal closes,
-                                // honor the opt-in attribute `data-reload-on-close="true"`.
+                                // Always reload the page after modal close to ensure booking state
+                                // is reflected consistently across the UI.
                                 try {
-                                    var reloadAttr = null;
-                                    try { reloadAttr = ($form && $form.length) ? ($form.data && $form.data('reloadOnClose')) : null; } catch (e) { reloadAttr = null; }
-                                    try { if (!reloadAttr && $form && $form.length) reloadAttr = $form.attr('data-reload-on-close'); } catch (e) {}
-                                    if (reloadAttr === true || String(reloadAttr) === 'true' || String(reloadAttr) === '1') {
-                                        setTimeout(function() {
-                                            try { window.location.reload(); } catch (e) {}
-                                        }, 120);
-                                    }
+                                    setTimeout(function() {
+                                        try { window.location.reload(); } catch (e) {}
+                                    }, 120);
                                 } catch (e) {}
 
                         // collapse right column and disable submit

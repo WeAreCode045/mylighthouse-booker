@@ -66,6 +66,13 @@
 
                 if (overlay2) {
                     try {
+                        // Refresh modal contents and request booking details to show
+                        if (typeof overlay2._refreshHotelInModal === 'function') {
+                            try { overlay2._refreshHotelInModal(); } catch (e) {}
+                        }
+                        if (typeof overlay2._showBookingDetailsPlaceholder === 'function') {
+                            try { overlay2._showBookingDetailsPlaceholder(); } catch (e) {}
+                        }
                         var shown = document.querySelectorAll('.mlb-calendar-modal-overlay.mlb-calendar-modal-show');
                         Array.prototype.forEach.call(shown, function(o) { if (o !== overlay2) { o.classList.remove('mlb-calendar-modal-show'); try { o.style.display = 'none'; } catch (e) {} } });
                     } catch (e) {}
