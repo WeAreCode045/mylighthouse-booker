@@ -707,7 +707,15 @@
                             const roomName = $form.attr('data-room-name') || $form.data('room-name') || $form.data('room-id') || 'Room';
                             const hotelNameSpan = bookingDetailsDiv.querySelector('.mlb-hotel-name');
                             const roomNameSpan = bookingDetailsDiv.querySelector('.mlb-room-name');
-                            if (hotelNameSpan) hotelNameSpan.textContent = hotelName;
+                            if (hotelNameSpan) {
+                                const existing = (hotelNameSpan.textContent || '').trim();
+                                const placeholder = mlbGettext('Hotel');
+                                if (!existing || existing === '' || existing === placeholder) {
+                                    hotelNameSpan.textContent = hotelName;
+                                } else {
+                                    try { console.debug('[MLB Datepicker] preserving existing hotel name in booking details', existing); } catch(e){}
+                                }
+                            }
                             if (roomNameSpan) roomNameSpan.textContent = roomName;
 
                             setTimeout(function() {
