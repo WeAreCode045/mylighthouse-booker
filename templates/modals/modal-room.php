@@ -30,10 +30,6 @@ if (! defined('ABSPATH')) {
                                 <span class="mlb-label"><?php echo esc_html__( 'Room:', 'mylighthouse-booker' ); ?></span>
                                 <span class="mlb-room-name">Room Name</span>
                             </div>
-                            <div class="mlb-info-row mlb-special-row" style="display:none;">
-                                <span class="mlb-label"><?php echo esc_html__( 'Special:', 'mylighthouse-booker' ); ?></span>
-                                <span class="mlb-special-name">Special Name</span>
-                            </div>
                             <div class="mlb-info-row mlb-booking-period-row">
                                 <span class="mlb-label"><?php echo esc_html__( 'Booking Period:', 'mylighthouse-booker' ); ?></span>
                                 <span class="mlb-booking-period"><span class="mlb-arrival-date"><?php echo esc_html__( 'Select dates', 'mylighthouse-booker' ); ?></span> - <span class="mlb-departure-date"></span></span>
@@ -43,10 +39,9 @@ if (! defined('ABSPATH')) {
                             <label for="mlb-discount-code" class="mlb-discount-code-label"><?php echo esc_html__( 'Discount Code', 'mylighthouse-booker' ); ?></label>
                             <input type="text" id="mlb-discount-code" class="mlb-discount-code" placeholder="<?php echo esc_attr__( 'Enter discount code', 'mylighthouse-booker' ); ?>" />
                         </div>
-                        <div class="mlb-modal-actions">
+                            <div class="mlb-modal-actions">
                             <button type="button" class="mlb-modal-submit-btn" disabled>
                                 <span class="mlb-modal-cta-room"><?php echo esc_html__( 'Book This Room', 'mylighthouse-booker' ); ?></span>
-                                <span class="mlb-modal-cta-special" style="display:none;"><?php echo esc_html__( 'Book Special', 'mylighthouse-booker' ); ?></span>
                             </button>
                         </div>
                     </div>

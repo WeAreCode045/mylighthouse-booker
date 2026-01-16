@@ -215,7 +215,7 @@ msgid "Import & Export"
 msgstr ""
 
 #: includes/Admin/class-admin-tools.php:40
-msgid "Move hotels (with rooms and specials) between environments using JSON exports."
+msgid "Move hotels (with rooms) between environments using JSON exports."
 msgstr ""
 
 #: includes/Admin/class-admin-tools.php:44
@@ -223,7 +223,7 @@ msgid "Export Data"
 msgstr ""
 
 #: includes/Admin/class-admin-tools.php:45
-msgid "Download a JSON snapshot of all hotels, rooms, and specials."
+msgid "Download a JSON snapshot of all hotels and rooms."
 msgstr ""
 
 #: includes/Admin/class-admin-tools.php:50
@@ -231,7 +231,7 @@ msgid "Export scope"
 msgstr ""
 
 #: includes/Admin/class-admin-tools.php:52
-msgid "All hotels (includes rooms and specials)"
+msgid "All hotels (includes rooms)"
 msgstr ""
 
 #: includes/Admin/class-admin-tools.php:56
@@ -251,7 +251,7 @@ msgid "Import Data"
 msgstr ""
 
 #: includes/Admin/class-admin-tools.php:68
-msgid "Upload a JSON export to preview changes and import hotels, rooms, and specials."
+msgid "Upload a JSON export to preview changes and import hotels and rooms."
 msgstr ""
 
 #: includes/Admin/class-admin-tools.php:69
@@ -271,7 +271,7 @@ msgid "Skip items that already exist"
 msgstr ""
 
 #: includes/Admin/class-admin-tools.php:80
-msgid "When enabled, matching hotel, room, or special IDs already in the database will be ignored."
+msgid "When enabled, matching hotel or room IDs already in the database will be ignored."
 msgstr ""
 
 #: includes/Admin/class-admin-tools.php:112
@@ -283,7 +283,7 @@ msgid "Rooms Table"
 msgstr ""
 
 #: includes/Admin/class-admin-tools.php:122
-msgid "Specials Table"
+msgid ""
 msgstr ""
 
 #: includes/Admin/class-admin-tools.php:152
@@ -415,9 +415,9 @@ msgstr ""
 msgid "Hotel ID: %s"
 msgstr ""
 
-#. translators: First %1$d is the number of rooms, second %2$d is the number of specials for this hotel. Use ordered placeholders if reordering is required for your language.
+#. translators: First %1$d is the number of rooms for this hotel. Use ordered placeholders if reordering is required for your language.
 #: includes/Admin/hotels/Templates/hotels-edit.php:46
-msgid "Rooms: %1$d — Specials: %2$d"
+msgid "Rooms: %1$d"
 msgstr ""
 
 #: includes/Admin/hotels/Templates/hotels-list.php:20
@@ -458,23 +458,28 @@ msgstr ""
 #: includes/Elementor/class-elementor-widget-booking-form.php:65
 msgid "Hotel"
 msgstr ""
-
+msgid ""
+msgstr ""
 #: includes/Admin/hotels/Templates/room-edit-sidebar.php:15
 #: includes/Admin/hotels/Templates/rooms-tabs.php:61
 msgid "Name"
 msgstr ""
-
-#: includes/Admin/hotels/Templates/room-edit-sidebar.php:18
+msgid ""
+msgstr ""
+msgid ""
+msgstr ""
 msgid "Edit name"
 msgstr ""
 
 #: includes/Admin/hotels/Templates/room-edit-sidebar.php:21
-#: includes/Admin/hotels/Templates/room-edit-sidebar.php:33
+msgid ""
+msgstr ""
 #: includes/Admin/hotels/Templates/rooms-tabs.php:71
 msgid "Save"
 msgstr ""
 
-#: includes/Admin/hotels/Templates/room-edit-sidebar.php:30
+msgid ""
+msgstr ""
 msgid "Edit external id"
 msgstr ""
 
@@ -483,7 +488,7 @@ msgid "Rooms"
 msgstr ""
 
 #: includes/Admin/hotels/Templates/rooms-tabs.php:19
-msgid "Specials"
+msgid ""
 msgstr ""
 
 #: includes/Admin/hotels/Templates/rooms-tabs.php:37
@@ -495,16 +500,15 @@ msgid "Item"
 msgstr ""
 
 #: includes/Admin/hotels/Templates/rooms-tabs.php:89
-#: includes/Admin/hotels/Templates/specials-section.php:20
-msgid "Add Special"
+msgid ""
 msgstr ""
 
 #: includes/Admin/hotels/Templates/special-card.php:27
-msgid "Edit special"
+msgid ""
 msgstr ""
 
 #: includes/Admin/hotels/Templates/special-card.php:30
-msgid "Delete special"
+msgid ""
 msgstr ""
 
 #: includes/API/class-ajax-handlers.php:165
@@ -600,21 +604,21 @@ msgid "Select a room from %s."
 msgstr ""
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:200
-msgid "— Select a Special —"
+msgid ""
 msgstr ""
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:210
-msgid "No specials available for this hotel"
+msgid ""
 msgstr ""
 
 #. translators: %s is the hotel name (e.g. "Seaside Hotel").
 #: includes/Elementor/class-elementor-widget-booking-form.php:217
-msgid "2. Select Special from %s"
+msgid ""
 msgstr ""
 
 #. translators: %s is the hotel name (e.g. "Seaside Hotel").
 #: includes/Elementor/class-elementor-widget-booking-form.php:236
-msgid "Select a special from %s."
+msgid ""
 msgstr ""
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:247
@@ -826,14 +830,10 @@ msgid "Special form requires selecting a hotel and special in the Source setting
 msgstr ""
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:867
-#: templates/modals/calendar-modal.php:48
-#: templates/modals/modal-room.php:48
 msgid "Book This Room"
 msgstr ""
 
 #: includes/Elementor/class-elementor-widget-booking-form.php:869
-#: templates/modals/calendar-modal.php:49
-#: templates/modals/modal-room.php:49
 msgid "Book Special"
 msgstr ""
 
@@ -860,46 +860,26 @@ msgstr ""
 msgid "Select Arrival Date ⇢ Select Departure Date"
 msgstr ""
 
-#: templates/modals/calendar-modal.php:18
-#: templates/modals/modal-calendar-template.php:24
-#: templates/modals/modal-room.php:18
 msgid "Close calendar"
 msgstr ""
 
-#: templates/modals/calendar-modal.php:23
-#: templates/modals/modal-calendar-template.php:29
-#: templates/modals/modal-room.php:23
 msgid "Booking Details"
 msgstr ""
 
-#: templates/modals/calendar-modal.php:26
-#: templates/modals/modal-room.php:26
 msgid "Hotel:"
 msgstr ""
 
-#: templates/modals/calendar-modal.php:30
-#: templates/modals/modal-room.php:30
 msgid "Room:"
 msgstr ""
 
-#: templates/modals/calendar-modal.php:34
-#: templates/modals/modal-room.php:34
 msgid "Special:"
 msgstr ""
 
-#: templates/modals/calendar-modal.php:38
-#: templates/modals/modal-room.php:38
 msgid "Check-in:"
 msgstr ""
 
-#: templates/modals/calendar-modal.php:39
-#: templates/modals/calendar-modal.php:43
-#: templates/modals/modal-room.php:39
-#: templates/modals/modal-room.php:43
 msgid "Select dates"
 msgstr ""
 
-#: templates/modals/calendar-modal.php:42
-#: templates/modals/modal-room.php:42
 msgid "Check-out:"
 msgstr ""

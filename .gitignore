@@ -1,12 +1,30 @@
 
+# Ignore files and directories generated during development and testing
 .github/copilot-profiles-general-state.json
 /depricated
 node_modules
 /tests
-.vscode
 *.log
 *.lock
 .DS_Store
 thumbs.db
 .idea
 *.iml
+
+#ESLint
+.eslintrc.cjs
+eslint.config.js
+
+#environment files
+.env
+.env.local
+.env.*.local
+
+#VSCode settings
+.vscode/
+
+#Package files
+package.json
+pnpm-lock.yaml
+yarn.lock
+

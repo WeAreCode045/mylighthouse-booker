@@ -199,12 +199,8 @@ class Mylighthouse_Booker_Hotel
 		}
 		
 		$hotel['rooms'] = Mylighthouse_Booker_Room::get_by_hotel($id);
-		// Include specials if model exists
-		if (class_exists('Mylighthouse_Booker_Special')) {
-			$hotel['specials'] = Mylighthouse_Booker_Special::get_by_hotel($id);
-		} else {
-			$hotel['specials'] = array();
-		}
+		// Specials feature removed — keep empty array for compatibility
+		$hotel['specials'] = array();
 		
 		return $hotel;
 	}
@@ -252,11 +248,8 @@ class Mylighthouse_Booker_Hotel
 
 		foreach ($hotels as & $hotel) {
 			$hotel['rooms'] = Mylighthouse_Booker_Room::get_by_hotel($hotel['id']);
-			if (class_exists('Mylighthouse_Booker_Special')) {
-				$hotel['specials'] = Mylighthouse_Booker_Special::get_by_hotel($hotel['id']);
-			} else {
-				$hotel['specials'] = array();
-			}
+			// Specials feature removed — keep empty array for compatibility
+			$hotel['specials'] = array();
 		}
 
 		return $hotels;

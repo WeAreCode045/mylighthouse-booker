@@ -61,13 +61,7 @@ class Mylighthouse_Booker_Frontend_Assets
 			'all'
 		);
 
-		wp_register_style(
-			'mylighthouse-booker-modal',
-			plugins_url('/assets/css/frontend/modal.css', MYLIGHTHOUSE_BOOKER_PLUGIN_FILE),
-			array(),
-			'1.0.0',
-			'all'
-		);
+		// Modal stylesheet removed: modal UI is no longer part of the plugin's frontend.
 
 	}
 
@@ -91,14 +85,10 @@ class Mylighthouse_Booker_Frontend_Assets
 			wp_enqueue_style('mylighthouse-booker-frontend');
 		}
 
-		if (!wp_style_is('mylighthouse-booker-modal', 'enqueued')) {
-			wp_enqueue_style('mylighthouse-booker-modal');
-		}
-
-		// Enqueue easepick override CSS LAST to ensure it overrides CDN styles
-		if (!wp_style_is('mylighthouse-booker-easepick-override', 'enqueued')) {
-			wp_enqueue_style('mylighthouse-booker-easepick-override');
-		}
+		// Modal styles are registered for legacy compatibility but are not enqueued
+		// by default since the plugin now uses direct redirects and theme/Elementor
+		// should provide the necessary layout. If a specific render path needs the
+		// modal CSS it may enqueue it explicitly.
 
 		// Styling is handled by the Elementor widget; do not read legacy DB option here.
 		// Styling is managed by the theme/Elementor; no inline legacy styles are emitted.
@@ -167,108 +157,43 @@ class Mylighthouse_Booker_Frontend_Assets
 		);
 
         // Use file modification times for script versions to help bust caches when files change.
-        $room_form_path = plugin_dir_path(MYLIGHTHOUSE_BOOKER_PLUGIN_FILE) . 'assets/js/frontend/room-form.js';
-        $special_form_path = plugin_dir_path(MYLIGHTHOUSE_BOOKER_PLUGIN_FILE) . 'assets/js/frontend/special-form.js';
-        $room_form_ver = (file_exists($room_form_path)) ? filemtime($room_form_path) : '1.0.1';
-        $special_form_ver = (file_exists($special_form_path)) ? filemtime($special_form_path) : '1.0.1';
+		// Per-file frontend script registrations removed — provided by consolidated bundle.
+		// The consolidated bundle is registered below; legacy shim handles map old handles
+		// to the consolidated bundle so external code can continue enqueuing old names.
 
+		// Register consolidated frontend bundles: widget and picker
+		// Point widget/picker handles to the consolidated bundle to avoid serving
+		// multiple per-file scripts. This keeps legacy handles intact while
+		// ensuring the single-file bundle is served.
+		$consolidated_path_early = plugin_dir_path(MYLIGHTHOUSE_BOOKER_PLUGIN_FILE) . 'assets/js/frontend/mylighthouse-booker-frontend.js';
+		$consolidated_ver_early = (file_exists($consolidated_path_early)) ? filemtime($consolidated_path_early) : '1.0.0';
 		wp_register_script(
-			'mylighthouse-booker-room-form',
-			plugins_url('/assets/js/frontend/room-form.js', MYLIGHTHOUSE_BOOKER_PLUGIN_FILE),
-			array('jquery', 'easepick-wrapper', 'wp-i18n'),
-			$room_form_ver,
+			'mylighthouse-booker-frontend-widget',
+			plugins_url('/assets/js/frontend/mylighthouse-booker-frontend.js', MYLIGHTHOUSE_BOOKER_PLUGIN_FILE),
+			array('jquery', 'wp-i18n'),
+			$consolidated_ver_early,
 			true
 		);
 		if ( function_exists( 'wp_set_script_translations' ) ) {
-			wp_set_script_translations( 'mylighthouse-booker-room-form', 'mylighthouse-booker', plugin_dir_path(MYLIGHTHOUSE_BOOKER_PLUGIN_FILE) . 'languages' );
+			wp_set_script_translations( 'mylighthouse-booker-frontend-widget', 'mylighthouse-booker', plugin_dir_path(MYLIGHTHOUSE_BOOKER_PLUGIN_FILE) . 'languages' );
 		}
 
 		wp_register_script(
-			'mylighthouse-booker-special-form',
-			plugins_url('/assets/js/frontend/special-form.js', MYLIGHTHOUSE_BOOKER_PLUGIN_FILE),
-			array('jquery', 'easepick-wrapper', 'wp-i18n'),
-			$special_form_ver,
-			true
-		);
-		if ( function_exists( 'wp_set_script_translations' ) ) {
-			wp_set_script_translations( 'mylighthouse-booker-special-form', 'mylighthouse-booker', plugin_dir_path(MYLIGHTHOUSE_BOOKER_PLUGIN_FILE) . 'languages' );
-		}
-
-		wp_register_script(
-			'mylighthouse-booker-booking-modal',
-			plugins_url('/assets/js/frontend/booking-modal.js', MYLIGHTHOUSE_BOOKER_PLUGIN_FILE),
-			array('wp-i18n'),
-			'1.0.0',
-			true
-		);
-		if ( function_exists( 'wp_set_script_translations' ) ) {
-			wp_set_script_translations( 'mylighthouse-booker-booking-modal', 'mylighthouse-booker', plugin_dir_path(MYLIGHTHOUSE_BOOKER_PLUGIN_FILE) . 'languages' );
-		}
-
-		wp_register_script(
-			'mylighthouse-booker-form',
-			plugins_url('/assets/js/frontend/form.js', MYLIGHTHOUSE_BOOKER_PLUGIN_FILE),
-			array('mylighthouse-booker-booking-modal', 'wp-i18n'),
-			'1.0.0',
-			true
-		);
-		if ( function_exists( 'wp_set_script_translations' ) ) {
-			wp_set_script_translations( 'mylighthouse-booker-form', 'mylighthouse-booker', plugin_dir_path(MYLIGHTHOUSE_BOOKER_PLUGIN_FILE) . 'languages' );
-		}
-
-		// Booking form behaviors (handles inline pickers and modal dispatching)
-		$booking_form_path = plugin_dir_path(MYLIGHTHOUSE_BOOKER_PLUGIN_FILE) . 'assets/js/frontend/booking-form.js';
-		$booking_form_ver = (file_exists($booking_form_path)) ? filemtime($booking_form_path) : '1.0.0';
-		wp_register_script(
-			'mylighthouse-booker-booking-form',
-			plugins_url('/assets/js/frontend/booking-form.js', MYLIGHTHOUSE_BOOKER_PLUGIN_FILE),
-			array('jquery', 'easepick-wrapper', 'mylighthouse-booker-booking-modal', 'wp-i18n'),
-			$booking_form_ver,
-			true
-		);
-		if ( function_exists( 'wp_set_script_translations' ) ) {
-			wp_set_script_translations( 'mylighthouse-booker-booking-form', 'mylighthouse-booker', plugin_dir_path(MYLIGHTHOUSE_BOOKER_PLUGIN_FILE) . 'languages' );
-		}
-
-		$iframe_path = plugin_dir_path(MYLIGHTHOUSE_BOOKER_PLUGIN_FILE) . 'assets/js/frontend/iframe.js';
-		$iframe_ver = (file_exists($iframe_path)) ? filemtime($iframe_path) : '1.0.0';
-		wp_register_script(
-			'mylighthouse-booker-iframe',
-			plugins_url('/assets/js/frontend/iframe.js', MYLIGHTHOUSE_BOOKER_PLUGIN_FILE),
-			array('jquery'),
-			$iframe_ver,
+			'mylighthouse-booker-frontend-picker',
+			plugins_url('/assets/js/frontend/mylighthouse-booker-frontend.js', MYLIGHTHOUSE_BOOKER_PLUGIN_FILE),
+			array('easepick-wrapper', 'mylighthouse-booker-frontend-widget'),
+			$consolidated_ver_early,
 			true
 		);
 
-		wp_register_script(
-			'mylighthouse-booker-spinner',
-			plugins_url('/assets/js/frontend/spinner.js', MYLIGHTHOUSE_BOOKER_PLUGIN_FILE),
-			array(),
-			'1.0.0',
-			true
-		);
+		// Specials feature removed: `special-form` script registration omitted.
 
-		wp_register_script(
-			'mylighthouse-booker-room-booking',
-			plugins_url('/assets/js/frontend/room-booking.js', MYLIGHTHOUSE_BOOKER_PLUGIN_FILE),
-			array('jquery', 'mylighthouse-booker-booking-modal', 'wp-i18n'),
-			'1.0.0',
-			true
-		);
-		if ( function_exists( 'wp_set_script_translations' ) ) {
-			wp_set_script_translations( 'mylighthouse-booker-room-booking', 'mylighthouse-booker', plugin_dir_path(MYLIGHTHOUSE_BOOKER_PLUGIN_FILE) . 'languages' );
-		}
+		// Note: per-file frontend registrations (booking-modal, form, booking-form,
+		// room-booking, room-form) are provided by the consolidated bundle and
+		// therefore not registered individually here. iframe.js and spinner.js
+		// were removed earlier and are intentionally not registered.
 
-		wp_register_script(
-			'mylighthouse-booker-special-booking',
-			plugins_url('/assets/js/frontend/special-booking.js', MYLIGHTHOUSE_BOOKER_PLUGIN_FILE),
-			array('jquery', 'mylighthouse-booker-booking-modal', 'wp-i18n'),
-			'1.0.0',
-			true
-		);
-		if ( function_exists( 'wp_set_script_translations' ) ) {
-			wp_set_script_translations( 'mylighthouse-booker-special-booking', 'mylighthouse-booker', plugin_dir_path(MYLIGHTHOUSE_BOOKER_PLUGIN_FILE) . 'languages' );
-		}
+		// Specials feature removed: `special-booking` script registration omitted.
 
 		// Fallback modal trigger script: ensures elements with `data-trigger-modal` open the modal
 		$modal_trigger_path = plugin_dir_path(MYLIGHTHOUSE_BOOKER_PLUGIN_FILE) . 'assets/js/frontend/modal-trigger-fallback.js';
@@ -284,6 +209,40 @@ class Mylighthouse_Booker_Frontend_Assets
 		// Enqueue the fallback so trigger buttons work even if other front-end form scripts aren't present
 		// Note: modal trigger script is registered here but will be enqueued
 		// only when a form/render path requires it (Elementor widget or shortcode).
+
+		// Do not enqueue the legacy alias handles here. We register `mylighthouse-booker-frontend-widget`
+		// and `mylighthouse-booker-frontend-picker` as compatibility aliases that point at the
+		// consolidated bundle; only the consolidated bundle is enqueued below.
+
+		// Register and enqueue the consolidated single-file frontend bundle.
+		$consolidated_path = plugin_dir_path(MYLIGHTHOUSE_BOOKER_PLUGIN_FILE) . 'assets/js/frontend/mylighthouse-booker-frontend.js';
+		$consolidated_ver = (file_exists($consolidated_path)) ? filemtime($consolidated_path) : '1.0.0';
+		wp_register_script(
+			'mylighthouse-booker-frontend',
+			plugins_url('/assets/js/frontend/mylighthouse-booker-frontend.js', MYLIGHTHOUSE_BOOKER_PLUGIN_FILE),
+			array('jquery', 'wp-i18n', 'easepick-wrapper'),
+			$consolidated_ver,
+			true
+		);
+		if ( function_exists( 'wp_set_script_translations' ) ) {
+			wp_set_script_translations( 'mylighthouse-booker-frontend', 'mylighthouse-booker', plugin_dir_path(MYLIGHTHOUSE_BOOKER_PLUGIN_FILE) . 'languages' );
+		}
+		if ( ! wp_script_is( 'mylighthouse-booker-frontend', 'enqueued' ) ) {
+			wp_enqueue_script( 'mylighthouse-booker-frontend' );
+		}
+
+		// Backwards-compatibility shim registrations: allow external code to enqueue old handles
+		// without breaking; they will depend on the consolidated bundle.
+		// Backwards-compatibility shim registrations: allow external code to enqueue old handles
+		// without breaking; they will depend on the new bundles.
+		// Backwards-compatibility shim registrations: old handles map to the consolidated bundle.
+		wp_register_script( 'mylighthouse-booker-booking-modal', '', array( 'mylighthouse-booker-frontend' ) );
+		wp_register_script( 'mylighthouse-booker-booking-form', '', array( 'mylighthouse-booker-frontend' ) );
+		wp_register_script( 'mylighthouse-booker-form', '', array( 'mylighthouse-booker-frontend' ) );
+		wp_register_script( 'mylighthouse-booker-room-form', '', array( 'mylighthouse-booker-frontend' ) );
+		wp_register_script( 'mylighthouse-booker-room-booking', '', array( 'mylighthouse-booker-frontend' ) );
+
+
 	}
 
 	// Legacy generate_styles removed; styling should be handled by Elementor/theme.

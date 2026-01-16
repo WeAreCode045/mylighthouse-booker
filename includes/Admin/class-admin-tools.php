@@ -37,19 +37,19 @@ class Mylighthouse_Booker_Admin_Tools {
 
             <div class="mlb-section-card">
                 <h3 class="mlb-section-title"><?php esc_html_e('Import & Export', 'mylighthouse-booker'); ?></h3>
-                <p><?php esc_html_e('Move hotels (with rooms and specials) between environments using JSON exports.', 'mylighthouse-booker'); ?></p>
+                <p><?php esc_html_e('Move hotels and rooms between environments using JSON exports.', 'mylighthouse-booker'); ?></p>
 
                 <div class="mlb-tools-split">
                     <div class="mlb-tools-panel">
                         <h4><?php esc_html_e('Export Data', 'mylighthouse-booker'); ?></h4>
-                        <p><?php esc_html_e('Download a JSON snapshot of all hotels, rooms, and specials.', 'mylighthouse-booker'); ?></p>
+                        <p><?php esc_html_e('Download a JSON snapshot of all hotels and rooms.', 'mylighthouse-booker'); ?></p>
                         <form id="mlb-export-form" method="post" action="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>" target="mlb-export-frame" class="mlb-export-form">
                             <input type="hidden" name="action" value="mlb_tools_export" />
                             <input type="hidden" name="nonce" value="<?php echo esc_attr( $export_nonce ); ?>" />
                             <input type="hidden" name="download" value="1" />
                             <label for="mlb-export-type" class="screen-reader-text"><?php esc_html_e('Export scope', 'mylighthouse-booker'); ?></label>
                             <select id="mlb-export-type" name="export_type" class="mlb-select">
-                                <option value="full"><?php esc_html_e('All hotels (includes rooms and specials)', 'mylighthouse-booker'); ?></option>
+                                <option value="full"><?php esc_html_e('All hotels (includes rooms)', 'mylighthouse-booker'); ?></option>
                             </select>
                             <label class="mlb-checkbox">
                                 <input type="checkbox" name="include_settings" value="1" checked />
@@ -65,7 +65,7 @@ class Mylighthouse_Booker_Admin_Tools {
 
                     <div class="mlb-tools-panel">
                         <h4><?php esc_html_e('Import Data', 'mylighthouse-booker'); ?></h4>
-                        <p><?php esc_html_e('Upload a JSON export to preview changes and import hotels, rooms, and specials.', 'mylighthouse-booker'); ?></p>
+                        <p><?php esc_html_e('Upload a JSON export to preview changes and import hotels and rooms.', 'mylighthouse-booker'); ?></p>
                         <label for="mlb-import-file"><?php esc_html_e('JSON file', 'mylighthouse-booker'); ?></label>
                         <input type="file" id="mlb-import-file" accept="application/json,.json" />
                         <label class="mlb-checkbox">
@@ -77,7 +77,7 @@ class Mylighthouse_Booker_Admin_Tools {
                             <input type="checkbox" id="mlb-import-skip-existing" checked />
                             <span><?php esc_html_e( 'Skip items that already exist', 'mylighthouse-booker' ); ?></span>
                         </label>
-                        <p class="description"><?php esc_html_e( 'When enabled, matching hotel, room, or special IDs already in the database will be ignored.', 'mylighthouse-booker' ); ?></p>
+                        <p class="description"><?php esc_html_e( 'When enabled, matching hotel or room IDs already in the database will be ignored.', 'mylighthouse-booker' ); ?></p>
                         <div class="mlb-import-actions">
                             <button type="button" id="mlb-preview-btn" class="mlb-btn mlb-btn-secondary" data-preview-nonce="<?php echo esc_attr($preview_nonce); ?>"><?php esc_html_e('Preview Import', 'mylighthouse-booker'); ?></button>
                             <button type="button" id="mlb-import-btn" class="mlb-btn mlb-btn-secondary" data-import-nonce="<?php echo esc_attr($import_nonce); ?>"><?php esc_html_e('Import JSON', 'mylighthouse-booker'); ?></button>
@@ -117,11 +117,7 @@ if ( ! class_exists( 'Mylighthouse_Booker_Admin_Tools_Page' ) ) {
                     'label'   => __( 'Rooms Table', 'mylighthouse-booker' ),
                     'columns' => array( 'id', 'hotel_id', 'name', 'room_id', 'status', 'created_at', 'updated_at' ),
                 ),
-                'specials' => array(
-                    'name'    => $wpdb->prefix . 'mlb_specials',
-                    'label'   => __( 'Specials Table', 'mylighthouse-booker' ),
-                    'columns' => array( 'id', 'hotel_id', 'name', 'special_id', 'status', 'created_at', 'updated_at' ),
-                ),
+                // specials table removed
             );
 
             $before = array();
@@ -172,14 +168,11 @@ if ( ! class_exists( 'Mylighthouse_Booker_Admin_Tools_Page' ) ) {
             $hotels = Mylighthouse_Booker_Hotel::get_all_with_rooms( array( 'status' => '' ) );
             $payload_hotels = array();
             $room_count = 0;
-            $special_count = 0;
 
             if ( ! empty( $hotels ) && is_array( $hotels ) ) {
                 foreach ( $hotels as $hotel ) {
                     $rooms = $this->format_rooms_for_export( isset( $hotel['rooms'] ) ? $hotel['rooms'] : array() );
-                    $specials = $this->format_specials_for_export( isset( $hotel['specials'] ) ? $hotel['specials'] : array() );
-                    $room_count    += count( $rooms );
-                    $special_count += count( $specials );
+                    $room_count += count( $rooms );
 
                     $payload_hotels[] = array(
                         'id'            => isset( $hotel['id'] ) ? intval( $hotel['id'] ) : 0,
@@ -188,7 +181,6 @@ if ( ! class_exists( 'Mylighthouse_Booker_Admin_Tools_Page' ) ) {
                         'status'        => isset( $hotel['status'] ) ? $hotel['status'] : '',
                         'display_order' => isset( $hotel['display_order'] ) ? intval( $hotel['display_order'] ) : 0,
                         'rooms'         => $rooms,
-                        'specials'      => $specials,
                     );
                 }
             }
@@ -202,9 +194,8 @@ if ( ! class_exists( 'Mylighthouse_Booker_Admin_Tools_Page' ) ) {
                 ),
                 'version'      => defined( 'MYLIGHTHOUSE_BOOKER_VERSION' ) ? MYLIGHTHOUSE_BOOKER_VERSION : '1.0.0',
                 'counts'       => array(
-                    'hotels'   => count( $payload_hotels ),
-                    'rooms'    => $room_count,
-                    'specials' => $special_count,
+                    'hotels' => count( $payload_hotels ),
+                    'rooms'  => $room_count,
                 ),
                 'hotels'       => $payload_hotels,
                 'settings'     => $settings_payload,
@@ -278,7 +269,6 @@ if ( ! class_exists( 'Mylighthouse_Booker_Admin_Tools_Page' ) ) {
                         'hotel_id' => $external_id,
                         'action'   => 'skip',
                         'rooms'    => array(),
-                        'specials' => array(),
                         'reason'   => __( 'Missing hotel ID or name.', 'mylighthouse-booker' ),
                     );
                     $skipped_count++;
@@ -314,25 +304,6 @@ if ( ! class_exists( 'Mylighthouse_Booker_Admin_Tools_Page' ) ) {
                     }
                 }
 
-                $special_preview = array();
-                if ( ! empty( $hotel_entry['specials'] ) && is_array( $hotel_entry['specials'] ) ) {
-                    foreach ( $hotel_entry['specials'] as $special_entry ) {
-                        if ( ! is_array( $special_entry ) ) {
-                            continue;
-                        }
-                        $special_id = isset( $special_entry['special_id'] ) ? sanitize_text_field( $special_entry['special_id'] ) : '';
-                        if ( empty( $special_id ) ) {
-                            continue;
-                        }
-                        $existing_special = $this->get_special_by_external_id( $special_id );
-                        $special_preview[] = array(
-                            'special_id' => $special_id,
-                            'action'     => ( $existing_special && isset( $existing_special['id'] ) ) ? 'update' : 'create',
-                            'exists'     => (bool) $existing_special,
-                            'will_skip'  => $skip_existing && (bool) $existing_special,
-                        );
-                    }
-                }
 
                 $preview[] = array(
                     'hotel_id' => $external_id,
@@ -341,7 +312,6 @@ if ( ! class_exists( 'Mylighthouse_Booker_Admin_Tools_Page' ) ) {
                     'exists'   => $hotel_exists,
                     'will_skip'=> $skip_existing && $hotel_exists,
                     'rooms'    => $room_preview,
-                    'specials' => $special_preview,
                 );
             }
 
@@ -397,8 +367,7 @@ if ( ! class_exists( 'Mylighthouse_Booker_Admin_Tools_Page' ) ) {
                 'hotels_updated'   => 0,
                 'rooms_created'    => 0,
                 'rooms_updated'    => 0,
-                'specials_created' => 0,
-                'specials_updated' => 0,
+            
                 'skipped'          => 0,
                 'settings_applied' => 0,
                 'skipped_existing' => 0,
@@ -516,56 +485,12 @@ if ( ! class_exists( 'Mylighthouse_Booker_Admin_Tools_Page' ) ) {
                     }
                 }
 
-                $special_log = array();
-                if ( ! empty( $hotel_entry['specials'] ) && is_array( $hotel_entry['specials'] ) ) {
-                    foreach ( $hotel_entry['specials'] as $special_entry ) {
-                        if ( ! is_array( $special_entry ) ) {
-                            continue;
-                        }
-                        $special_id   = isset( $special_entry['special_id'] ) ? sanitize_text_field( $special_entry['special_id'] ) : '';
-                        $special_name = isset( $special_entry['name'] ) ? sanitize_text_field( $special_entry['name'] ) : '';
-                        if ( empty( $special_id ) || empty( $special_name ) ) {
-                            continue;
-                        }
-                        $special_status   = isset( $special_entry['status'] ) ? sanitize_text_field( $special_entry['status'] ) : 'active';
-                        if ( ! $this->is_special_selected( $selection, $external_id, $special_id ) ) {
-                            continue;
-                        }
-                        $existing_special = $this->get_special_by_external_id( $special_id );
-                        if ( $skip_existing && $existing_special && isset( $existing_special['id'] ) ) {
-                            $summary['specials_skipped_existing']++;
-                            $special_log[] = array( 'special_id' => $special_id, 'action' => 'skipped_existing' );
-                            continue;
-                        }
-                        if ( $existing_special && isset( $existing_special['id'] ) ) {
-                            Mylighthouse_Booker_Special::update( $existing_special['id'], array(
-                                'hotel_id'   => $hotel_db_id,
-                                'name'       => $special_name,
-                                'special_id' => $special_id,
-                                'status'     => $special_status,
-                            ) );
-                            $summary['specials_updated']++;
-                            $special_log[] = array( 'special_id' => $special_id, 'action' => 'updated' );
-                        } else {
-                            $new_special_id = Mylighthouse_Booker_Special::create( array(
-                                'hotel_id'   => $hotel_db_id,
-                                'name'       => $special_name,
-                                'special_id' => $special_id,
-                                'status'     => $special_status,
-                            ) );
-                            if ( $new_special_id ) {
-                                $summary['specials_created']++;
-                                $special_log[] = array( 'special_id' => $special_id, 'action' => 'created' );
-                            }
-                        }
-                    }
-                }
+                // specials removed: no-op
 
                 $entries[] = array(
                     'hotel_id' => $external_id,
                     'action'   => $hotel_action,
                     'rooms'    => $room_log,
-                    'specials' => $special_log,
                 );
             }
 
@@ -712,9 +637,7 @@ if ( ! class_exists( 'Mylighthouse_Booker_Admin_Tools_Page' ) ) {
             if ( ! class_exists( 'Mylighthouse_Booker_Room' ) ) {
                 require_once MYLIGHTHOUSE_BOOKER_ABSPATH . 'includes/Models/class-room.php';
             }
-            if ( ! class_exists( 'Mylighthouse_Booker_Special' ) ) {
-                require_once MYLIGHTHOUSE_BOOKER_ABSPATH . 'includes/Models/class-special.php';
-            }
+            // specials model removed
         }
 
         private function get_general_settings_keys() {
@@ -822,26 +745,7 @@ if ( ! class_exists( 'Mylighthouse_Booker_Admin_Tools_Page' ) ) {
             return (bool) $entry['rooms'][ $room_id ];
         }
 
-        private function is_special_selected( $selection, $hotel_id, $special_id ) {
-            if ( empty( $selection ) || empty( $selection['hotels'] ) ) {
-                return true;
-            }
-
-            if ( ! isset( $selection['hotels'][ $hotel_id ] ) ) {
-                return false;
-            }
-
-            $entry = $selection['hotels'][ $hotel_id ];
-            if ( empty( $entry['specials'] ) ) {
-                return isset( $entry['include'] ) ? (bool) $entry['include'] : true;
-            }
-
-            if ( ! array_key_exists( $special_id, $entry['specials'] ) ) {
-                return isset( $entry['include'] ) ? (bool) $entry['include'] : true;
-            }
-
-          return (bool) $entry['specials'][ $special_id ];
-        }
+        // specials removed: selection handling not required
 
         /**
          * Decode the JSON payload sent by import/preview requests.
@@ -945,56 +849,7 @@ if ( ! class_exists( 'Mylighthouse_Booker_Admin_Tools_Page' ) ) {
             return $formatted;
         }
 
-        /**
-         * Format specials for export payloads.
-         *
-         * @param array $specials
-         * @return array
-         */
-        private function format_specials_for_export( $specials ) {
-            $formatted = array();
-            if ( empty( $specials ) || ! is_array( $specials ) ) {
-                return $formatted;
-            }
-
-            foreach ( $specials as $special ) {
-                if ( ! is_array( $special ) ) {
-                    continue;
-                }
-                $formatted[] = array(
-                    'id'         => isset( $special['id'] ) ? intval( $special['id'] ) : 0,
-                    'hotel_id'   => isset( $special['hotel_id'] ) ? intval( $special['hotel_id'] ) : 0,
-                    'special_id' => isset( $special['special_id'] ) ? sanitize_text_field( $special['special_id'] ) : '',
-                    'name'       => isset( $special['name'] ) ? $special['name'] : '',
-                    'status'     => isset( $special['status'] ) ? $special['status'] : '',
-                );
-            }
-
-            return $formatted;
-        }
-
-        /**
-         * Fetch a special by its external identifier with a DB fallback.
-         *
-         * @param string $special_id
-         * @return array|null
-         */
-        private function get_special_by_external_id( $special_id ) {
-            if ( empty( $special_id ) ) {
-                return null;
-            }
-
-            if ( class_exists( 'Mylighthouse_Booker_Special' ) && method_exists( 'Mylighthouse_Booker_Special', 'get_by_special_id' ) ) {
-                return Mylighthouse_Booker_Special::get_by_special_id( $special_id );
-            }
-
-            global $wpdb;
-            $table = $wpdb->prefix . 'mlb_specials';
-            return $wpdb->get_row(
-                $wpdb->prepare( "SELECT * FROM {$table} WHERE special_id = %s", $special_id ),
-                ARRAY_A
-            );
-        }
+        // specials removed: no helper functions remain
     }
 }
 ?>

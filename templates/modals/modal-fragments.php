@@ -14,12 +14,6 @@ if (! defined('ABSPATH')) {
     <button type="button" class="mlb-modal-close" aria-label="<?php echo esc_attr( 'Close booking results' ); ?>">&times;</button>
 </template>
 
-<template id="mlb-modal-spinner-box">
-    <div class="mlb-spinner-box">
-        <div class="mlb-spinner" aria-hidden="true"></div>
-    </div>
-</template>
-
 <template id="mlb-icon-arrow-down">
     <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
 </template>

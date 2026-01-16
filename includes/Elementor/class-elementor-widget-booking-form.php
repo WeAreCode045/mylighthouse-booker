@@ -62,7 +62,7 @@ class Mylighthouse_Booker_Elementor_Widget_Booking_Form extends Widget_Base
 			[
 				'label' => __('Form Type', 'mylighthouse-booker'),
 				'type' => Controls_Manager::SELECT,
-				'options' => [ 'hotel' => __('Hotel', 'mylighthouse-booker'), 'room' => __('Room', 'mylighthouse-booker'), 'special' => __('Special', 'mylighthouse-booker') ],
+				'options' => [ 'hotel' => __('Hotel', 'mylighthouse-booker'), 'room' => __('Room', 'mylighthouse-booker') ],
 				'default' => 'hotel',
 			]
 		);
@@ -135,17 +135,7 @@ class Mylighthouse_Booker_Elementor_Widget_Booking_Form extends Widget_Base
 			]
 		);
 
-		// SPECIAL FORM TYPE: Step 1 - Select Hotel
-		$this->add_control(
-			'special_hotel',
-			[
-				'label' => __('1. Select Hotel', 'mylighthouse-booker'),
-				'type' => Controls_Manager::SELECT,
-				'options' => array_merge([ '' => __('— Select a Hotel —', 'mylighthouse-booker') ], $hotel_options),
-				'condition' => [ 'form_type' => 'special' ],
-				'description' => __('First, select the hotel.', 'mylighthouse-booker'),
-			]
-		);
+		// SPECIAL form type removed.
 
 		// ROOM FORM TYPE: Step 2 - Build room options for each hotel (shown conditionally)
 		foreach ($hotels as $hotel) {
@@ -196,46 +186,7 @@ class Mylighthouse_Booker_Elementor_Widget_Booking_Form extends Widget_Base
 				]
 			);
 
-			// Build special options for this specific hotel
-			$special_options_for_hotel = [ '' => __('— Select a Special —', 'mylighthouse-booker') ];
-			if (isset($hotel['specials']) && is_array($hotel['specials']) && count($hotel['specials']) > 0) {
-				foreach ($hotel['specials'] as $spec) {
-					$spec_id = $spec['special_id'] ?? '';
-					$spec_name = $spec['name'] ?? '';
-					if ($spec_id && $spec_name) {
-						$special_options_for_hotel[$spec_id] = $spec_name . ' (ID: ' . $spec_id . ')';
-					}
-				}
-			} else {
-				$special_options_for_hotel['_no_specials'] = __('No specials available for this hotel', 'mylighthouse-booker');
-			}
-
-			$this->add_control(
-				'special_id_' . $hotel_id,
-				[
-					/* translators: %s is the hotel name (e.g. "Seaside Hotel"). */
-					'label' => sprintf(__('2. Select Special from %s', 'mylighthouse-booker'), $hotel_name),
-					'type' => Controls_Manager::SELECT,
-					'options' => $special_options_for_hotel,
-					'conditions' => [
-						'relation' => 'and',
-						'terms' => [
-							[
-								'name' => 'form_type',
-								'operator' => '===',
-								'value' => 'special',
-							],
-							[
-								'name' => 'special_hotel',
-								'operator' => '===',
-								'value' => (string)$hotel_id,
-							],
-						],
-					],
-					/* translators: %s is the hotel name (e.g. "Seaside Hotel"). */
-					'description' => sprintf(__('Select a special from %s.', 'mylighthouse-booker'), $hotel_name),
-				]
-			);
+			// Specials removed — no special selection controls added.
 		}
 
 		$this->end_controls_section();
@@ -782,11 +733,6 @@ class Mylighthouse_Booker_Elementor_Widget_Booking_Form extends Widget_Base
 			'form_type' => $form_type,
 		);
 
-		// Load modal template for JS usage and localize script
-		ob_start();
-		include MYLIGHTHOUSE_BOOKER_ABSPATH . 'templates/modals/calendar-modal.php';
-		$modal_template = ob_get_clean();
-
 		// Prefer widget-specific style option, fall back to global admin setting
 		$spinner_image = '';
 		if (!empty($style_opts) && isset($style_opts['calendar']['spinner_image_url'])) {
@@ -812,14 +758,10 @@ class Mylighthouse_Booker_Elementor_Widget_Booking_Form extends Widget_Base
 
 		// Localize only essential runtime parameters. Translations are handled
 		// via gettext (.po/.mo) and wp-i18n; DB-based overrides were removed.
-		wp_localize_script($script_handle, 'cqb_params', array(
+		// Localize runtime params to the consolidated frontend bundle handle
+		wp_localize_script('mylighthouse-booker-frontend', 'cqb_params', array(
 			'booking_page_url' => $booking_page_url,
-			'modal_template' => $modal_template,
 			'result_target' => $result_target,
-			'display_mode_mobile' => $display_mode_mobile,
-			'display_mode_tablet' => $display_mode_tablet,
-			'display_mode_desktop' => $display_mode_desktop,
-			'spinner_image_url' => $spinner_image,
 		));
 
 		// Render the form template directly (not via shortcode)

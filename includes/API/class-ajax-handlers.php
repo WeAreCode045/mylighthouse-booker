@@ -165,21 +165,8 @@ class Mylighthouse_Booker_Ajax_Handlers
 			wp_die(__('You do not have permission to save settings.', 'mylighthouse-booker'));
 		}
 
-		// Sanitize and save options
-		$booking_page = isset($_POST['mlb_booking_page_url']) ? sanitize_text_field($_POST['mlb_booking_page_url']) : '';
-		$valid_modes = array('modal','booking_page','redirect_engine');
-		$display_mode_mobile = isset($_POST['mlb_display_mode_mobile']) && in_array($_POST['mlb_display_mode_mobile'], $valid_modes) ? sanitize_text_field($_POST['mlb_display_mode_mobile']) : 'modal';
-		$display_mode_tablet = isset($_POST['mlb_display_mode_tablet']) && in_array($_POST['mlb_display_mode_tablet'], $valid_modes) ? sanitize_text_field($_POST['mlb_display_mode_tablet']) : 'modal';
-		$display_mode_desktop = isset($_POST['mlb_display_mode_desktop']) && in_array($_POST['mlb_display_mode_desktop'], $valid_modes) ? sanitize_text_field($_POST['mlb_display_mode_desktop']) : 'modal';
-		$spinner_image_url = isset($_POST['mlb_spinner_image_url']) ? esc_url_raw(trim($_POST['mlb_spinner_image_url'])) : '';
-
-		update_option('mlb_booking_page_url', $booking_page);
-		update_option('mlb_display_mode_mobile', $display_mode_mobile);
-		update_option('mlb_display_mode_tablet', $display_mode_tablet);
-		update_option('mlb_display_mode_desktop', $display_mode_desktop);
-		update_option('mlb_spinner_image_url', $spinner_image_url);
-
-		// Redirect back to the settings fragment inside the dashboard
+		// Legacy frontend display settings removed. No options are stored anymore.
+		// Redirect back to the settings fragment inside the dashboard for UX consistency.
 		$redirect = admin_url('admin.php?page=mylighthouse-booker&content=settings&updated=1');
 		wp_safe_redirect($redirect);
 		exit;
@@ -198,20 +185,9 @@ class Mylighthouse_Booker_Ajax_Handlers
 			wp_send_json_error(array('message' => 'Insufficient permissions'));
 		}
 
-		$booking_page = isset($_POST['mlb_booking_page_url']) ? sanitize_text_field($_POST['mlb_booking_page_url']) : '';
-		$valid_modes = array('modal','booking_page','redirect_engine');
-		$display_mode_mobile = isset($_POST['mlb_display_mode_mobile']) && in_array($_POST['mlb_display_mode_mobile'], $valid_modes) ? sanitize_text_field($_POST['mlb_display_mode_mobile']) : 'modal';
-		$display_mode_tablet = isset($_POST['mlb_display_mode_tablet']) && in_array($_POST['mlb_display_mode_tablet'], $valid_modes) ? sanitize_text_field($_POST['mlb_display_mode_tablet']) : 'modal';
-		$display_mode_desktop = isset($_POST['mlb_display_mode_desktop']) && in_array($_POST['mlb_display_mode_desktop'], $valid_modes) ? sanitize_text_field($_POST['mlb_display_mode_desktop']) : 'modal';
-		$spinner_image_url = isset($_POST['mlb_spinner_image_url']) ? esc_url_raw(trim($_POST['mlb_spinner_image_url'])) : '';
-
-		update_option('mlb_booking_page_url', $booking_page);
-		update_option('mlb_display_mode_mobile', $display_mode_mobile);
-		update_option('mlb_display_mode_tablet', $display_mode_tablet);
-		update_option('mlb_display_mode_desktop', $display_mode_desktop);
-		update_option('mlb_spinner_image_url', $spinner_image_url);
-
-		wp_send_json_success(array('message' => 'Settings saved'));
+		// Legacy frontend display settings removed. Accept the request for compatibility
+		// but do not persist any display-related options.
+		wp_send_json_success(array('message' => 'Settings saved (no-op for display options)'));
 	}
 
 	// Texts & translations persistence removed — rely on PO/MO files and WP translations.
@@ -271,20 +247,7 @@ class Mylighthouse_Booker_Ajax_Handlers
 			}
 		}
 
-		// Handle specials (if provided)
-		if (isset($_POST['specials']) && is_array($_POST['specials'])) {
-			foreach ($_POST['specials'] as $s) {
-				$s_id = isset($s['id']) ? intval($s['id']) : 0;
-				$s_name = isset($s['name']) ? sanitize_text_field($s['name']) : '';
-				$s_external = isset($s['special_id']) ? sanitize_text_field($s['special_id']) : '';
-				if (empty($s_name) || empty($s_external)) continue;
-				if ($s_id > 0 && class_exists('Mylighthouse_Booker_Special')) {
-					Mylighthouse_Booker_Special::update($s_id, array('name' => $s_name, 'special_id' => $s_external, 'hotel_id' => $hotel_id));
-				} elseif (class_exists('Mylighthouse_Booker_Special')) {
-					Mylighthouse_Booker_Special::create(array('hotel_id' => $hotel_id, 'name' => $s_name, 'special_id' => $s_external));
-				}
-			}
-		}
+		// specials removed: no-op
 
 		// Prepare rendered hotel row HTML for in-place updates if templates are available
 		$rendered_html = '';
@@ -758,12 +721,7 @@ class Mylighthouse_Booker_Ajax_Handlers
 				}
 				$new_id = Mylighthouse_Booker_Room::create(array('hotel_id' => $hotel_id, 'name' => $name, 'room_id' => $ext));
 				break;
-			case 'specials':
-				if (! class_exists('Mylighthouse_Booker_Special')) {
-					wp_send_json_error(array('message' => 'Special model not available'));
-				}
-				$new_id = Mylighthouse_Booker_Special::create(array('hotel_id' => $hotel_id, 'name' => $name, 'special_id' => $ext));
-				break;
+			// specials removed
 			default:
 				wp_send_json_error(array('message' => 'Invalid target'));
 		}
@@ -807,12 +765,7 @@ class Mylighthouse_Booker_Ajax_Handlers
 				}
 				$ok = Mylighthouse_Booker_Room::delete($item_id);
 				break;
-			case 'specials':
-				if (! class_exists('Mylighthouse_Booker_Special') || ! method_exists('Mylighthouse_Booker_Special', 'delete')) {
-					wp_send_json_error(array('message' => 'Special delete not supported'));
-				}
-				$ok = Mylighthouse_Booker_Special::delete($item_id);
-				break;
+			// specials removed
 			default:
 				wp_send_json_error(array('message' => 'Invalid target'));
 		}
@@ -857,12 +810,7 @@ class Mylighthouse_Booker_Ajax_Handlers
 				}
 				$ok = Mylighthouse_Booker_Room::update($item_id, array('name' => $name, 'room_id' => $ext));
 				break;
-			case 'specials':
-				if (! class_exists('Mylighthouse_Booker_Special')) {
-					wp_send_json_error(array('message' => 'Special model not available'));
-				}
-				$ok = Mylighthouse_Booker_Special::update($item_id, array('name' => $name, 'special_id' => $ext));
-				break;
+			// specials removed
 			default:
 				wp_send_json_error(array('message' => 'Invalid target'));
 		}

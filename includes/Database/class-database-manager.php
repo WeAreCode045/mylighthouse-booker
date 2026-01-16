@@ -89,23 +89,7 @@ class Mylighthouse_Booker_Database_Manager
 		dbDelta($hotels_sql);
 		dbDelta($rooms_sql);
 
-		// Specials table
-		$specials_table = $wpdb->prefix . 'mlb_specials';
-		$specials_sql = "CREATE TABLE $specials_table (
-			id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-			hotel_id bigint(20) UNSIGNED NOT NULL,
-			name varchar(255) NOT NULL,
-			special_id varchar(100) NOT NULL,
-			status varchar(20) DEFAULT 'active',
-			created_at datetime DEFAULT CURRENT_TIMESTAMP,
-			updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-			PRIMARY KEY (id),
-			KEY hotel_id (hotel_id),
-			KEY special_id (special_id),
-			KEY status (status)
-		) $charset_collate;";
-
-		dbDelta($specials_sql);
+		// Specials feature removed — no specials table is created.
 	}
 
 	/**
@@ -185,7 +169,6 @@ class Mylighthouse_Booker_Database_Manager
 		global $wpdb;
 		
 		$wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}mlb_rooms");
-		$wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}mlb_specials");
 		$wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}mlb_hotels");
 		
 		delete_option('mlb_db_version');

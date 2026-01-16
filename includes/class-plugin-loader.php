@@ -83,15 +83,10 @@ class Mylighthouse_Booker_Plugin_Loader
 		if (file_exists(MYLIGHTHOUSE_BOOKER_ABSPATH . 'includes/Models/class-room.php')) {
 			require_once MYLIGHTHOUSE_BOOKER_ABSPATH . 'includes/Models/class-room.php';
 		}
-		if (file_exists(MYLIGHTHOUSE_BOOKER_ABSPATH . 'includes/Models/class-special.php')) {
-			require_once MYLIGHTHOUSE_BOOKER_ABSPATH . 'includes/Models/class-special.php';
-		}
 
 
 		// Frontend classes
 		require_once MYLIGHTHOUSE_BOOKER_ABSPATH . 'includes/Frontend/class-frontend-assets.php';
-		require_once MYLIGHTHOUSE_BOOKER_ABSPATH . 'includes/Frontend/class-shortcode-booking-form.php';
-		require_once MYLIGHTHOUSE_BOOKER_ABSPATH . 'includes/Frontend/class-shortcode-iframe-target.php';
 
 		// Elementor integration (optional if Elementor is active)
 		require_once MYLIGHTHOUSE_BOOKER_ABSPATH . 'includes/Elementor/class-elementor-loader.php';
@@ -116,8 +111,6 @@ class Mylighthouse_Booker_Plugin_Loader
 		// previews and builders (actual hooks like wp_enqueue_scripts only fire on
 		// the frontend, so instantiating here is safe in both contexts).
 		$this->components[] = new Mylighthouse_Booker_Frontend_Assets();
-		$this->components[] = new Mylighthouse_Booker_Shortcode_Booking_Form();
-		$this->components[] = new Mylighthouse_Booker_Shortcode_Iframe_Target();
 
 		// AJAX components (always load for both admin and frontend)
 		$this->components[] = new Mylighthouse_Booker_Ajax_Handlers();

@@ -14,9 +14,12 @@
         
         var $ = jQuery;
 
-    // JS gettext helper: prefer wp.i18n.__() when available
+    // JS gettext helper: delegate to MLB.utils when available
     function mlbGettext(str) {
         try {
+            if (window.MLB && window.MLB.utils && typeof window.MLB.utils.gettext === 'function') {
+                return window.MLB.utils.gettext(str);
+            }
             if (typeof wp !== 'undefined' && wp.i18n && typeof wp.i18n.__ === 'function') {
                 return wp.i18n.__(str, 'mylighthouse-booker');
             }
@@ -37,43 +40,7 @@
                 }
             }
 
-            // Ensure forms that are special forms with a rate but missing dataset hotel id
-            // behave like room forms: try to infer hotel from select, hide selector, and
-            // switch to modal date picker flow.
             try { if ($form && $form.length && typeof window.mlbEnsureFormId === 'function') { window.mlbEnsureFormId($form[0]); } } catch (e) {}
-            try{
-                var preselected = $form.data('hotel-id') || '';
-                var isSpecial = $form.hasClass('mlb-special-form-type');
-                var rateId = $form.data('rate-id') || $form.data('special-id') || '';
-                if((!preselected || preselected === '') && isSpecial && rateId){
-                    var native = $form.find('.mlb-hotel-select')[0];
-                    if(native){
-                        var selOpt = native.querySelector('option[selected][value]');
-                        if(!selOpt){
-                            var opts = Array.from(native.options).filter(function(o){ return o.value && !o.disabled; });
-                            if(opts.length === 1) selOpt = opts[0];
-                        }
-                        if(selOpt && selOpt.value){
-                            preselected = selOpt.value;
-                            // set dataset and hidden input
-                            try{ $form[0].dataset.hotelId = preselected; }catch(e){}
-                            var existingHidden = $form.find('input[name="hotel_id"]');
-                            if(!existingHidden.length){
-                                var h = document.createElement('input'); h.type = 'hidden'; h.name = 'hotel_id'; h.value = preselected; $form[0].appendChild(h);
-                            } else { existingHidden.val(preselected); }
-                            // hide the select UI
-                            $($form.find('.mlb-hotel-select')).hide();
-                        }
-                    }
-                    // If we've inferred a hotel, hide inline daterange and mark button to trigger modal
-                    try {
-                        $form.find('.mlb-daterange').hide();
-                        $form.find('[data-trigger-modal="true"]').attr('data-trigger-modal', 'true');
-                    } catch (e) {}
-                }
-            } catch (err) {
-                console.error('initRoomForm preselect error', err);
-            }
 
             // Ensure modal picker initializer is called for this form
             try {
@@ -95,9 +62,14 @@
     // ========================================================================
 
     /**
-     * Format Date object to d-m-Y string
+     * Format Date object to d-m-Y string (delegate to utils if available)
      */
     function formatDMY(d) {
+        try {
+            if (window.MLB && window.MLB.utils && typeof window.MLB.utils.formatDMY === 'function') {
+                return window.MLB.utils.formatDMY(d);
+            }
+        } catch (e) {}
         const dd = String(d.getDate()).padStart(2, '0');
         const mm = String(d.getMonth() + 1).padStart(2, '0');
         const yyyy = d.getFullYear();
@@ -105,9 +77,14 @@
     }
 
     /**
-     * Copy CSS variables from source to target element
+     * Copy CSS variables from source to target element (delegate to utils if available)
      */
     function copyCSSVariables(source, target, variables) {
+        try {
+            if (window.MLB && window.MLB.utils && typeof window.MLB.utils.copyCSSVariables === 'function') {
+                return window.MLB.utils.copyCSSVariables(source, target, variables);
+            }
+        } catch (e) {}
         const computedStyle = getComputedStyle(source);
         variables.forEach(function(varName) {
             const value = computedStyle.getPropertyValue(varName);
@@ -388,8 +365,7 @@
                 if (contentWrapper) {
                     // Detect form type
                     const hasRoomId = $form.data('room-id');
-                    const hasSpecialId = $form.data('special-id') || $form.data('rate-id');
-                    const isHotelForm = !hasRoomId && !hasSpecialId;
+                    const isHotelForm = !hasRoomId;
                     
                     var hotelName = '';
                     try { hotelName = window.mlbGetFormValue($form, ['hotelName','hotel_name','hotel-id','hotel_id','hotel']); } catch (e) {}
@@ -417,9 +393,7 @@
                         if (specialRow) specialRow.style.display = 'none';
                         
                         const ctaRoom = modalOverlay.querySelector('.mlb-modal-cta-room');
-                        const ctaSpecial = modalOverlay.querySelector('.mlb-modal-cta-special');
-                        if (ctaRoom) ctaRoom.textContent = 'Check Availability';
-                        if (ctaSpecial) ctaSpecial.style.display = 'none';
+                        if (ctaRoom) ctaRoom.textContent = mlbGettext('Check Availability');
 
                         // If dates are already present, enable the submit button so Check Availability works immediately
                         try {
@@ -448,34 +422,7 @@
                             if (specialRow) specialRow.style.display = 'none';
                         }
                         // Ensure CTA label shows room text
-                        const ctaRoom = modalOverlay.querySelector('.mlb-modal-cta-room');
-                        const ctaSpecial = modalOverlay.querySelector('.mlb-modal-cta-special');
-                        if (ctaRoom) ctaRoom.style.display = '';
-                        if (ctaSpecial) ctaSpecial.style.display = 'none';
-                    } else if (hasSpecialId) {
-                        // Special form: show special row, hide room row, show "Book Special"
-                        contentWrapper.classList.add('special-form-modal');
-                        var specialName = '';
-                        try { specialName = window.mlbGetFormValue($form, ['specialName','special_name','rate-name','rate_name','special']); } catch (e) {}
-                        if (!specialName) specialName = $form.data('special-name') || $form.data('rate-name') || '';
-                        
-                        const specialNameSpan = modalOverlay.querySelector('.mlb-special-name');
-                        if (specialNameSpan) {
-                            specialNameSpan.textContent = specialName;
-                            // show special row and hide room row
-                            const roomRow = modalOverlay.querySelector('.mlb-room-row');
-                            const specialRow = modalOverlay.querySelector('.mlb-special-row');
-                            if (roomRow) roomRow.style.display = 'none';
-                            if (specialRow) specialRow.style.display = '';
-                        }
-                        // Ensure CTA label shows special text
-                        const ctaRoom = modalOverlay.querySelector('.mlb-modal-cta-room');
-                        const ctaSpecial = modalOverlay.querySelector('.mlb-modal-cta-special');
-                        if (ctaRoom) ctaRoom.style.display = 'none';
-                        if (ctaSpecial) {
-                            ctaSpecial.style.display = '';
-                            ctaSpecial.textContent = 'Book Special';
-                        }
+                        if (ctaRoom) { ctaRoom.style.display = ''; ctaRoom.textContent = mlbGettext('Book This Room'); }
                     }
                 }
 
@@ -739,8 +686,7 @@
                                 try {
                                     // Detect form type
                                     const hasRoomId = $form.data('room-id');
-                                    const hasSpecialId = $form.data('special-id') || $form.data('rate-id');
-                                    const isHotelForm = !hasRoomId && !hasSpecialId;
+                                    const isHotelForm = !hasRoomId;
                                     
                                     if (isHotelForm) {
                                         // For hotel forms, redirect to booking engine URL with parameters
@@ -806,30 +752,6 @@
                                             window.location.href = bookingUrl;
                                         } else {
                                             console.error('MLB: Missing required data for room booking redirect', { hotelId, checkin, checkout, roomId: hasRoomId });
-                                        }
-                                    } else if (hasSpecialId) {
-                                        // For special forms, redirect to booking engine URL
-                                        let hotelId = $form.data('hotel-id') || $form.find('[name="hotel_id"]').val();
-                                        const checkin = $checkinHidden.val();
-                                        const checkout = $checkoutHidden.val();
-                                        const checkinISO = toISO(checkin);
-                                        const checkoutISO = toISO(checkout);
-                                        const discountCode = modalOverlay.querySelector('.mlb-discount-code') ? modalOverlay.querySelector('.mlb-discount-code').value : '';
-
-                                        if (hotelId && checkinISO && checkoutISO) {
-                                            // Build full booking engine URL with parameters
-                                            let bookingUrl = 'https://bookingengine.mylighthouse.com/' + encodeURIComponent(hotelId) + '/Rooms/Select?';
-                                            bookingUrl += 'Arrival=' + encodeURIComponent(checkinISO);
-                                            bookingUrl += '&Departure=' + encodeURIComponent(checkoutISO);
-                                            bookingUrl += '&Room=';
-                                            if (discountCode) {
-                                                bookingUrl += '&DiscountCode=' + encodeURIComponent(discountCode);
-                                            }
-                                            try { console.debug('[MLB Redirect] navigating to', bookingUrl); } catch(e) {}
-                                            // Redirect to booking engine
-                                            window.location.href = bookingUrl;
-                                        } else {
-                                            console.error('MLB: Missing required data for special booking redirect', { hotelId, checkin, checkout, specialId: hasSpecialId });
                                         }
                                     }
                                 } catch (e) {
