@@ -5,6 +5,16 @@
 (function() {
     'use strict';
 
+    // Early shim: provide a queued initRoomModalDatePicker so calls from other
+    // bundles (which may execute before this file finishes parsing) are not lost.
+    if (typeof window.initRoomModalDatePicker !== 'function' || /noop/.test(String(window.initRoomModalDatePicker))) {
+        window._mlb_initRoomModal_queue = window._mlb_initRoomModal_queue || [];
+        window.initRoomModalDatePicker = function(form) {
+            try { console.debug('[MLB RoomForm Shim] queueing init call for form', form && (form.id || (form[0] && form[0].id))); } catch (e) {}
+            window._mlb_initRoomModal_queue.push(form);
+        };
+    }
+
     // Wait for jQuery to be available
     function initWhenReady() {
         if (typeof jQuery === 'undefined') {
@@ -433,6 +443,11 @@
                 }
 
                 document.body.appendChild(modalOverlay);
+                try {
+                    if (modalOverlay && modalOverlay.style && modalOverlay.style.display === 'none') {
+                        modalOverlay.style.display = '';
+                    }
+                } catch (e) {}
                 console.debug('[MLB Modal Picker] modalOverlay appended for form:', formId, modalOverlay);
                 try { if ($form && $form.length) $form[0]._mlbModalOverlay = modalOverlay; } catch (e) {}
 
@@ -464,6 +479,7 @@
                 function closeModal() {
                     try {
                         // hide overlay
+                        try { modalOverlay.style.display = 'none'; } catch (e) {}
                         modalOverlay.classList.remove('mlb-calendar-modal-show');
 
                         // Hide the easepick calendar UI to prevent arrows from staying visible
@@ -544,6 +560,7 @@
                 // Show modal on trigger (room forms only)
                 $form.on('mlb-open-calendar', function(e) {
                     e.preventDefault();
+                    try { modalOverlay.style.display = 'block'; } catch (e) {}
                     modalOverlay.classList.add('mlb-calendar-modal-show');
                 });
 
@@ -553,6 +570,7 @@
                         console.log('[MLB Modal Picker] Book button clicked for form:', formId);
                         if (modalOverlay) {
                             console.log('[MLB Modal Picker] Showing modalOverlay for form:', formId, modalOverlay);
+                            try { modalOverlay.style.display = 'block'; } catch (e) {}
                             modalOverlay.classList.add('mlb-calendar-modal-show');
                             try {
                                 // Give layout a tick then inspect computed style and bounds
@@ -802,8 +820,19 @@
         initPicker();
     }
 
-    // Expose initializer globally so modal dispatcher can call it
-    try { window.initRoomModalDatePicker = window.initRoomModalDatePicker || initRoomModalDatePicker; } catch (e) {}
+    // Expose initializer globally so modal dispatcher can call it and drain any queued calls
+    try {
+        try { console.debug('[MLB RoomForm] registering real initRoomModalDatePicker'); } catch (e) {}
+        // If a shim queued calls, drain them after setting the real function
+        window.initRoomModalDatePicker = initRoomModalDatePicker;
+        if (window._mlb_initRoomModal_queue && window._mlb_initRoomModal_queue.length) {
+            try { console.debug('[MLB RoomForm] draining queued init calls', window._mlb_initRoomModal_queue.length); } catch (e) {}
+            while (window._mlb_initRoomModal_queue.length) {
+                var q = window._mlb_initRoomModal_queue.shift();
+                try { window.initRoomModalDatePicker(q); } catch (e) {}
+            }
+        }
+    } catch (e) {}
 
     /**
      * Handle form submission
