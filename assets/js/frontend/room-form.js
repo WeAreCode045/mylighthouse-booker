@@ -392,7 +392,7 @@
     /**
      * Initialize modal date picker for room forms
      */
-    function initRoomModalDatePicker($form) {
+    function initRoomModalDatePicker($form, showImmediately) {
         // Accept either a jQuery-wrapped form or a raw DOM element.
         if (!$form) return;
         if (!$form.jquery && typeof jQuery !== 'undefined') {
@@ -756,6 +756,15 @@
                     // Expose the refresh helper on the overlay so external listeners can update it
                     try { modalOverlay._refreshHotelInModal = refreshHotelInModal; } catch (e) {}
                 }
+
+                // If caller requested immediate show (typical during a click fallback), reveal the overlay now
+                try {
+                    if (showImmediately && modalOverlay) {
+                        try { modalOverlay.style.display = 'block'; } catch (e) {}
+                        modalOverlay.classList.add('mlb-calendar-modal-show');
+                        console.debug('[MLB Modal Picker] modalOverlay shown immediately for form:', formId);
+                    }
+                } catch (e) {}
 
                 // Ensure modal reflects current form selection immediately
                 try { refreshHotelInModal(); } catch (e) {}
