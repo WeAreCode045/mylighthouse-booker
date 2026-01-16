@@ -189,6 +189,15 @@
     cursor: not-allowed;
 }
 
+/* Ensure CTA text inside modal submit button isn't overridden by booking-details row span rules */
+.mlb-modal-submit-btn .mlb-modal-cta-room,
+.mlb-modal-submit-btn {
+    color: var(--mlb-btn-text, #ffffff) !important;
+    font-weight: 700 !important;
+    font-size: var(--mlb-button-font-size, 12px) !important;
+    text-transform: var(--mlb-button-text-transform, uppercase) !important;
+}
+
 /* ==========================================================================
    12. BOOKING DETAILS SUMMARY (Room Form Modal)
    ========================================================================== */
@@ -231,15 +240,42 @@
 .mlb-booking-details .mlb-row label {
     font-size: 12px;
     font-weight: 600;
-    color: #666;
-    text-transform: uppercase;
+    color: #333;
     margin-right: 8px;
 }
 
 .mlb-booking-details .mlb-row span {
-    font-size: 14px;
+    font-size: 13px;
     color: #222;
-    font-weight: 600;
+    font-weight: 400;
+}
+
+/* Dates pair: show arrival and departure in one row */
+.mlb-booking-details .mlb-dates-pair {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+}
+.mlb-booking-details .mlb-dates-pair .mlb-date-col {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex: 1 1 0;
+}
+
+/* Discount row: stack checkbox and input vertically and make input full width */
+.mlb-booking-details .mlb-row.mlb-discount-row {
+    flex-direction: column;
+    align-items: stretch;
+}
+.mlb-booking-details .mlb-discount-input-wrapper {
+    width: 100%;
+    margin-top: 8px;
+}
+.mlb-booking-details .mlb-discount-input-wrapper .mlb-discount-code {
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .mlb-booking-details .mlb-row:hover {

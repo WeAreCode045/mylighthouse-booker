@@ -433,7 +433,6 @@
                     // Populate modal select from source form select if present
                     try {
                         if (modalHotelSelect) {
-                            // If source form contains a select with options, clone them into modal select
                             const sourceSelect = $form.find('.mlb-hotel-select');
                             if (sourceSelect && sourceSelect.length) {
                                 modalHotelSelect.innerHTML = '';
@@ -452,9 +451,35 @@
                         console.warn('[MLB Datepicker] Error populating modal hotel select', e);
                     }
 
-                    // Show select when no hotel name is available, otherwise show span
+                    // Decide whether to show the select: show when the source select has no selected value
+                    // or when the resolved hotel name looks like a placeholder.
+                    var needSelect = false;
+                    try {
+                        const sourceSelect = $form.find('.mlb-hotel-select');
+                        if (sourceSelect && sourceSelect.length) {
+                            const sel = sourceSelect.find('option:selected');
+                            if (sel && sel.length) {
+                                var val = (typeof sel.val === 'function') ? sel.val() : (sel.attr ? sel.attr('value') : '');
+                                if (!val || String(val).trim() === '') {
+                                    needSelect = true;
+                                }
+                            } else {
+                                needSelect = true;
+                            }
+                        }
+                    } catch (e) {}
+
+                    // Also treat common placeholder texts as missing selections
+                    try {
+                        var normalized = (finalHotelName || '').trim().toLowerCase();
+                        var placeholders = [mlbGettext('Hotel'), mlbGettext('Select hotel'), mlbGettext('Choose hotel'), mlbGettext('Select a hotel')].map(function(s){ return (s||'').trim().toLowerCase(); });
+                        if (!normalized || placeholders.indexOf(normalized) !== -1) {
+                            needSelect = true;
+                        }
+                    } catch (e) {}
+
                     if (modalHotelSelect) {
-                        if (!finalHotelName || !finalHotelName.trim() || finalHotelName === mlbGettext('Hotel')) {
+                        if (needSelect) {
                             modalHotelSelect.style.display = '';
                             if (hotelNameSpan) hotelNameSpan.style.display = 'none';
                         } else {
@@ -464,7 +489,7 @@
                     } else {
                         if (hotelNameSpan) hotelNameSpan.textContent = finalHotelName || mlbGettext('Hotel');
                     }
-                    try { console.debug('[MLB Datepicker] hotel name resolved', { displayHotelName, finalHotelName, hotelSelectCount: hotelSelect ? hotelSelect.length : 0 }); } catch(e){}
+                    try { console.debug('[MLB Datepicker] hotel name resolved', { displayHotelName, finalHotelName, hotelSelectCount: hotelSelect ? hotelSelect.length : 0, needSelect: needSelect }); } catch(e){}
                     
                     if (isHotelForm) {
                         // Hotel form: hide room/special rows, show "Check Availability"
