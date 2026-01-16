@@ -688,8 +688,23 @@
                             if (arrivalSpan) arrivalSpan.textContent = arrivalStr;
                             if (departureSpan) departureSpan.textContent = departureStr;
 
-                            const hotelName = $form.data('hotel-name') || $form.data('hotel-id') || 'Hotel';
-                            const roomName = $form.data('room-name') || $form.data('room-id') || 'Room';
+                            // Resolve hotel name from select if present, fallback to data attributes
+                            var hotelName = 'Hotel';
+                            try {
+                                const hotelSelectLocal = $form.find('.mlb-hotel-select');
+                                if (hotelSelectLocal && hotelSelectLocal.length) {
+                                    const sel = hotelSelectLocal.find('option:selected');
+                                    if (sel && sel.length && sel.text().trim()) {
+                                        hotelName = sel.text().trim();
+                                    }
+                                }
+                            } catch (e) {}
+                            try {
+                                if ((!hotelName || hotelName === 'Hotel') && ($form.attr('data-hotel-name') || $form.data('hotel-name') || $form.data('hotel-id'))) {
+                                    hotelName = $form.attr('data-hotel-name') || $form.data('hotel-name') || $form.data('hotel-id') || hotelName;
+                                }
+                            } catch (e) {}
+                            const roomName = $form.attr('data-room-name') || $form.data('room-name') || $form.data('room-id') || 'Room';
                             const hotelNameSpan = bookingDetailsDiv.querySelector('.mlb-hotel-name');
                             const roomNameSpan = bookingDetailsDiv.querySelector('.mlb-room-name');
                             if (hotelNameSpan) hotelNameSpan.textContent = hotelName;
