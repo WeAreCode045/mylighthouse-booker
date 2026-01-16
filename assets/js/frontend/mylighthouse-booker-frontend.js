@@ -701,7 +701,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
             setTimeout(function () {
                 try {
+                    // If no overlay exists, allow page scripts to initialize one via the
+                    // public initializer. This ensures hotel forms can lazily create
+                    // the modal the same way room forms do.
                     var overlay2 = form._mlbModalOverlay || document.querySelector('.mlb-calendar-modal-overlay[data-form-id="' + formId + '"]');
+                    if (!overlay2 && typeof window.initRoomModalDatePicker === 'function') {
+                        try { window.initRoomModalDatePicker(form); } catch (e) { /* ignore init errors */ }
+                        // Re-query after attempted init
+                        overlay2 = form._mlbModalOverlay || document.querySelector('.mlb-calendar-modal-overlay[data-form-id="' + formId + '"]');
+                    }
+
                     if (overlay2) {
                         overlay2.classList.add('mlb-calendar-modal-show');
                         return;

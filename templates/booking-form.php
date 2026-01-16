@@ -49,3 +49,8 @@ include __DIR__ . '/' . $partial;
 // Modal templates removed: UI fragments and modal wrappers are deprecated.
 // The consolidated frontend bundle provides inline date-picker and
 // no-op shims for legacy modal triggers to preserve backwards compatibility.
+
+// Ensure the modal template is available for JS to clone when needed
+if ( file_exists( __DIR__ . '/modals/modal-calendar-template.php' ) ) {
+	include __DIR__ . '/modals/modal-calendar-template.php';
+}
