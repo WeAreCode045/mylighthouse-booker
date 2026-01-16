@@ -86,19 +86,40 @@
                                 if (overlay) {
                                     // If trigger is a room booking button, try to populate room details
                                     try {
-                                        var roomId = trigger.getAttribute && (trigger.getAttribute('data-room-id') || trigger.getAttribute('data-room') || trigger.dataset && trigger.dataset.roomId);
-                                        var roomName = trigger.getAttribute && (trigger.getAttribute('data-room-name') || trigger.getAttribute('data-room') || (trigger.dataset && trigger.dataset.roomName));
-                                        if (!roomName && trigger.closest) {
+                                        // Prefer explicit data-room-id for id, and data-room-name or visible title for name.
+                                        var roomId = null;
+                                        var roomName = null;
+                                        try {
+                                            if (trigger && trigger.getAttribute) {
+                                                roomId = trigger.getAttribute('data-room-id') || trigger.getAttribute('data-room') || (trigger.dataset && trigger.dataset.roomId) || null;
+                                                roomName = trigger.getAttribute('data-room-name') || (trigger.dataset && trigger.dataset.roomName) || null;
+                                            }
+                                        } catch (e) {}
+
+                                        if ((!roomName || roomName === null) && trigger && trigger.closest) {
                                             var ancestorWithRoom = trigger.closest('[data-room-name], [data-room-id], .mlb-room-card');
                                             if (ancestorWithRoom) {
-                                                roomName = ancestorWithRoom.getAttribute('data-room-name') || ancestorWithRoom.getAttribute('data-room') || '';
+                                                // only use data-room-name for name; do NOT use data-room (id) as name
+                                                roomName = ancestorWithRoom.getAttribute('data-room-name') || null;
                                                 if (!roomName) {
-                                                    var titleEl = ancestorWithRoom.querySelector && (ancestorWithRoom.querySelector('.room-title') || ancestorWithRoom.querySelector('.mlb-room-name') );
+                                                    // try common title selectors inside the room card
+                                                    var titleEl = ancestorWithRoom.querySelector && (ancestorWithRoom.querySelector('.room-title') || ancestorWithRoom.querySelector('.mlb-room-name') || ancestorWithRoom.querySelector('h3') || ancestorWithRoom.querySelector('h2'));
                                                     if (titleEl) roomName = (titleEl.textContent || titleEl.innerText || '').trim();
                                                 }
-                                                if (!roomId) roomId = ancestorWithRoom.getAttribute('data-room-id') || ancestorWithRoom.getAttribute('data-room');
+                                                if (!roomId) roomId = ancestorWithRoom.getAttribute('data-room-id') || null;
                                             }
                                         }
+
+                                        // As a last resort, use the button's visible text if it looks like a room name
+                                        try {
+                                            if ((!roomName || roomName === null || roomName === '') && trigger) {
+                                                var txt = (trigger.textContent || trigger.innerText || '').trim();
+                                                // avoid using generic CTA text
+                                                if (txt && !/^\s*(book|boek|check|availability|beschikbaar)/i.test(txt)) {
+                                                    roomName = txt;
+                                                }
+                                            }
+                                        } catch (e) {}
 
                                         // update modal room display
                                         try {
@@ -650,6 +671,7 @@
                 document.body.appendChild(modalOverlay);
                 // Ensure modal reflects current form selection immediately after append
                 try { refreshHotelInModal(); } catch (e) {}
+                try { showBookingDetailsPlaceholder(); } catch (e) {}
                 try {
                     if (modalOverlay && modalOverlay.style && modalOverlay.style.display === 'none') {
                         modalOverlay.style.display = '';
@@ -729,6 +751,20 @@
                     } catch (e) {
                         console.warn('[MLB Datepicker] refreshHotelInModal error', e);
                     }
+                }
+
+                // Show booking details placeholder and reveal right column without enabling submit
+                function showBookingDetailsPlaceholder() {
+                    try {
+                        const periodSpan = modalOverlay.querySelector('.mlb-period-range');
+                        if (periodSpan) {
+                            try { periodSpan.textContent = mlbGettext('Choose arrival and departure dates'); } catch (e) { periodSpan.textContent = 'Choose arrival and departure dates'; }
+                        }
+                        if (rightColumn) {
+                            rightColumn.classList.add('mlb-expanded');
+                        }
+                        if (modalSubmitBtn) modalSubmitBtn.disabled = true;
+                    } catch (e) { }
                 }
 
                 // Attach change listener on source hotel select to update modal if open
@@ -862,6 +898,7 @@
                 $form.on('mlb-open-calendar', function(e) {
                     e.preventDefault();
                     try { refreshHotelInModal(); } catch (e) {}
+                    try { showBookingDetailsPlaceholder(); } catch (e) {}
                     try { modalOverlay.style.display = 'block'; } catch (e) {}
                     modalOverlay.classList.add('mlb-calendar-modal-show');
                 });
@@ -872,6 +909,7 @@
                         console.log('[MLB Modal Picker] Book button clicked for form:', formId);
                         if (modalOverlay) {
                             try { refreshHotelInModal(); } catch (e) {}
+                            try { showBookingDetailsPlaceholder(); } catch (e) {}
                             console.log('[MLB Modal Picker] Showing modalOverlay for form:', formId, modalOverlay);
                             try { modalOverlay.style.display = 'block'; } catch (e) {}
                             modalOverlay.classList.add('mlb-calendar-modal-show');
