@@ -780,7 +780,7 @@
                                     });
 
                             const periodSpan = bookingDetailsDiv.querySelector('.mlb-period-range');
-                            if (periodSpan) periodSpan.textContent = mlbGettext('Period') + ': ' + arrivalStr + ' - ' + departureStr;
+                            if (periodSpan) periodSpan.textContent = arrivalStr + ' - ' + departureStr;
 
                             // Resolve hotel name: prefer a modal-select (if visible), then form select/data attrs
                             var hotelName = '';
