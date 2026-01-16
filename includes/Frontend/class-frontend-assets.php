@@ -231,6 +231,12 @@ class Mylighthouse_Booker_Frontend_Assets
 			wp_enqueue_script( 'mylighthouse-booker-frontend' );
 		}
 
+		// Ensure modal trigger shim is enqueued with the consolidated frontend so
+		// clicks on `[data-trigger-modal]` work on all render paths.
+		if ( ! wp_script_is( 'mylighthouse-booker-modal-trigger', 'enqueued' ) ) {
+			wp_enqueue_script( 'mylighthouse-booker-modal-trigger' );
+		}
+
 		// Backwards-compatibility shim registrations: allow external code to enqueue old handles
 		// without breaking; they will depend on the consolidated bundle.
 		// Backwards-compatibility shim registrations: allow external code to enqueue old handles

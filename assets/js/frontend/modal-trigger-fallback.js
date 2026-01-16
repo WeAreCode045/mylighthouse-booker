@@ -1,6 +1,8 @@
 (function () {
     'use strict';
 
+    try { console.debug('[MLB Modal Trigger] script loaded'); } catch (e) {}
+
     if (window._mlb_modal_trigger_bound) return;
     window._mlb_modal_trigger_bound = true;
 
