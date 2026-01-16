@@ -20,42 +20,48 @@
                 btn = field.querySelector && field.querySelector('[data-trigger-modal="true"]');
             }
         }
-        
         if (!btn) return;
-
         if (btn._mlbHandled) return;
         btn._mlbHandled = true;
-
         e.preventDefault();
 
-        var form = btn.closest && btn.closest('.mlb-form');
-        if (!form) return;
+        // Find the canonical form element: prefer a direct .mlb-form, otherwise look inside a wrapper
+        var wrapper = btn.closest && (btn.closest('.mlb-form') || btn.closest('.mlb-booking-form'));
+        var formEl = null;
+        if (wrapper) {
+            formEl = (wrapper.tagName && wrapper.tagName.toLowerCase() === 'form') ? wrapper : (wrapper.querySelector && (wrapper.querySelector('form.mlb-form') || wrapper.querySelector('.mlb-form')));
+            if (!formEl && wrapper.tagName && wrapper.tagName.toLowerCase() === 'form') formEl = wrapper;
+        }
+        if (!formEl) return;
 
-        var formId = form.id || '';
-        var overlay = form._mlbModalOverlay || document.querySelector('.mlb-calendar-modal-overlay[data-form-id="' + formId + '"]');
-                if (!overlay2 && typeof window.initRoomModalDatePicker === 'function') {
-                    try {
-                        console.debug('[MLB Modal Trigger] calling initRoomModalDatePicker for form', form && form.id);
-                        if (window.jQuery) {
-                            try { window.initRoomModalDatePicker(window.jQuery(form)); } catch (e) { /* ignore init errors */ }
-                        } else {
-                            try { window.initRoomModalDatePicker(form); } catch (e) { /* ignore init errors */ }
-                        }
-                    } catch (e) { /* ignore init errors */ }
-            return;
+        var formId = formEl.id || '';
+
+        // Try to find existing overlay
+        var overlay = formEl._mlbModalOverlay || document.querySelector('.mlb-calendar-modal-overlay[data-form-id="' + formId + '"]');
+
+        // If no overlay, attempt to initialize the modal for this form
+        if (!overlay && typeof window.initRoomModalDatePicker === 'function') {
+            try {
+                console.debug('[MLB Modal Trigger] calling initRoomModalDatePicker for form', formEl && formEl.id);
+                if (window.jQuery) {
+                    try { window.initRoomModalDatePicker(window.jQuery(formEl)); } catch (e) { /* ignore init errors */ }
+                } else {
+                    try { window.initRoomModalDatePicker(formEl); } catch (e) { /* ignore init errors */ }
+                }
+            } catch (e) { /* ignore init errors */ }
         }
 
         try {
-            var evt = new CustomEvent('mlb-maybe-init-modal', { detail: { form: form } });
+            var evt = new CustomEvent('mlb-maybe-init-modal', { detail: { form: formEl } });
             document.dispatchEvent(evt);
         } catch (err) {}
 
         setTimeout(function () {
             try {
-                var overlay2 = form._mlbModalOverlay || document.querySelector('.mlb-calendar-modal-overlay[data-form-id="' + formId + '"]');
+                var overlay2 = formEl._mlbModalOverlay || document.querySelector('.mlb-calendar-modal-overlay[data-form-id="' + (formEl.id || '') + '"]');
                 if (!overlay2 && typeof window.initRoomModalDatePicker === 'function') {
-                    try { window.initRoomModalDatePicker(form); } catch (e) { /* ignore init errors */ }
-                    overlay2 = form._mlbModalOverlay || document.querySelector('.mlb-calendar-modal-overlay[data-form-id="' + formId + '"]');
+                    try { window.initRoomModalDatePicker(window.jQuery ? window.jQuery(formEl) : formEl); } catch (e) { /* ignore init errors */ }
+                    overlay2 = formEl._mlbModalOverlay || document.querySelector('.mlb-calendar-modal-overlay[data-form-id="' + (formEl.id || '') + '"]');
                 }
 
                 if (overlay2) {
@@ -69,8 +75,8 @@
                 }
 
                 var openEvt = new CustomEvent('mlb-open-calendar', { bubbles: true });
-                try { form.dispatchEvent(openEvt); } catch (err) {}
-                try { if (window.jQuery) jQuery(form).trigger('mlb-open-calendar'); } catch (err) {}
+                try { formEl.dispatchEvent(openEvt); } catch (err) {}
+                try { if (window.jQuery) jQuery(formEl).trigger('mlb-open-calendar'); } catch (err) {}
             } catch (err) {}
         }, 120);
     }, false);

@@ -56,17 +56,27 @@
                         if (!trigger) return;
                         e.preventDefault();
 
-                        // Find the nearest booking form wrapper
-                        var frmEl = trigger.closest ? trigger.closest('.mlb-booking-form') : null;
+                        // Find the nearest booking form wrapper or the actual <form>
+                        var frmEl = trigger.closest ? (trigger.closest('.mlb-booking-form') || trigger.closest('.mlb-form')) : null;
                         var $targetForm = null;
-                        if (frmEl && typeof jQuery !== 'undefined') {
-                            $targetForm = jQuery(frmEl);
+                        if (frmEl) {
+                            // Prefer the inner <form.mlb-form> when a wrapper was returned
+                            try {
+                                var inner = (frmEl.tagName && frmEl.tagName.toLowerCase() === 'form') ? frmEl : (frmEl.querySelector && (frmEl.querySelector('form.mlb-form') || frmEl.querySelector('.mlb-form')));
+                                if (inner) {
+                                    $targetForm = (typeof jQuery !== 'undefined') ? jQuery(inner) : inner;
+                                } else {
+                                    $targetForm = (typeof jQuery !== 'undefined') ? jQuery(frmEl) : frmEl;
+                                }
+                            } catch (e) {
+                                $targetForm = (typeof jQuery !== 'undefined') ? jQuery(frmEl) : frmEl;
+                            }
                         } else {
                             // fallback: try to find a form by data-form-id on the trigger
                             var fid = trigger.getAttribute && (trigger.getAttribute('data-form-id') || trigger.getAttribute('data-target-form'));
                             if (fid) {
                                 var f = document.getElementById(fid) || document.querySelector('[data-form-id="' + fid + '"]');
-                                if (f && typeof jQuery !== 'undefined') $targetForm = jQuery(f);
+                                $targetForm = (f && typeof jQuery !== 'undefined') ? jQuery(f) : f;
                             }
                         }
 
@@ -385,6 +395,28 @@
     function initRoomModalDatePicker($form) {
         // Ensure we have a jQuery-wrapped form
         if (!$form || !$form.length) return;
+        // Normalize to the actual <form> element in case a wrapper (.mlb-booking-form)
+        // or other ancestor was passed in. This prevents generating an id on the
+        // wrapper (mlb-form-uid-...) while the server-rendered <form> already has
+        // the canonical mlb-form-<n> id, which caused duplicate overlays.
+        try {
+            var maybe = $form[0];
+            if (maybe && maybe.tagName && maybe.tagName.toLowerCase() !== 'form') {
+                var inner = $form.find && $form.find('form.mlb-form');
+                if (inner && inner.length) {
+                    $form = inner;
+                } else {
+                    // try to locate a direct child form
+                    var q = maybe.querySelector && (maybe.querySelector('form.mlb-form') || maybe.querySelector('.mlb-form'));
+                    if (q && typeof jQuery !== 'undefined') {
+                        $form = jQuery(q);
+                    } else if (q) {
+                        // wrap fallback element in jQuery if available
+                        if (typeof jQuery !== 'undefined') $form = jQuery(q);
+                    }
+                }
+            }
+        } catch (e) {}
         // Ensure the form has a stable id; create one if missing to avoid 'undefined' data-form-id
         var formId = $form.attr('id') || '';
         if (!formId) {
