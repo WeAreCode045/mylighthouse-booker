@@ -28,7 +28,14 @@ if (! defined('ABSPATH')) {
                             <select class="mlb-hotel-select" style="display:none;" aria-label="<?php echo esc_attr__( 'Select hotel', 'mylighthouse-booker' ); ?>"></select>
                         </div>
                         <div class="mlb-row mlb-room-row" style="display:none;">
-                            <label><?php echo esc_html__( 'Room:', 'mylighthouse-booker' ); ?></label>
+                            <label>
+                                <span class="mlb-bed-icon" aria-hidden="true">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true">
+                                        <path fill="currentColor" d="M21 10.5V8c0-1.1-.9-2-2-2H5C3.9 6 3 6.9 3 8v2.5H1v6h2v-2h18v2h2v-6h-2zM5 10V8h14v2H5z"/>
+                                    </svg>
+                                </span>
+                                <?php echo esc_html__( 'Room:', 'mylighthouse-booker' ); ?>
+                            </label>
                             <span class="mlb-room-name"></span>
                         </div>
                         <div class="mlb-row mlb-dates-row">

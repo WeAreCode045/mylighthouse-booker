@@ -676,6 +676,17 @@ label.mlb-discount-toggle-label {
         padding: 15px;
     }
 
+    .calendar {
+    padding: 20px;
+}
+
+
+.wp-mbb-hotel-selector__calendar {
+    background: #ffffff;
+    width: 100%;
+    max-width: 100%;
+}
+
     .mlb-modal {
         max-width: 95vw;
         max-height: 95vh;
