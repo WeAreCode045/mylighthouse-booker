@@ -44,6 +44,59 @@
             window._mlb_global_hotel_select_listener = true;
         }
 
+        // Global delegated trigger: open modal when clicking elements that should trigger it
+        if (!window._mlb_global_trigger_listener) {
+            try {
+                document.addEventListener('click', function(e) {
+                    try {
+                        var t = e.target || e.srcElement;
+                        if (!t) return;
+                        // Allow matching on the element itself or its ancestors
+                        var trigger = (t.matches && t.matches('[data-trigger-modal="true"], .mlb-book-room-btn')) ? t : (t.closest ? t.closest('[data-trigger-modal="true"], .mlb-book-room-btn') : null);
+                        if (!trigger) return;
+                        e.preventDefault();
+
+                        // Find the nearest booking form wrapper
+                        var frmEl = trigger.closest ? trigger.closest('.mlb-booking-form') : null;
+                        var $targetForm = null;
+                        if (frmEl && typeof jQuery !== 'undefined') {
+                            $targetForm = jQuery(frmEl);
+                        } else {
+                            // fallback: try to find a form by data-form-id on the trigger
+                            var fid = trigger.getAttribute && (trigger.getAttribute('data-form-id') || trigger.getAttribute('data-target-form'));
+                            if (fid) {
+                                var f = document.getElementById(fid) || document.querySelector('[data-form-id="' + fid + '"]');
+                                if (f && typeof jQuery !== 'undefined') $targetForm = jQuery(f);
+                            }
+                        }
+
+                        if (!$targetForm || !$targetForm.length) return;
+
+                        // Ensure modal init is called for this form
+                        try { if (typeof window.initRoomModalDatePicker === 'function') window.initRoomModalDatePicker($targetForm); } catch (err) {}
+
+                        // Give the init a small tick then show overlay if present
+                        setTimeout(function() {
+                            try {
+                                var overlay = null;
+                                try { overlay = $targetForm[0]._mlbModalOverlay; } catch (e) {}
+                                if (!overlay) {
+                                    try { overlay = document.querySelector('.mlb-calendar-modal-overlay[data-form-id="' + ($targetForm.attr('id') || '') + '"]'); } catch (e) {}
+                                }
+                                if (overlay) {
+                                    // refresh hotel data and show
+                                    try { if (typeof overlay._refreshHotelInModal === 'function') overlay._refreshHotelInModal(); } catch (e) {}
+                                    try { overlay.style.display = 'block'; } catch (e) {}
+                                    overlay.classList.add('mlb-calendar-modal-show');
+                                }
+                            } catch (e) {}
+                        }, 60);
+                    } catch (err) {}
+                }, true);
+            } catch (e) {}
+            window._mlb_global_trigger_listener = true;
+        }
+
     // JS gettext helper: delegate to MLB.utils when available
     function mlbGettext(str) {
         try {
