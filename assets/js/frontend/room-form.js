@@ -540,6 +540,8 @@
                 }
 
                 document.body.appendChild(modalOverlay);
+                // Ensure modal reflects current form selection immediately after append
+                try { refreshHotelInModal(); } catch (e) {}
                 try {
                     if (modalOverlay && modalOverlay.style && modalOverlay.style.display === 'none') {
                         modalOverlay.style.display = '';
@@ -547,6 +549,87 @@
                 } catch (e) {}
                 console.debug('[MLB Modal Picker] modalOverlay appended for form:', formId, modalOverlay);
                 try { if ($form && $form.length) $form[0]._mlbModalOverlay = modalOverlay; } catch (e) {}
+
+                // Helper: refresh hotel display/options in modal from source form
+                function refreshHotelInModal() {
+                    try {
+                        const sourceSelect = $form.find('.mlb-hotel-select');
+                        const modalHotelSelectEl = modalOverlay.querySelector('.mlb-hotel-select');
+                        const hotelNameSpanEl = modalOverlay.querySelector('.mlb-hotel-name');
+
+                        // Repopulate modal select options from source select
+                        if (modalHotelSelectEl) {
+                            modalHotelSelectEl.innerHTML = '';
+                            if (sourceSelect && sourceSelect.length) {
+                                sourceSelect.find('option').each(function() {
+                                    try {
+                                        var opt = document.createElement('option');
+                                        opt.value = this.value || this.getAttribute('value') || '';
+                                        opt.text = this.text || this.textContent || this.innerText || '';
+                                        if (this.selected) opt.selected = true;
+                                        modalHotelSelectEl.appendChild(opt);
+                                    } catch (e) {}
+                                });
+                            }
+                        }
+
+                        // Decide if select should be shown (no value or placeholder)
+                        var needSelect = false;
+                        try {
+                            if (sourceSelect && sourceSelect.length) {
+                                const sel = sourceSelect.find('option:selected');
+                                if (sel && sel.length) {
+                                    var v = (typeof sel.val === 'function') ? sel.val() : (sel.attr ? sel.attr('value') : '');
+                                    if (!v || String(v).trim() === '') needSelect = true;
+                                } else {
+                                    needSelect = true;
+                                }
+                            }
+                        } catch (e) {}
+
+                        // Also treat common placeholders as missing
+                        try {
+                            var finalText = (hotelNameSpanEl && (hotelNameSpanEl.textContent || hotelNameSpanEl.innerText)) ? (hotelNameSpanEl.textContent || hotelNameSpanEl.innerText).trim().toLowerCase() : '';
+                            var placeholders = [mlbGettext('Hotel'), mlbGettext('Select hotel'), mlbGettext('Choose hotel'), mlbGettext('Select a hotel')].map(function(s){ return (s||'').trim().toLowerCase(); });
+                            if (!finalText || placeholders.indexOf(finalText) !== -1) {
+                                needSelect = true;
+                            }
+                        } catch (e) {}
+
+                        if (modalHotelSelectEl) {
+                            if (needSelect) {
+                                modalHotelSelectEl.style.display = '';
+                                if (hotelNameSpanEl) hotelNameSpanEl.style.display = 'none';
+                            } else {
+                                modalHotelSelectEl.style.display = 'none';
+                                // set the span text from selected option if available
+                                try {
+                                    const selOpt = modalHotelSelectEl.querySelector('option:checked') || modalHotelSelectEl.options[0];
+                                    if (selOpt && hotelNameSpanEl) hotelNameSpanEl.textContent = (selOpt.textContent || selOpt.innerText || '').trim() || mlbGettext('Hotel');
+                                } catch (e) {}
+                                if (hotelNameSpanEl) hotelNameSpanEl.style.display = '';
+                            }
+                        } else if (hotelNameSpanEl) {
+                            // fallback: update span from source select
+                            try {
+                                const sel = $form.find('.mlb-hotel-select').find('option:selected');
+                                if (sel && sel.length && sel.text()) hotelNameSpanEl.textContent = sel.text().trim();
+                            } catch (e) {}
+                        }
+                    } catch (e) {
+                        console.warn('[MLB Datepicker] refreshHotelInModal error', e);
+                    }
+                }
+
+                // Attach change listener on source hotel select to update modal if open
+                try {
+                    const srcSelect = $form.find('.mlb-hotel-select');
+                    if (srcSelect && srcSelect.length) {
+                        srcSelect.off('change.mlbModalRefresh').on('change.mlbModalRefresh', function() {
+                            try { if (modalOverlay) refreshHotelInModal(); } catch (e) {}
+                        });
+                    }
+                } catch (e) {}
 
                 // Defensive scrub: remove any stray text nodes that contain date-like strings
                 // (e.g. '16 Oct - 16 Oct 2025') which occasionally appear due to
@@ -665,6 +748,7 @@
                 // Show modal on trigger (room forms only)
                 $form.on('mlb-open-calendar', function(e) {
                     e.preventDefault();
+                    try { refreshHotelInModal(); } catch (e) {}
                     try { modalOverlay.style.display = 'block'; } catch (e) {}
                     modalOverlay.classList.add('mlb-calendar-modal-show');
                 });
@@ -674,6 +758,7 @@
                         e.preventDefault();
                         console.log('[MLB Modal Picker] Book button clicked for form:', formId);
                         if (modalOverlay) {
+                            try { refreshHotelInModal(); } catch (e) {}
                             console.log('[MLB Modal Picker] Showing modalOverlay for form:', formId, modalOverlay);
                             try { modalOverlay.style.display = 'block'; } catch (e) {}
                             modalOverlay.classList.add('mlb-calendar-modal-show');
