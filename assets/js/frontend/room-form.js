@@ -142,8 +142,15 @@
 
                                     // refresh hotel data and show
                                     try { if (typeof overlay._refreshHotelInModal === 'function') overlay._refreshHotelInModal(); } catch (e) {}
-                                    try { overlay.style.display = 'block'; } catch (e) {}
-                                    overlay.classList.add('mlb-calendar-modal-show');
+                                    try {
+                                        // Ensure only one overlay is shown at a time
+                                        try {
+                                            var shown = document.querySelectorAll('.mlb-calendar-modal-overlay.mlb-calendar-modal-show');
+                                            Array.prototype.forEach.call(shown, function(o) { if (o !== overlay) { o.classList.remove('mlb-calendar-modal-show'); try { o.style.display = 'none'; } catch (e) {} } });
+                                        } catch (e) {}
+                                        try { overlay.style.display = 'block'; } catch (e) {}
+                                        overlay.classList.add('mlb-calendar-modal-show');
+                                    } catch (e) {}
                                 }
                             } catch (e) {}
                         }, 60);
@@ -942,8 +949,15 @@
                             e.preventDefault();
                             try { refreshHotelInModal(); } catch (e) {}
                             try { showBookingDetailsPlaceholder(); } catch (e) {}
-                            try { modalOverlay.style.display = 'block'; } catch (e) {}
-                            modalOverlay.classList.add('mlb-calendar-modal-show');
+                            try {
+                                // ensure only one visible overlay
+                                try {
+                                    var shown = document.querySelectorAll('.mlb-calendar-modal-overlay.mlb-calendar-modal-show');
+                                    Array.prototype.forEach.call(shown, function(o) { if (o !== modalOverlay) { o.classList.remove('mlb-calendar-modal-show'); try { o.style.display = 'none'; } catch (e) {} } });
+                                } catch (e) {}
+                                try { modalOverlay.style.display = 'block'; } catch (e) {}
+                                modalOverlay.classList.add('mlb-calendar-modal-show');
+                            } catch (e) {}
                         });
 
                         try { $bookRoomBtn.off('click.mlbModalBtn'); } catch (e) {}
@@ -955,8 +969,15 @@
                                     try { refreshHotelInModal(); } catch (e) {}
                                     try { showBookingDetailsPlaceholder(); } catch (e) {}
                                     console.log('[MLB Modal Picker] Showing modalOverlay for form:', formId, modalOverlay);
-                                    try { modalOverlay.style.display = 'block'; } catch (e) {}
-                                    modalOverlay.classList.add('mlb-calendar-modal-show');
+                                    try {
+                                        // ensure only one visible overlay
+                                        try {
+                                            var shown = document.querySelectorAll('.mlb-calendar-modal-overlay.mlb-calendar-modal-show');
+                                            Array.prototype.forEach.call(shown, function(o) { if (o !== modalOverlay) { o.classList.remove('mlb-calendar-modal-show'); try { o.style.display = 'none'; } catch (e) {} } });
+                                        } catch (e) {}
+                                        try { modalOverlay.style.display = 'block'; } catch (e) {}
+                                        modalOverlay.classList.add('mlb-calendar-modal-show');
+                                    } catch (e) {}
                                     try {
                                         // Give layout a tick then inspect computed style and bounds
                                         setTimeout(function() {

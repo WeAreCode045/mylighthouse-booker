@@ -691,10 +691,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
             var formId = form.id || '';
             var overlay = form._mlbModalOverlay || document.querySelector('.mlb-calendar-modal-overlay[data-form-id="' + formId + '"]');
-            if (overlay) {
-                overlay.classList.add('mlb-calendar-modal-show');
-                return;
-            }
+                    if (overlay) {
+                        try {
+                            var shown = document.querySelectorAll('.mlb-calendar-modal-overlay.mlb-calendar-modal-show');
+                            Array.prototype.forEach.call(shown, function(o) { if (o !== overlay) { o.classList.remove('mlb-calendar-modal-show'); try { o.style.display = 'none'; } catch (e) {} } });
+                        } catch (e) {}
+                        try { overlay.style.display = 'block'; } catch (e) {}
+                        overlay.classList.add('mlb-calendar-modal-show');
+                        return;
+                    }
 
             try {
                 var evt = new CustomEvent('mlb-maybe-init-modal', { detail: { form: form } });
@@ -721,6 +726,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
 
                     if (overlay2) {
+                        try {
+                            var shown = document.querySelectorAll('.mlb-calendar-modal-overlay.mlb-calendar-modal-show');
+                            Array.prototype.forEach.call(shown, function(o) { if (o !== overlay2) { o.classList.remove('mlb-calendar-modal-show'); try { o.style.display = 'none'; } catch (e) {} } });
+                        } catch (e) {}
+                        try { overlay2.style.display = 'block'; } catch (e) {}
                         overlay2.classList.add('mlb-calendar-modal-show');
                         return;
                     }

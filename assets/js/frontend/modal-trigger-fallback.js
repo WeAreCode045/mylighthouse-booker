@@ -59,6 +59,11 @@
                 }
 
                 if (overlay2) {
+                    try {
+                        var shown = document.querySelectorAll('.mlb-calendar-modal-overlay.mlb-calendar-modal-show');
+                        Array.prototype.forEach.call(shown, function(o) { if (o !== overlay2) { o.classList.remove('mlb-calendar-modal-show'); try { o.style.display = 'none'; } catch (e) {} } });
+                    } catch (e) {}
+                    try { overlay2.style.display = 'block'; } catch (e) {}
                     overlay2.classList.add('mlb-calendar-modal-show');
                     return;
                 }
