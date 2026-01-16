@@ -745,43 +745,38 @@ label.mlb-discount-toggle-label {
         position: relative;
     }
 
-    /* Prepare right column as an off-canvas drawer */
+    /* Stack calendar and booking details vertically on small screens (calendar above, details below) */
     .mlb-modal-right-column {
-        position: fixed;
-        left: 0;
-        right: 0;
-        bottom: 0;
+        position: static;
+        left: auto;
+        right: auto;
+        bottom: auto;
         width: 100%;
         max-width: 100%;
-        transform: translateY(110%);
-        transition: transform 320ms cubic-bezier(0.2, 0.9, 0.2, 1);
-        z-index: 11005; /* above modal contents */
-        box-shadow: 0 -10px 30px rgba(0,0,0,0.18);
-        background: transparent; /* inner .mlb-booking-details provides white background */
-        pointer-events: none; /* disabled until opened */
-    }
-
-    /* When expanded, slide into view and accept pointer events */
-    .mlb-modal-right-column.mlb-expanded {
-        transform: translateY(0);
+        transform: none;
+        transition: none;
+        z-index: auto;
+        box-shadow: none;
+        background: transparent;
         pointer-events: auto;
+        margin-top: 12px;
     }
 
-    /* Limit drawer height and allow scrolling inside details */
+    .mlb-modal-right-column.mlb-expanded {
+        /* expanded state simply ensures it's visible and sized full-width */
+        width: 100%;
+    }
+
+    /* Booking details behave as a regular block beneath the calendar */
     .mlb-modal-right-column .mlb-booking-details {
         min-width: auto;
         width: 100%;
-        max-height: 65vh;
-        overflow-y: auto;
+        max-height: none;
+        overflow-y: visible;
         padding: 16px;
         background: #ffffff;
-        border-top-left-radius: 12px;
-        border-top-right-radius: 12px;
-    }
-
-    /* Small gap when drawer is shown so it doesn't touch screen edge unnecessarily */
-    .mlb-modal-right-column.mlb-expanded .mlb-booking-details {
-        margin-bottom: env(safe-area-inset-bottom, 12px);
+        border-radius: 12px;
+        margin: 0;
     }
 }
 
