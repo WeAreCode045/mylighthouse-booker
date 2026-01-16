@@ -277,7 +277,7 @@
     text-align: center;
 }
 .mlb-location-icon { color: var(--mlb-btn-bg, #dc143c); }
-.mlb-calendar-icon { color: #666; }
+.mlb-calendar-icon { color: var(--mlb-btn-bg, #dc143c); }
 
 /* Override absolute icon placement used in inline form fields when inside
    the modal booking details — keep icons inline with labels here. */
