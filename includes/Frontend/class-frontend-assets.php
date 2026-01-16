@@ -123,7 +123,7 @@ class Mylighthouse_Booker_Frontend_Assets
 		// Register EasePick core library from local vendor directory (depends on datetime and base-plugin)
 		wp_register_script(
 			'easepick-core',
-			plugins_url('/assets/vendor/easepick/easepick.js', MYLIGHTHOUSE_BOOKER_PLUGIN_FILE),
+			'https://cdn.jsdelivr.net/npm/@easepick/core@1.2.1/dist/index.umd.js',
 			array('easepick-datetime', 'easepick-base-plugin'),
 			'1.2.1',
 			false  // Load in head to ensure availability before modal opens
@@ -132,7 +132,7 @@ class Mylighthouse_Booker_Frontend_Assets
 		// Register EasePick range plugin from local vendor (MUST load after core and base-plugin)
 		wp_register_script(
 			'easepick-range',
-			plugins_url('/assets/vendor/easepick/easepick-range.js', MYLIGHTHOUSE_BOOKER_PLUGIN_FILE),
+			'https://cdn.jsdelivr.net/npm/@easepick/range-plugin@1.2.1/dist/index.umd.js',
 			array('easepick-datetime', 'easepick-base-plugin', 'easepick-core'),
 			'1.2.1',
 			false  // Load in head
