@@ -352,8 +352,8 @@
                 const modalSubmitBtn = modalOverlay.querySelector('.mlb-modal-submit-btn');
 
                 // Copy form styling to modal
-                const formWrapper = $form.closest('.mylighthouse-booking-form');
-                if (formWrapper.length) {
+                const formWrapper = $form.closest('.mlb-booking-form');
+                if (formWrapper && formWrapper.length) {
                     copyCSSVariables(formWrapper[0], modalOverlay, [
                         '--mlb-btn-bg',
                         '--mlb-btn-text',
@@ -379,7 +379,12 @@
                     
                     var hotelName = '';
                     try { hotelName = window.mlbGetFormValue($form, ['hotelName','hotel_name','hotel-id','hotel_id','hotel']); } catch (e) {}
-                    if (!hotelName) hotelName = $form.data('hotel-name') || $form.data('hotel-id') || '';
+                    if (!hotelName) {
+                        hotelName = $form.attr('data-hotel-name') || $form.attr('data-hotel-id') || '';
+                        if (!hotelName && $form.data) {
+                            hotelName = $form.data('hotelName') || $form.data('hotel-id') || $form.data('hotelId') || hotelName;
+                        }
+                    }
                     
                     // Set hotel name - prioritize selected hotel, then data attribute
                     let displayHotelName = hotelName;
@@ -703,9 +708,20 @@
                                 function toISO(dmy){ if(!dmy) return ''; var p = dmy.split('-'); if(p.length!==3) return dmy; return p[2] + '-' + p[1] + '-' + p[0]; }
                                 try {
                                     // Detect form type
-                                    const hasRoomId = $form.data('room-id');
+                                    const hasRoomId = $form.attr('data-room-id') || $form.data('roomId') || $form.data('room-id');
                                     const isHotelForm = !hasRoomId;
                                     
+                                    console.debug('[MLB Modal Submit] click handler values', {
+                                        formData: {
+                                            hasRoomId: hasRoomId,
+                                            isHotelForm: isHotelForm,
+                                            hotelDataAttr: $form.data('hotel-id'),
+                                            checkinHidden: $checkinHidden.val && $checkinHidden.val(),
+                                            checkoutHidden: $checkoutHidden.val && $checkoutHidden.val(),
+                                            discountValue: modalOverlay.querySelector('.mlb-discount-code') ? modalOverlay.querySelector('.mlb-discount-code').value : ''
+                                        }
+                                    });
+
                                     if (isHotelForm) {
                                         // For hotel forms, redirect to booking engine URL with parameters
                                         let hotelId = $form.data('hotel-id') || $form.find('[name="hotel_id"]').val();
@@ -742,8 +758,9 @@
                                             }
                                             
                                             // Debug and redirect to booking engine
-                                            try { console.debug('[MLB Redirect] navigating to', bookingUrl); } catch(e) {}
-                                            window.location.href = bookingUrl;
+                                            try { console.debug('[MLB Redirect] navigating to', bookingUrl, { hotelId, checkinISO, checkoutISO, discountCode }); } catch(e) {}
+                                            // Fallback: assign via location.replace to avoid some CSP/target issues
+                                            try { window.location.href = bookingUrl; } catch (err) { try { window.location.replace(bookingUrl); } catch (e) { console.error('[MLB Redirect] redirect failed', e); } }
                                         } else {
                                             console.error('MLB: Missing required data for booking redirect', { hotelId, checkin, checkout });
                                         }
@@ -765,9 +782,8 @@
                                             if (discountCode) {
                                                 bookingUrl += '&DiscountCode=' + encodeURIComponent(discountCode);
                                             }
-                                            try { console.debug('[MLB Redirect] navigating to', bookingUrl); } catch(e) {}
-                                            // Redirect to booking engine
-                                            window.location.href = bookingUrl;
+                                            try { console.debug('[MLB Redirect] navigating to', bookingUrl, { hotelId, checkinISO, checkoutISO, roomId: hasRoomId, discountCode }); } catch(e) {}
+                                            try { window.location.href = bookingUrl; } catch (err) { try { window.location.replace(bookingUrl); } catch (e) { console.error('[MLB Redirect] redirect failed', e); } }
                                         } else {
                                             console.error('MLB: Missing required data for room booking redirect', { hotelId, checkin, checkout, roomId: hasRoomId });
                                         }
