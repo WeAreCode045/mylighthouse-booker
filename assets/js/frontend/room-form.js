@@ -376,7 +376,32 @@
      * Initialize modal date picker for room forms
      */
     function initRoomModalDatePicker($form) {
-        const formId = $form.attr('id');
+        // Ensure we have a jQuery-wrapped form
+        if (!$form || !$form.length) return;
+        // Ensure the form has a stable id; create one if missing to avoid 'undefined' data-form-id
+        var formId = $form.attr('id') || '';
+        if (!formId) {
+            try {
+                if (typeof window.mlbEnsureFormId === 'function') {
+                    window.mlbEnsureFormId($form[0]);
+                }
+            } catch (e) {}
+            formId = $form.attr('id') || '';
+            if (!formId) {
+                formId = 'mlb-form-' + (Date.now()) + '-' + Math.floor(Math.random() * 1000);
+                try { $form.attr('id', formId); } catch (e) {}
+            }
+        }
+
+        // Defensive cleanup: remove any stray overlays created with data-form-id="undefined"
+        try {
+            var stray = document.querySelectorAll('.mlb-calendar-modal-overlay[data-form-id="undefined"]');
+            if (stray && stray.length) {
+                Array.prototype.forEach.call(stray, function(n) { if (n && n.parentNode) n.parentNode.removeChild(n); });
+                console.debug('[MLB Modal Picker] removed stray overlays with data-form-id="undefined"');
+            }
+        } catch (e) {}
+
         console.debug('[MLB Modal Picker] initRoomModalDatePicker called for form:', formId);
         const $checkinHidden = $form.find('.mlb-checkin');
         const $checkoutHidden = $form.find('.mlb-checkout');
