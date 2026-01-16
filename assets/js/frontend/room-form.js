@@ -84,6 +84,41 @@
                                     try { overlay = document.querySelector('.mlb-calendar-modal-overlay[data-form-id="' + ($targetForm.attr('id') || '') + '"]'); } catch (e) {}
                                 }
                                 if (overlay) {
+                                    // If trigger is a room booking button, try to populate room details
+                                    try {
+                                        var roomId = trigger.getAttribute && (trigger.getAttribute('data-room-id') || trigger.getAttribute('data-room') || trigger.dataset && trigger.dataset.roomId);
+                                        var roomName = trigger.getAttribute && (trigger.getAttribute('data-room-name') || trigger.getAttribute('data-room') || (trigger.dataset && trigger.dataset.roomName));
+                                        if (!roomName && trigger.closest) {
+                                            var ancestorWithRoom = trigger.closest('[data-room-name], [data-room-id], .mlb-room-card');
+                                            if (ancestorWithRoom) {
+                                                roomName = ancestorWithRoom.getAttribute('data-room-name') || ancestorWithRoom.getAttribute('data-room') || '';
+                                                if (!roomName) {
+                                                    var titleEl = ancestorWithRoom.querySelector && (ancestorWithRoom.querySelector('.room-title') || ancestorWithRoom.querySelector('.mlb-room-name') );
+                                                    if (titleEl) roomName = (titleEl.textContent || titleEl.innerText || '').trim();
+                                                }
+                                                if (!roomId) roomId = ancestorWithRoom.getAttribute('data-room-id') || ancestorWithRoom.getAttribute('data-room');
+                                            }
+                                        }
+
+                                        // update modal room display
+                                        try {
+                                            var roomRowEl = overlay.querySelector('.mlb-room-row');
+                                            var roomNameEl = overlay.querySelector('.mlb-room-name');
+                                            var ctaEl = overlay.querySelector('.mlb-modal-cta-room');
+                                            if (roomNameEl && roomName) {
+                                                roomNameEl.textContent = roomName;
+                                            }
+                                            if (roomRowEl && roomName) {
+                                                roomRowEl.style.display = '';
+                                            }
+                                            if (ctaEl && roomName) {
+                                                try { ctaEl.textContent = mlbGettext('Book This Room'); } catch (e) { ctaEl.textContent = 'Book This Room'; }
+                                            }
+                                            // set data-room-id on form so submit handler includes Room parameter
+                                            try { if ($targetForm && $targetForm.length && roomId) $targetForm.attr('data-room-id', roomId); } catch (e) {}
+                                        } catch (e) {}
+                                    } catch (e) {}
+
                                     // refresh hotel data and show
                                     try { if (typeof overlay._refreshHotelInModal === 'function') overlay._refreshHotelInModal(); } catch (e) {}
                                     try { overlay.style.display = 'block'; } catch (e) {}
