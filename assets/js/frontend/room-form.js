@@ -746,7 +746,6 @@
                     modalOverlay = existingOverlay;
                     // ensure helper is exposed on reused overlay
                     try { modalOverlay._refreshHotelInModal = refreshHotelInModal; } catch (e) {}
-                    try { modalOverlay._showBookingDetailsPlaceholder = showBookingDetailsPlaceholder; } catch (e) {}
                     try { if ($form && $form.length) $form[0]._mlbModalOverlay = modalOverlay; } catch (e) {}
                 } else {
                     document.body.appendChild(modalOverlay);
@@ -756,7 +755,6 @@
                     try { if ($form && $form.length) $form[0]._mlbModalOverlay = modalOverlay; } catch (e) {}
                     // Expose the refresh helper on the overlay so external listeners can update it
                     try { modalOverlay._refreshHotelInModal = refreshHotelInModal; } catch (e) {}
-                    try { modalOverlay._showBookingDetailsPlaceholder = showBookingDetailsPlaceholder; } catch (e) {}
                 }
 
                 // Ensure modal reflects current form selection immediately
@@ -933,15 +931,7 @@
                         } catch (e) {}
 
                         // Refresh/hydrate hotel display in modal to match the source form on close
-                                try { if (typeof refreshHotelInModal === 'function') refreshHotelInModal(); } catch (e) {}
-
-                                // Always reload the page after modal close to ensure booking state
-                                // is reflected consistently across the UI.
-                                try {
-                                    setTimeout(function() {
-                                        try { window.location.reload(); } catch (e) {}
-                                    }, 120);
-                                } catch (e) {}
+                        try { if (typeof refreshHotelInModal === 'function') refreshHotelInModal(); } catch (e) {}
 
                         // collapse right column and disable submit
                         try { if (rightColumn) rightColumn.classList.remove('mlb-expanded'); } catch (e) {}
