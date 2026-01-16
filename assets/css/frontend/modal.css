@@ -279,6 +279,18 @@
 .mlb-location-icon { color: var(--mlb-btn-bg, #dc143c); }
 .mlb-calendar-icon { color: #666; }
 
+/* Override absolute icon placement used in inline form fields when inside
+   the modal booking details — keep icons inline with labels here. */
+.mlb-booking-details .mlb-field-icon {
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    margin-right: 8px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+
 .mlb-booking-details .mlb-row span {
     font-size: 13px;
     color: #222;
