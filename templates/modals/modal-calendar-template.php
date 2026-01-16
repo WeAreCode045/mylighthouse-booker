@@ -21,6 +21,7 @@ if (! defined('ABSPATH')) {
 
                 <div class="mlb-modal-right-column">
                     <div class="mlb-booking-details">
+                        <h3 class="mlb-booking-details-title"><?php echo esc_html__( 'Booking Details', 'mylighthouse-booker' ); ?></h3>
                         <div class="mlb-row mlb-hotel-row">
                             <label><?php echo esc_html__( 'Hotel:', 'mylighthouse-booker' ); ?></label>
                             <span class="mlb-hotel-name"></span>

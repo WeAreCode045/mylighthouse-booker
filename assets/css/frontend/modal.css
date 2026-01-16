@@ -168,7 +168,7 @@
     width: 100%;
     /* Inherit all button styling variables */
     background-color: var(--mlb-btn-bg);
-    color: var(--mlb-btn-text);
+    color: #ffffff !important;
     border: none;
     padding: var(--mlb-button-padding-vertical, 12px) var(--mlb-button-padding-horizontal, 8px);
     font-size: var(--mlb-button-font-size, 12px);
@@ -196,9 +196,21 @@
 .mlb-booking-details {
     height: 100%;
     min-width: 320px;
-    padding: 20px;
+    padding: 18px 20px;
     background-color: #ffffff;
     border-radius: 8px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+/* Header title */
+.mlb-booking-details h3,
+.mlb-booking-details .mlb-booking-details-title {
+    margin: 0 0 12px 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: #222;
+    letter-spacing: 0.4px;
 }
 
 /* Booking details rows: labels and values */
@@ -206,8 +218,14 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 6px 0;
+    padding: 10px 0;
     gap: 12px;
+    border-bottom: 1px solid rgba(34,34,34,0.06);
+    transition: border-color 200ms ease, background-color 200ms ease;
+}
+
+.mlb-booking-details .mlb-row:last-child {
+    border-bottom: none;
 }
 
 .mlb-booking-details .mlb-row label {
@@ -222,6 +240,11 @@
     font-size: 14px;
     color: #222;
     font-weight: 600;
+}
+
+.mlb-booking-details .mlb-row:hover {
+    background-color: rgba(0,0,0,0.01);
+    border-color: rgba(34,34,34,0.09);
 }
 
 /* Discount code wrapper - inside booking details */
