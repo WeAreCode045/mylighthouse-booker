@@ -397,7 +397,11 @@
                     }
                     
                     const hotelNameSpan = modalOverlay.querySelector('.mlb-hotel-name');
-                    if (hotelNameSpan) hotelNameSpan.textContent = displayHotelName;
+                    if (hotelNameSpan) {
+                        const finalHotelName = (displayHotelName && displayHotelName.trim()) ? displayHotelName : (hotelSelect && hotelSelect.length ? hotelSelect.find('option:selected').text().trim() : hotelName);
+                        hotelNameSpan.textContent = finalHotelName || mlbGettext('Hotel');
+                        try { console.debug('[MLB Datepicker] hotel name resolved', { displayHotelName, finalHotelName, hotelSelectCount: hotelSelect ? hotelSelect.length : 0 }); } catch(e){}
+                    }
                     
                     if (isHotelForm) {
                         // Hotel form: hide room/special rows, show "Check Availability"

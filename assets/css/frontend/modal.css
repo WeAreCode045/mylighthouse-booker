@@ -48,25 +48,25 @@
 
 /* Modal container for calendar */
 .mlb-calendar-modal-container {
-    position: relative;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
     background: white;
     border-radius: 12px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
     max-width: 90vw;
     max-height: 90vh;
     overflow: visible;
-    transform: scale(0.9);
-    transition: transform 0.3s ease,
-                width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.3s ease, width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     padding: 20px;
     height: fit-content;
-		width: fit-content;
+    width: fit-content;
     z-index: 9998;
 }
 
-
 .mlb-calendar-modal-show .mlb-calendar-modal-container {
-    transform: scale(1);
+    transform: translate(-50%, -50%) scale(1);
 }
 
 /* Close button for modal */
@@ -199,6 +199,29 @@
     padding: 20px;
     background-color: #ffffff;
     border-radius: 8px;
+}
+
+/* Booking details rows: labels and values */
+.mlb-booking-details .mlb-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 0;
+    gap: 12px;
+}
+
+.mlb-booking-details .mlb-row label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #666;
+    text-transform: uppercase;
+    margin-right: 8px;
+}
+
+.mlb-booking-details .mlb-row span {
+    font-size: 14px;
+    color: #222;
+    font-weight: 600;
 }
 
 /* Discount code wrapper - inside booking details */
