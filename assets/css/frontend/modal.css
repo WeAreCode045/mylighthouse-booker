@@ -212,6 +212,12 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
+/* Layout booking details as a column so bottom controls can be anchored */
+.mlb-booking-details {
+    display: flex;
+    flex-direction: column;
+}
+
 /* Header title */
 .mlb-booking-details h3,
 .mlb-booking-details .mlb-booking-details-title {
@@ -240,6 +246,9 @@
     transition: border-color 200ms ease, background-color 200ms ease;
 }
 
+/* Keep individual rows from stretching; allow a specific bottom block to push down */
+.mlb-booking-details .mlb-row { flex: 0 0 auto; }
+
 .mlb-booking-details .mlb-row:last-child {
     border-bottom: none;
 }
@@ -249,6 +258,36 @@
     font-weight: 600;
     color: #333;
     margin-right: 8px;
+}
+
+/* Icons before labels: hotel and calendar */
+.mlb-booking-details .mlb-row label {
+    position: relative;
+    padding-left: 28px;
+}
+.mlb-booking-details .mlb-hotel-row label::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    background-size: 18px 18px;
+    background-repeat: no-repeat;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect x='3' y='3' width='18' height='18' rx='2' fill='none' stroke='%23222' stroke-width='1.5'/><path d='M8 11h.01M12 11h.01M16 11h.01' stroke='%23222' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+}
+.mlb-booking-details .mlb-dates-row label::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    background-size: 18px 18px;
+    background-repeat: no-repeat;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect x='3' y='5' width='18' height='16' rx='2' fill='none' stroke='%23222' stroke-width='1.5'/><path d='M16 3v4M8 3v4' stroke='%23222' stroke-width='1.5' stroke-linecap='round'/></svg>");
 }
 
 .mlb-booking-details .mlb-row span {
@@ -309,6 +348,7 @@
 .mlb-booking-details .mlb-row.mlb-discount-row {
     flex-direction: column;
     align-items: stretch;
+    margin-top: auto; /* push discount and CTA to the bottom */
 }
 .mlb-booking-details .mlb-discount-input-wrapper {
     width: 100%;
@@ -317,6 +357,10 @@
 .mlb-booking-details .mlb-discount-input-wrapper .mlb-discount-code {
     width: 100%;
     box-sizing: border-box;
+}
+
+.mlb-booking-details .mlb-row.mlb-ctas {
+    margin-top: 12px;
 }
 
 .mlb-booking-details .mlb-row:hover {
