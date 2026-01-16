@@ -351,6 +351,34 @@
                 const bookingDetailsDiv = modalOverlay.querySelector('.mlb-booking-details');
                 const modalSubmitBtn = modalOverlay.querySelector('.mlb-modal-submit-btn');
 
+                // Discount code toggle: reveal input when checked
+                const discountToggle = modalOverlay.querySelector('.mlb-discount-toggle');
+                const discountInput = modalOverlay.querySelector('.mlb-discount-code');
+                const discountWrapper = modalOverlay.querySelector('.mlb-discount-input-wrapper');
+                if (discountToggle) {
+                    try {
+                        // initial state
+                        if (discountToggle.checked) {
+                            if (discountWrapper) discountWrapper.style.display = '';
+                            if (discountInput) discountInput.disabled = false;
+                        } else {
+                            if (discountWrapper) discountWrapper.style.display = 'none';
+                            if (discountInput) discountInput.disabled = true;
+                        }
+                        discountToggle.addEventListener('change', function() {
+                            try {
+                                if (discountToggle.checked) {
+                                    if (discountWrapper) discountWrapper.style.display = '';
+                                    if (discountInput) { discountInput.disabled = false; discountInput.focus(); }
+                                } else {
+                                    if (discountWrapper) discountWrapper.style.display = 'none';
+                                    if (discountInput) { discountInput.disabled = true; discountInput.value = ''; }
+                                }
+                            } catch (e) {}
+                        });
+                    } catch (e) {}
+                }
+
                 // Copy form styling to modal
                 const formWrapper = $form.closest('.mlb-booking-form');
                 if (formWrapper && formWrapper.length) {
@@ -397,11 +425,46 @@
                     }
                     
                     const hotelNameSpan = modalOverlay.querySelector('.mlb-hotel-name');
-                    if (hotelNameSpan) {
-                        const finalHotelName = (displayHotelName && displayHotelName.trim()) ? displayHotelName : (hotelSelect && hotelSelect.length ? hotelSelect.find('option:selected').text().trim() : hotelName);
-                        hotelNameSpan.textContent = finalHotelName || mlbGettext('Hotel');
-                        try { console.debug('[MLB Datepicker] hotel name resolved', { displayHotelName, finalHotelName, hotelSelectCount: hotelSelect ? hotelSelect.length : 0 }); } catch(e){}
+                    const modalHotelSelect = modalOverlay.querySelector('.mlb-hotel-select');
+
+                    // Determine final hotel name from selected option or data attributes
+                    const finalHotelName = (displayHotelName && displayHotelName.trim()) ? displayHotelName : (hotelSelect && hotelSelect.length ? hotelSelect.find('option:selected').text().trim() : hotelName);
+
+                    // Populate modal select from source form select if present
+                    try {
+                        if (modalHotelSelect) {
+                            // If source form contains a select with options, clone them into modal select
+                            const sourceSelect = $form.find('.mlb-hotel-select');
+                            if (sourceSelect && sourceSelect.length) {
+                                modalHotelSelect.innerHTML = '';
+                                sourceSelect.find('option').each(function() {
+                                    try {
+                                        var opt = document.createElement('option');
+                                        opt.value = this.value || this.getAttribute('value') || '';
+                                        opt.text = this.text || this.textContent || this.innerText || '';
+                                        if (this.selected) opt.selected = true;
+                                        modalHotelSelect.appendChild(opt);
+                                    } catch (e) {}
+                                });
+                            }
+                        }
+                    } catch (e) {
+                        console.warn('[MLB Datepicker] Error populating modal hotel select', e);
                     }
+
+                    // Show select when no hotel name is available, otherwise show span
+                    if (modalHotelSelect) {
+                        if (!finalHotelName || !finalHotelName.trim() || finalHotelName === mlbGettext('Hotel')) {
+                            modalHotelSelect.style.display = '';
+                            if (hotelNameSpan) hotelNameSpan.style.display = 'none';
+                        } else {
+                            modalHotelSelect.style.display = 'none';
+                            if (hotelNameSpan) { hotelNameSpan.style.display = ''; hotelNameSpan.textContent = finalHotelName || mlbGettext('Hotel'); }
+                        }
+                    } else {
+                        if (hotelNameSpan) hotelNameSpan.textContent = finalHotelName || mlbGettext('Hotel');
+                    }
+                    try { console.debug('[MLB Datepicker] hotel name resolved', { displayHotelName, finalHotelName, hotelSelectCount: hotelSelect ? hotelSelect.length : 0 }); } catch(e){}
                     
                     if (isHotelForm) {
                         // Hotel form: hide room/special rows, show "Check Availability"
@@ -520,6 +583,16 @@
                                 if (arrivalSpan) arrivalSpan.textContent = '';
                                 if (departureSpan) departureSpan.textContent = '';
                             }
+                        } catch (e) {}
+
+                        // Clear discount toggle and input when closing modal
+                        try {
+                            const toggle = modalOverlay.querySelector('.mlb-discount-toggle');
+                            const input = modalOverlay.querySelector('.mlb-discount-code');
+                            const wrapper = modalOverlay.querySelector('.mlb-discount-input-wrapper');
+                            if (toggle) toggle.checked = false;
+                            if (input) input.value = '';
+                            if (wrapper) wrapper.style.display = 'none';
                         } catch (e) {}
 
                         // collapse right column and disable submit
@@ -688,34 +761,58 @@
                             if (arrivalSpan) arrivalSpan.textContent = arrivalStr;
                             if (departureSpan) departureSpan.textContent = departureStr;
 
-                            // Resolve hotel name from select if present, fallback to data attributes
-                            var hotelName = 'Hotel';
+                            // Resolve hotel name: prefer a modal-select (if visible), then form select/data attrs
+                            var hotelName = '';
                             try {
-                                const hotelSelectLocal = $form.find('.mlb-hotel-select');
-                                if (hotelSelectLocal && hotelSelectLocal.length) {
-                                    const sel = hotelSelectLocal.find('option:selected');
-                                    if (sel && sel.length && sel.text().trim()) {
-                                        hotelName = sel.text().trim();
-                                    }
+                                const modalHotelSelectLocal = bookingDetailsDiv.querySelector('.mlb-hotel-select');
+                                if (modalHotelSelectLocal && modalHotelSelectLocal.style.display !== 'none') {
+                                    const sel = modalHotelSelectLocal.querySelector('option:checked') || modalHotelSelectLocal.options[0];
+                                    if (sel) hotelName = (sel.textContent || sel.innerText || '').trim();
                                 }
                             } catch (e) {}
+
+                            if (!hotelName) {
+                                try {
+                                    const hotelSelectLocal = $form.find('.mlb-hotel-select');
+                                    if (hotelSelectLocal && hotelSelectLocal.length) {
+                                        const sel = hotelSelectLocal.find('option:selected');
+                                        if (sel && sel.length && sel.text().trim()) {
+                                            hotelName = sel.text().trim();
+                                        }
+                                    }
+                                } catch (e) {}
+                            }
+
                             try {
-                                if ((!hotelName || hotelName === 'Hotel') && ($form.attr('data-hotel-name') || $form.data('hotel-name') || $form.data('hotel-id'))) {
+                                if ((!hotelName || hotelName === '') && ($form.attr('data-hotel-name') || $form.data('hotel-name') || $form.data('hotel-id'))) {
                                     hotelName = $form.attr('data-hotel-name') || $form.data('hotel-name') || $form.data('hotel-id') || hotelName;
                                 }
                             } catch (e) {}
+
                             const roomName = $form.attr('data-room-name') || $form.data('room-name') || $form.data('room-id') || 'Room';
                             const hotelNameSpan = bookingDetailsDiv.querySelector('.mlb-hotel-name');
                             const roomNameSpan = bookingDetailsDiv.querySelector('.mlb-room-name');
-                            if (hotelNameSpan) {
-                                const existing = (hotelNameSpan.textContent || '').trim();
-                                const placeholder = mlbGettext('Hotel');
-                                if (!existing || existing === '' || existing === placeholder) {
-                                    hotelNameSpan.textContent = hotelName;
+
+                            // If modal select is visible, prefer that and don't overwrite the select
+                            try {
+                                const modalHotelSelectLocal = bookingDetailsDiv.querySelector('.mlb-hotel-select');
+                                if (modalHotelSelectLocal && modalHotelSelectLocal.style.display !== 'none') {
+                                    // ensure span is hidden when select visible
+                                    if (hotelNameSpan) hotelNameSpan.style.display = 'none';
                                 } else {
-                                    try { console.debug('[MLB Datepicker] preserving existing hotel name in booking details', existing); } catch(e){}
+                                    if (hotelNameSpan) {
+                                        const existing = (hotelNameSpan.textContent || '').trim();
+                                        const placeholder = mlbGettext('Hotel');
+                                        if (!existing || existing === '' || existing === placeholder) {
+                                            hotelNameSpan.textContent = hotelName || placeholder;
+                                        } else {
+                                            try { console.debug('[MLB Datepicker] preserving existing hotel name in booking details', existing); } catch(e){}
+                                        }
+                                        hotelNameSpan.style.display = '';
+                                    }
                                 }
-                            }
+                            } catch (e) {}
+
                             if (roomNameSpan) roomNameSpan.textContent = roomName;
 
                             setTimeout(function() {
@@ -760,11 +857,19 @@
                                         const checkoutISO = toISO(checkout);
                                         const discountCode = modalOverlay.querySelector('.mlb-discount-code') ? modalOverlay.querySelector('.mlb-discount-code').value : '';
                                         
-                                        // If no hotel ID from data, try to get from select or hidden input
+                                        // If no hotel ID from data, prefer modal select, then form select, then hidden input
                                         if (!hotelId) {
-                                            const hotelSelect = $form.find('.mlb-hotel-select');
-                                            if (hotelSelect.length) {
-                                                hotelId = hotelSelect.val();
+                                            try {
+                                                const modalSelect = modalOverlay.querySelector('.mlb-hotel-select');
+                                                if (modalSelect && modalSelect.value) {
+                                                    hotelId = modalSelect.value;
+                                                }
+                                            } catch (e) {}
+                                            if (!hotelId) {
+                                                const hotelSelect = $form.find('.mlb-hotel-select');
+                                                if (hotelSelect.length) {
+                                                    hotelId = hotelSelect.val();
+                                                }
                                             }
                                             if (!hotelId) {
                                                 const hiddenHotel = $form.find('input[name="hotel_id"]');
@@ -794,6 +899,13 @@
                                     } else if (hasRoomId) {
                                         // For room forms, redirect to booking engine URL with Room parameter
                                         let hotelId = $form.data('hotel-id') || $form.find('[name="hotel_id"]').val();
+                                        // If modal select present, prefer that value for room-booking as well
+                                        try {
+                                            const modalSelect = modalOverlay.querySelector('.mlb-hotel-select');
+                                            if ((!hotelId || hotelId === '') && modalSelect && modalSelect.value) {
+                                                hotelId = modalSelect.value;
+                                            }
+                                        } catch (e) {}
                                         const checkin = $checkinHidden.val();
                                         const checkout = $checkoutHidden.val();
                                         const checkinISO = toISO(checkin);

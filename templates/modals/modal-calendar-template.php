@@ -25,6 +25,7 @@ if (! defined('ABSPATH')) {
                         <div class="mlb-row mlb-hotel-row">
                             <label><?php echo esc_html__( 'Hotel:', 'mylighthouse-booker' ); ?></label>
                             <span class="mlb-hotel-name"></span>
+                            <select class="mlb-hotel-select" style="display:none;" aria-label="<?php echo esc_attr__( 'Select hotel', 'mylighthouse-booker' ); ?>"></select>
                         </div>
                         <div class="mlb-row mlb-room-row" style="display:none;">
                             <label><?php echo esc_html__( 'Room:', 'mylighthouse-booker' ); ?></label>
@@ -39,8 +40,14 @@ if (! defined('ABSPATH')) {
                             <span class="mlb-departure-date"></span>
                         </div>
                         <div class="mlb-row mlb-discount-row">
-                            <label for="mlb-discount-input"><?php echo esc_html__( 'Discount code', 'mylighthouse-booker' ); ?></label>
-                            <input id="mlb-discount-input" class="mlb-discount-code" type="text" placeholder="" />
+                            <label class="mlb-discount-toggle-label">
+                                <input type="checkbox" id="mlb-discount-toggle" class="mlb-discount-toggle" />
+                                <?php echo esc_html__( 'I have a discount code', 'mylighthouse-booker' ); ?>
+                            </label>
+                            <div class="mlb-discount-input-wrapper" style="display:none;">
+                                <label for="mlb-discount-input" class="mlb-discount-label"><?php echo esc_html__( 'Discount code', 'mylighthouse-booker' ); ?></label>
+                                <input id="mlb-discount-input" class="mlb-discount-code" type="text" placeholder="" />
+                            </div>
                         </div>
                         <div class="mlb-row mlb-ctas">
                             <button type="button" class="mlb-modal-submit-btn mlb-btn-primary">
