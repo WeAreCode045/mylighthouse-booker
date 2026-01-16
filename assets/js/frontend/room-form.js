@@ -759,6 +759,7 @@
                         const periodSpan = modalOverlay.querySelector('.mlb-period-range');
                         if (periodSpan) {
                             try { periodSpan.textContent = mlbGettext('Choose arrival and departure dates'); } catch (e) { periodSpan.textContent = 'Choose arrival and departure dates'; }
+                            try { periodSpan.classList.add('mlb-period-placeholder'); } catch (e) {}
                         }
                         if (rightColumn) {
                             rightColumn.classList.add('mlb-expanded');
@@ -833,7 +834,10 @@
                         try {
                             if (bookingDetailsDiv) {
                                 const periodSpan = bookingDetailsDiv.querySelector('.mlb-period-range');
-                                if (periodSpan) periodSpan.textContent = '';
+                                if (periodSpan) {
+                                    periodSpan.textContent = '';
+                                    try { periodSpan.classList.remove('mlb-period-placeholder'); } catch (e) {}
+                                }
                             }
                         } catch (e) {}
 
@@ -1016,7 +1020,10 @@
                                     });
 
                             const periodSpan = bookingDetailsDiv.querySelector('.mlb-period-range');
-                            if (periodSpan) periodSpan.textContent = arrivalStr + ' - ' + departureStr;
+                            if (periodSpan) {
+                                periodSpan.textContent = arrivalStr + ' - ' + departureStr;
+                                try { periodSpan.classList.remove('mlb-period-placeholder'); } catch (e) {}
+                            }
 
                             // Resolve hotel name: prefer a modal-select (if visible), then form select/data attrs
                             var hotelName = '';

@@ -344,6 +344,14 @@
     flex: 1 1 0;
 }
 
+/* Right-align period placeholder when no dates are selected */
+.mlb-period-range.mlb-period-placeholder {
+    text-align: right;
+    color: #666;
+    font-style: italic;
+    width: 100%;
+}
+
 /* Discount row: stack checkbox and input vertically and make input full width */
 .mlb-booking-details .mlb-row.mlb-discount-row {
     flex-direction: column;
