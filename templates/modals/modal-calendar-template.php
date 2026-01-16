@@ -31,15 +31,9 @@ if (! defined('ABSPATH')) {
                             <label><?php echo esc_html__( 'Room:', 'mylighthouse-booker' ); ?></label>
                             <span class="mlb-room-name"></span>
                         </div>
-                        <div class="mlb-row mlb-dates-row mlb-dates-pair">
-                            <div class="mlb-date-col">
-                                <label><?php echo esc_html__( 'Check-in:', 'mylighthouse-booker' ); ?></label>
-                                <span class="mlb-arrival-date"></span>
-                            </div>
-                            <div class="mlb-date-col">
-                                <label><?php echo esc_html__( 'Check-out:', 'mylighthouse-booker' ); ?></label>
-                                <span class="mlb-departure-date"></span>
-                            </div>
+                        <div class="mlb-row mlb-dates-row">
+                            <label><?php echo esc_html__( 'Period:', 'mylighthouse-booker' ); ?></label>
+                            <span class="mlb-period-range"></span>
                         </div>
                         <div class="mlb-row mlb-discount-row">
                             <label class="mlb-discount-toggle-label">

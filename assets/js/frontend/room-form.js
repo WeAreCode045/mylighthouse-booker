@@ -603,10 +603,8 @@
                         // reset booking details UI
                         try {
                             if (bookingDetailsDiv) {
-                                const arrivalSpan = bookingDetailsDiv.querySelector('.mlb-arrival-date');
-                                const departureSpan = bookingDetailsDiv.querySelector('.mlb-departure-date');
-                                if (arrivalSpan) arrivalSpan.textContent = '';
-                                if (departureSpan) departureSpan.textContent = '';
+                                const periodSpan = bookingDetailsDiv.querySelector('.mlb-period-range');
+                                if (periodSpan) periodSpan.textContent = '';
                             }
                         } catch (e) {}
 
@@ -781,10 +779,8 @@
                                         year: 'numeric'
                                     });
 
-                            const arrivalSpan = bookingDetailsDiv.querySelector('.mlb-arrival-date');
-                            const departureSpan = bookingDetailsDiv.querySelector('.mlb-departure-date');
-                            if (arrivalSpan) arrivalSpan.textContent = arrivalStr;
-                            if (departureSpan) departureSpan.textContent = departureStr;
+                            const periodSpan = bookingDetailsDiv.querySelector('.mlb-period-range');
+                            if (periodSpan) periodSpan.textContent = mlbGettext('Period') + ': ' + arrivalStr + ' - ' + departureStr;
 
                             // Resolve hotel name: prefer a modal-select (if visible), then form select/data attrs
                             var hotelName = '';
