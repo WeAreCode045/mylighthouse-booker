@@ -453,6 +453,15 @@
         const $daterangeInput = $form.find('.mlb-daterange');
         const $bookRoomBtn = $form.find('.mlb-book-room-btn, [data-trigger-modal="true"]');
 
+        // Capture the initial room id/name so we can restore on modal close
+        try {
+            var _initialRoomId = '';
+            var _initialRoomName = '';
+            try { _initialRoomId = $form.attr('data-room-id') || $form.data('roomId') || $form.data('room-id') || ($form.find('input[name="room_id"]').length ? $form.find('input[name="room_id"]').val() : '') || ''; } catch (e) {}
+            try { _initialRoomName = $form.attr('data-room-name') || $form.data('roomName') || $form.data('room-name') || ($form.find('input[name="room_name"]').length ? $form.find('input[name="room_name"]').val() : '') || ''; } catch (e) {}
+            try { $form[0]._mlbInitialRoom = { id: _initialRoomId, name: _initialRoomName }; } catch (e) {}
+        } catch (e) {}
+
         if (!$checkinHidden.length || !$checkoutHidden.length) {
             console.error('[MLB Modal Picker] Missing hidden inputs');
             return;
@@ -937,6 +946,37 @@
                             if (toggle) toggle.checked = false;
                             if (input) input.value = '';
                             if (wrapper) wrapper.style.display = 'none';
+                        } catch (e) {}
+
+                        // Restore any room selection that was changed by clicking a room button.
+                        try {
+                            if ($form && $form.length && $form[0]._mlbInitialRoom) {
+                                var orig = $form[0]._mlbInitialRoom || {};
+                                if (orig.id && String(orig.id).trim() !== '') {
+                                    try { $form.attr('data-room-id', orig.id); } catch (e) {}
+                                    try { $form.find('input[name="room_id"]').val(orig.id); } catch (e) {}
+                                } else {
+                                    try { $form.removeAttr('data-room-id'); } catch (e) {}
+                                    try { $form.find('input[name="room_id"]').val(''); } catch (e) {}
+                                }
+                                if (typeof orig.name !== 'undefined' && orig.name !== null && String(orig.name).trim() !== '') {
+                                    try { $form.attr('data-room-name', orig.name); } catch (e) {}
+                                    try { $form.find('input[name="room_name"]').val(orig.name); } catch (e) {}
+                                } else {
+                                    try { $form.removeAttr('data-room-name'); } catch (e) {}
+                                    try { $form.find('input[name="room_name"]').val(''); } catch (e) {}
+                                }
+                                try {
+                                    var roomRow = modalOverlay.querySelector('.mlb-room-row');
+                                    if (roomRow) roomRow.style.display = 'none';
+                                    var roomNameEl = modalOverlay.querySelector('.mlb-room-name');
+                                    if (roomNameEl) roomNameEl.textContent = '';
+                                } catch (e) {}
+                            } else {
+                                // No initial recorded: clear any transient room id set during this modal session
+                                try { if ($form && $form.length) { $form.removeAttr('data-room-id'); $form.removeAttr('data-room-name'); $form.find('input[name="room_id"]').val(''); $form.find('input[name="room_name"]').val(''); } } catch(e) {}
+                                try { var rr = modalOverlay.querySelector('.mlb-room-row'); if (rr) rr.style.display = 'none'; var rne = modalOverlay.querySelector('.mlb-room-name'); if (rne) rne.textContent = ''; } catch(e) {}
+                            }
                         } catch (e) {}
 
                         // Refresh/hydrate hotel display in modal to match the source form on close

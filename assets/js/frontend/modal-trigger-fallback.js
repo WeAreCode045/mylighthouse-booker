@@ -44,9 +44,9 @@
             try {
                 console.debug('[MLB Modal Trigger] calling initRoomModalDatePicker for form', formEl && formEl.id);
                 if (window.jQuery) {
-                    try { window.initRoomModalDatePicker(window.jQuery(formEl)); } catch (e) { /* ignore init errors */ }
+                    try { window.initRoomModalDatePicker(window.jQuery(formEl), true); } catch (e) { /* ignore init errors */ }
                 } else {
-                    try { window.initRoomModalDatePicker(formEl); } catch (e) { /* ignore init errors */ }
+                    try { window.initRoomModalDatePicker(formEl, true); } catch (e) { /* ignore init errors */ }
                 }
             } catch (e) { /* ignore init errors */ }
         }
@@ -60,7 +60,7 @@
             try {
                 var overlay2 = formEl._mlbModalOverlay || document.querySelector('.mlb-calendar-modal-overlay[data-form-id="' + (formEl.id || '') + '"]');
                 if (!overlay2 && typeof window.initRoomModalDatePicker === 'function') {
-                    try { window.initRoomModalDatePicker(window.jQuery ? window.jQuery(formEl) : formEl); } catch (e) { /* ignore init errors */ }
+                    try { window.initRoomModalDatePicker(window.jQuery ? window.jQuery(formEl) : formEl, true); } catch (e) { /* ignore init errors */ }
                     overlay2 = formEl._mlbModalOverlay || document.querySelector('.mlb-calendar-modal-overlay[data-form-id="' + (formEl.id || '') + '"]');
                 }
 
