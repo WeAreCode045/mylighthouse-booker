@@ -24,6 +24,26 @@
         
         var $ = jQuery;
 
+        // Global delegated listener: when any hotel select changes, update its modal (if present)
+        if (!window._mlb_global_hotel_select_listener) {
+            try {
+                document.addEventListener('change', function(e) {
+                    try {
+                        var t = e.target || e.srcElement;
+                        if (!t) return;
+                        if (t.matches && t.matches('.mlb-hotel-select')) {
+                            // find closest form wrapper
+                            var frm = t.closest && t.closest('.mlb-booking-form');
+                            if (frm && frm._mlbModalOverlay && typeof frm._mlbModalOverlay._refreshHotelInModal === 'function') {
+                                try { frm._mlbModalOverlay._refreshHotelInModal(); } catch (err) {}
+                            }
+                        }
+                    } catch (err) {}
+                }, true);
+            } catch (e) {}
+            window._mlb_global_hotel_select_listener = true;
+        }
+
     // JS gettext helper: delegate to MLB.utils when available
     function mlbGettext(str) {
         try {
@@ -549,6 +569,8 @@
                 } catch (e) {}
                 console.debug('[MLB Modal Picker] modalOverlay appended for form:', formId, modalOverlay);
                 try { if ($form && $form.length) $form[0]._mlbModalOverlay = modalOverlay; } catch (e) {}
+                // Expose the refresh helper on the overlay so external listeners can update it
+                try { modalOverlay._refreshHotelInModal = refreshHotelInModal; } catch (e) {}
 
                 // Helper: refresh hotel display/options in modal from source form
                 function refreshHotelInModal() {
@@ -700,6 +722,9 @@
                             if (input) input.value = '';
                             if (wrapper) wrapper.style.display = 'none';
                         } catch (e) {}
+
+                        // Refresh/hydrate hotel display in modal to match the source form on close
+                        try { if (typeof refreshHotelInModal === 'function') refreshHotelInModal(); } catch (e) {}
 
                         // collapse right column and disable submit
                         try { if (rightColumn) rightColumn.classList.remove('mlb-expanded'); } catch (e) {}
