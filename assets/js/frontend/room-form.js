@@ -641,6 +641,7 @@
                     
                     const hotelNameSpan = modalOverlay.querySelector('.mlb-hotel-name');
                     const modalHotelSelect = modalOverlay.querySelector('.mlb-hotel-select');
+                    const ctaRoom = modalOverlay.querySelector('.mlb-modal-cta-room');
 
                     // Determine final hotel name from selected option or data attributes
                     const finalHotelName = (displayHotelName && displayHotelName.trim()) ? displayHotelName : (hotelSelect && hotelSelect.length ? hotelSelect.find('option:selected').text().trim() : hotelName);
