@@ -279,6 +279,24 @@
 .mlb-location-icon { color: var(--mlb-btn-bg, #dc143c); }
 .mlb-calendar-icon { color: var(--mlb-btn-bg, #dc143c); }
 
+/* Bed icon used before Room label in booking details */
+.mlb-bed-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    vertical-align: middle;
+    color: var(--mlb-btn-bg, #dc143c);
+    flex: 0 0 18px;
+}
+.mlb-bed-icon svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
 /* Override absolute icon placement used in inline form fields when inside
    the modal booking details — keep icons inline with labels here. */
 .mlb-booking-details .mlb-field-icon {

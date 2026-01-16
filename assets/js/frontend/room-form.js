@@ -931,7 +931,20 @@
                         } catch (e) {}
 
                         // Refresh/hydrate hotel display in modal to match the source form on close
-                        try { if (typeof refreshHotelInModal === 'function') refreshHotelInModal(); } catch (e) {}
+                                try { if (typeof refreshHotelInModal === 'function') refreshHotelInModal(); } catch (e) {}
+
+                                // If the source form requested a page reload when the modal closes,
+                                // honor the opt-in attribute `data-reload-on-close="true"`.
+                                try {
+                                    var reloadAttr = null;
+                                    try { reloadAttr = ($form && $form.length) ? ($form.data && $form.data('reloadOnClose')) : null; } catch (e) { reloadAttr = null; }
+                                    try { if (!reloadAttr && $form && $form.length) reloadAttr = $form.attr('data-reload-on-close'); } catch (e) {}
+                                    if (reloadAttr === true || String(reloadAttr) === 'true' || String(reloadAttr) === '1') {
+                                        setTimeout(function() {
+                                            try { window.location.reload(); } catch (e) {}
+                                        }, 120);
+                                    }
+                                } catch (e) {}
 
                         // collapse right column and disable submit
                         try { if (rightColumn) rightColumn.classList.remove('mlb-expanded'); } catch (e) {}
