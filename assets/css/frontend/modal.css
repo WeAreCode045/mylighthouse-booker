@@ -55,8 +55,8 @@
     background: white;
     border-radius: 12px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-    max-width: 90vw;
-    max-height: 90vh;
+    max-width: 95vw;
+    max-height: 95vh;
     overflow: visible;
     transition: transform 0.3s ease, width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     padding: 20px;
@@ -671,8 +671,7 @@ label.mlb-discount-toggle-label {
 
 @media (max-width: 768px) {
     .mlb-calendar-modal-container {
-        width: 95vw;
-        margin: 20px;
+        width: 100vw;
         padding: 15px;
     }
 
